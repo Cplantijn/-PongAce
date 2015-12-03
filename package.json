@@ -1,0 +1,26 @@
+{
+  "name": "pong-ace",
+  "version": "1.0.0",
+  "description": "Ping Pong Arduino app for the ACE Table Tennis Club",
+  "main": "pong.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cplantijn/PongAce.git"
+  },
+  "keywords": [
+    "ping-pong",
+    "table-tennis",
+    "node",
+    "arduino",
+    "raspberry-pi"
+  ],
+  "author": "Christopher S Plantijn <cplantijn90@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cplantijn/PongAce/issues"
+  },
+  "homepage": "https://github.com/Cplantijn/PongAce#readme"
+}
