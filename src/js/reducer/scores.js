@@ -1,20 +1,51 @@
-import  { ADD_POINT } from '../actions/scores'
+import  { ADD_POINT, ADD_TEAM } from '../actions/scores'
+import _ from 'underscore'
 
 const initialState = {
-  score: 0
+  gameActive: false,
+  userMessage: {
+    active: false,
+    messages: []
+  },
+  teamData: {}
 }
 
-function scores(state = initialState, action) {
+function reducer(state = initialState, action) {
   switch(action.type) {
     case ADD_POINT:
-      console.log(state);
+      return {
+        ...state
+      }
+    case ADD_TEAM:
+      let teamData = state.teamData
+      let userMessage = state.userMessage
+
+      if (_.size(teamData) < 2) {
+        teamData[_.size(teamData)] = {
+          id: _.size(teamData),
+          name: action.name,
+          isServing: false,
+          players: [],
+          score: 0
+        }
+      } else {
+        userMessage.active = true
+        userMessage.messages.push({
+          id: userMessage.messages.length,
+          type: 'warning',
+          content: 'You can\'t have more than two teams playing each other.',
+          hideTimeout: 2000
+        })
+
+      }
       return {
         ...state,
-        score: state.score + 1
+        teamData: teamData,
+        userMessage: userMessage,
       }
     default:
       return state
   }
 }
 
-export default scores
+export default reducer

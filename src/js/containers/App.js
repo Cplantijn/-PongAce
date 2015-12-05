@@ -9,24 +9,26 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    const { dispatch, addPoint } = this.props
+    const { dispatch, addPoint, addTeam } = this.props
     console.log(this.props)
     var self = this
     this.socket = io()
     this.socket.on('btnPress', function() {
-      addPoint()
+      addTeam('test')
     })
   }
   render() {
     return (
-      <div>{this.props.score}</div>
+      <div>0</div>
     )
   }
 }
 
 function mapStateToProps(state) {
   return {
-    score: state.score
+    gameActive: state.gameActive,
+    teamData: state.teamData,
+    userMessage: state.userMessage
   }
 }
 

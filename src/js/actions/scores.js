@@ -1,10 +1,18 @@
 var actions = exports = module.exports
 
 exports.ADD_POINT = 'ADD_POINT'
+exports.ADD_TEAM = 'ADD_TEAM'
 
-exports.addPoint = function addPoint(player) {
+exports.addPoint = function(index) {
   return {
     type: actions.ADD_POINT,
-    player: player
+    teamIndex: index
+  }
+}
+
+exports.addTeam = function(name) {
+  return {
+    type: actions.ADD_TEAM,
+    name: name
   }
 }
