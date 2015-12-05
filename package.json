@@ -42,6 +42,7 @@
     "watchify": "^3.4.0"
   },
   "dependencies": {
+    "classnames": "^2.2.1",
     "express": "^4.13.3",
     "johnny-five": "^0.9.14",
     "react": "^0.14.3",
