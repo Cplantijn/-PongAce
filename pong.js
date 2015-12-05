@@ -20,15 +20,16 @@ io.on('connection', function() {
 
 board = new five.Board();
 board.on('ready', function() {
+
   buttonOne = new five.Button(2);
-  buttonTwo = new five.Button(3); 
-  
+  buttonTwo = new five.Button(3);
+
   buttonOne.on('down', function() {
     io.emit('btnPress', 'Button One has been pressed!');
   });
-  
+
   buttonTwo.on('down', function() {
     io.emit('btnPress', 'Button Two has been pressed!');
   });
-  
+
 });

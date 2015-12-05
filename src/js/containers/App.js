@@ -1,23 +1,36 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as PongActions from '../actions/scores'
 import io from 'socket.io-client'
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      message: this.props.message
-    }
   }
   componentDidMount() {
-    var self = this;
-    this.socket = io();
-    this.socket.on('btnPress', function(msg) {
-      self.setState({message: msg });
-    });
+    const { dispatch, addPoint } = this.props
+    console.log(this.props)
+    var self = this
+    this.socket = io()
+    this.socket.on('btnPress', function() {
+      addPoint()
+    })
   }
   render() {
     return (
-      <div><h1>{this.state.message}</h1></div>
+      <div>{this.props.score}</div>
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    score: state.score
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(PongActions, dispatch)
+}
+export default connect(mapStateToProps, mapDispatchToProps)(App)

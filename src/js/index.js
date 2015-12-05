@@ -5,10 +5,9 @@ import ReactDOM, { render } from 'react-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from './containers/App'
-import pongApp from './reducers'
+import pongReducer from './reducer/scores'
 
-let store = createStore(pongApp)
-
+let store = createStore(pongReducer)
 render(
   <Provider store={store}>
     <App />
