@@ -1,0 +1,60 @@
+@font-face {
+    font-family: 'pier_sansbold_italic';
+    src:  url('../webfont/pier-bold-italic-webfont.woff2') format('woff2'),
+         url('../webfont/pier-bold-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'pier_sansbold';
+    src: url('../webfont/pier-bold-webfont.woff2') format('woff2'),
+         url('../webfont/pier-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'pier_sansitalic';
+    src: url('../webfont/pier-italic-webfont.woff2') format('woff2'),
+         url('../webfont/pier-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'pier_sansregular';
+    src:url('../webfont/pier-regular-webfont.woff2') format('woff2'),
+         url('../webfont/pier-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+	font-family: 'icomoon';
+	src:url('../webfont/icomoon.woff?ga2giu') format('woff'),
+			url('../webfont/icomoon.svg?ga2giu#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering ===ß======== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-logo:before {
+	content: "\e900";
+}
+
+
+
+$pier_bold: 'pier_sansbold', sans-serif;
+$pier_bold_italic: 'pier_sansbold_italic', sans-serif;
+$pier_regular: 'pier_sansregular', sans-serif;
+$pier_italic: 'pier_sansitalic', sans-serif;

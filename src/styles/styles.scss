@@ -1,2 +1,63 @@
 @import 'vendor/reset';
 @import 'vendor/bootstrap/bootstrap';
+@import 'colors';
+@import 'fonts';
+
+body{
+  color: #333;
+  font-family: $pier_regular;
+}
+.main-component {
+  background-color: $main_bg_color;
+  height: 100vh;
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  justify-content: stretch;
+  .card-component-container{
+    flex:16;
+    display: flex;
+    flex-direction: row;
+    .team-card-component{
+      flex:1;
+      background: $white;
+      border-radius: 0.33em;
+      box-shadow: 0px 0px 2px $element_shadow;
+      margin: 1em;
+      &.team-1{
+        background: $main_color;
+      }
+      &.team-2{
+        background: $secondary_color;
+      }
+    }
+
+  }
+  .pong-section{
+    flex: 2;
+    &.top-bar{
+      background-color: $white;
+      display: flex;
+      box-shadow: 0px 0px 10px $element_shadow;
+      .logo-container{
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-logo{
+          color: $secondary_color;
+          padding-right:1em;
+        }
+        h1 {
+          font-family: $pier_bold;
+          letter-spacing: 0.1em;
+          color: $main_color;
+        }
+      }
+    }
+    &.footer-bar{
+      box-shadow: 0px 0px 10px $element_shadow;
+      background-color: $white;
+    }
+  }
+}

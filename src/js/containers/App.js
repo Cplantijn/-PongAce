@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as PongActions from '../actions/scores'
 import io from 'socket.io-client'
+import MainComponent from '../components/MainComponent'
 
 class App extends Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class App extends Component {
   }
   componentDidMount() {
     const { dispatch, addPoint, addTeam } = this.props
-    console.log(this.props)
     var self = this
     this.socket = io()
     this.socket.on('btnPress', function() {
@@ -19,7 +19,7 @@ class App extends Component {
   }
   render() {
     return (
-      <div>0</div>
+      <MainComponent props={this.props}/>
     )
   }
 }
