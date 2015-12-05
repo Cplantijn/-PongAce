@@ -14,7 +14,7 @@ var watch = require('gulp-watch');
 var reactify = require('reactify');
 var babelify = require('babelify');
 
-var jsFiles = glob.sync('./src/js/main.js');
+var jsFiles = glob.sync('./src/js/index.js');
 
 var customOpts = {
   entries: jsFiles,
