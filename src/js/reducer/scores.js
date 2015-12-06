@@ -3,11 +3,11 @@ import _ from 'underscore'
 
 const initialState = {
   gameActive: false,
+  teamData: {},
   userMessage: {
     active: false,
     messages: []
-  },
-  teamData: {}
+  }
 }
 
 function reducer(state = initialState, action) {
