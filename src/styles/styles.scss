@@ -20,15 +20,57 @@ body{
     flex-direction: row;
     .team-card-component{
       flex:1;
+      display: flex;
+      flex-direction: column;
       background: $white;
       border-radius: 0.33em;
       box-shadow: 0px 0px 2px $element_shadow;
       margin: 1em;
       &.team-1{
-        background: $main_color;
+        .team-card-score-component{
+          background: $main_color;
+        }
       }
       &.team-2{
-        background: $secondary_color;
+        .team-card-score-component{
+          background: $secondary_color;
+        }
+      }
+      .team-card-score-component{
+        flex: 3;
+        border-top-left-radius: 0.33em;
+        border-top-right-radius: 0.33em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.join-game{
+          background: $inactive_color;
+          .join-game-btn{
+            color: $light_grey;
+            font-size: 2em;
+            background: transparent;
+            padding: 1em 4em;
+            border: 0.15em dashed $light_grey;
+            transition: 0.1s linear all;
+            &.team-1{
+              &:hover{
+                background: $main_color;
+                border: 0;
+                color: $white;
+              }
+            }
+            &.team-2{
+              &:hover{
+                background: $secondary_color;
+                border: 0;
+                color: $white;
+              }
+            }
+          }
+        }
+      }
+      .team-card-bottom-component{
+        flex: 1;
       }
     }
 
