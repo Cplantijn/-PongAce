@@ -18,8 +18,9 @@ class App extends Component {
     })
   }
   render() {
+    var { gameActive, cardData, userMessage } = this.props
     return (
-      <MainComponent props={this.props}/>
+      <MainComponent {...this.props}/>
     )
   }
 }
@@ -27,7 +28,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     gameActive: state.gameActive,
-    teamData: state.teamData,
+    cardData: state.cardData,
     userMessage: state.userMessage
   }
 }

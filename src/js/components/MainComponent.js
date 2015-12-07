@@ -9,26 +9,13 @@ export default class MainComponent extends Component {
     super(props)
   }
   render() {
-    var { teamData, addTeam } = this.props.props;
-    var teamCardOne, teamCardTwo;
-
-      if (typeof teamData[0] !== 'undefined') {
-        teamCardOne = <TeamCard active={true} score={teamData[0].score} cardType="team-1"/>
-      } else {
-        teamCardOne = <TeamCard addTeam={addTeam} cardType="team-1" active={false} />
-      }
-
-      if (typeof teamData[1] !== 'undefined') {
-        teamCardTwo = <TeamCard active={true} score={teamData[1].score} cardType="team-2"/>
-      } else {
-        teamCardTwo = <TeamCard addTeam={addTeam} cardType="team-2" active={false} />
-      }
+    var { cardData } = this.props
     return (
       <div className="main-component container-fluid">
         <TopBar />
         <div className="card-component-container">
-          {teamCardOne}
-          {teamCardTwo}
+          <TeamCard cardData={cardData} teamIndex={0} cardType="team-1" />
+          <TeamCard cardData={cardData} teamIndex={1} cardType="team-2" />
         </div>
         <Footer />
       </div>

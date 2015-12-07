@@ -10,9 +10,10 @@ exports.addPoint = function(index) {
   }
 }
 
-exports.addTeam = function(name) {
+exports.addTeam = function(index, name) {
   return {
     type: actions.ADD_TEAM,
+    cardIndex: index,
     name: name
   }
 }
