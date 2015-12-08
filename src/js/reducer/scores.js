@@ -1,8 +1,14 @@
-import  { ADD_POINT, ADD_TEAM } from '../actions/scores'
+import  {
+  ADD_POINT,
+  ADD_TEAM,
+  SHOW_PLAYER_MODAL,
+  HIDE_PLAYER_MODAL
+} from '../actions/scores'
 import _ from 'underscore'
 
 const initialState = {
   gameActive: false,
+  playerModalShown: false,
   cardData: {
     cardOneData: {},
     cardTwoData: {},
@@ -23,6 +29,16 @@ function reducer(state = initialState, action) {
       return {
         ...state,
       }
+    case SHOW_PLAYER_MODAL:
+      return {
+        ...state,
+        playerModalShown: true,
+      }
+    case HIDE_PLAYER_MODAL:
+    return {
+      ...state,
+      playerModalShown: false,
+    }
     default:
       return state
   }

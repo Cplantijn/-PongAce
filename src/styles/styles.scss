@@ -1,5 +1,7 @@
 @import 'vendor/reset';
 @import 'vendor/bootstrap/bootstrap';
+@import 'vendor/font-awesome/font-awesome';
+@import 'mixins';
 @import 'colors';
 @import 'fonts';
 
@@ -61,6 +63,7 @@ body{
       color: $grey;
       border: 1px solid $grey;
       &:hover {
+        @include pulsate;
         background: $main_color;
         color: $white;
         border: 1px solid $main_color;
@@ -70,10 +73,11 @@ body{
   }
   .pong-section{
     flex: 2;
+    display: flex;
     &.top-bar{
       background-color: $white;
-      display: flex;
       box-shadow: 0px 0px 10px $element_shadow;
+      border-bottom: 2px solid $main_color;
       .logo-container{
         text-align: center;
         display: flex;
@@ -95,7 +99,39 @@ body{
     }
     &.footer-bar{
       box-shadow: 0px 0px 10px $element_shadow;
+      border-top: 2px solid $main_color;
       background-color: $white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .footer-container {
+        flex: .5;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .footer-icon-pair{
+          display: flex;
+          flex: 1;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: $main_color;
+          &:hover{
+            cursor: pointer;
+            color: $secondary_color;
+          }
+          .footer-icon-icon{
+            padding: 0.5em 0.5em 0.1em 0.5em;
+            &:hover {
+              @include pulsate;
+            }
+          }
+          .footer-icon-title{
+            padding-bottom: 0.5em;
+          }
+        }
+      }
     }
   }
 }

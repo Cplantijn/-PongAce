@@ -14,8 +14,8 @@ export default class MainComponent extends Component {
       <div className="main-component container-fluid">
         <TopBar />
         <div className="card-component-container">
-          <TeamCard cardData={cardData} teamIndex={0} cardType="team-1" />
-          <TeamCard cardData={cardData} teamIndex={1} cardType="team-2" />
+          <TeamCard teamIndex={0} cardType="team-1" {...this.props} />
+          <TeamCard teamIndex={1} cardType="team-2" {...this.props} />
         </div>
         <Footer />
       </div>

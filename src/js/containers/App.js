@@ -28,6 +28,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     gameActive: state.gameActive,
+    playerModalShown: state.playerModalShown,
     cardData: state.cardData,
     userMessage: state.userMessage
   }
