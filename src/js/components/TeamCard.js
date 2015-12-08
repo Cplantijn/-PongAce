@@ -26,7 +26,7 @@ export default class TeamCard extends Component {
                       <CardBottom />
                   </div>
     } else {
-        cardBody = <EmptyCard teamIndex={teamIndex} />
+        cardBody = <EmptyCard {...this.props} />
     }
 
     return (

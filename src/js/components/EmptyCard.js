@@ -6,22 +6,19 @@ import PlayerJoinModal from './PlayerJoinModal'
 export default class EmptyCard extends Component {
   constructor(props) {
     super(props)
-    this.state = {showModal: false}
   }
   _joinGame() {
-    this.setState({showModal: true})
-    console.log('player joining', this.props.teamIndex);
-  }
-  _closeModal() {
-    this.setState({showModal: false})
+    console.log('player joining', this.props)
   }
   render() {
+    console.log(this.props);
+    var { showPlayerModal, playerModalShown, hidePlayerModal } = this.props
     var btnCls = classNames('btn-block','btn-join-game')
     return (
       <div>
-        <PlayerJoinModal showModal={this.state.showModal} closeModal={this._closeModal.bind(this)}/>
+        <PlayerJoinModal showModal={playerModalShown} closeModal={hidePlayerModal}/>
         <h2 className="no-players"> No Player(s) </h2>
-        <Button className={btnCls} onClick={this._joinGame.bind(this)}> Join </Button>
+        <Button className={btnCls} onClick={ showPlayerModal }> Join </Button>
       </div>
     )
   }

@@ -1,0 +1,52 @@
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+@mixin animate($name, $duration, $iteration, $direction) {
+  -webkit-animation-duration: $duration;
+     -moz-animation-duration: $duration;
+       -o-animation-duration: $duration;
+          animation-duration: $duration;
+
+  -webkit-animation-iteration-count: $iteration;
+     -moz-animation-iteration-count: $iteration;
+       -o-animation-iteration-count: $iteration;
+          animation-iteration-count: $iteration;
+
+  -webkit-animation-name: $name;
+     -moz-animation-name: $name;
+       -o-animation-name: $name;
+          animation-name: $name;
+
+  -webkit-animation-direction: $direction;
+     -moz-animation-direction: $direction;
+       -o-animation-direction: $direction;
+          animation-direction: $direction;
+}
+
+@include keyframes(pulsate) {
+  0% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
+@mixin pulsate {
+  @include animate(pulsate, 1.2s, infinite, normal);
+}
