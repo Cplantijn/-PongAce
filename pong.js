@@ -7,7 +7,9 @@ var config    = require('./config');
 var sqlite3   = require('sqlite3').verbose();
 var db        = new sqlite3.Database(config.dbFile);
 var five      = require('johnny-five');
-var board, buttonOne, buttonTwo;
+
+var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
+    btnOneTimeout, btnTwoTimeout;
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
@@ -24,21 +26,39 @@ io.on('connection', function() {
 board = new five.Board();
 board.on('ready', function() {
 
-  buttonOne = new five.Button(config.buttonOnePin);
-  buttonTwo = new five.Button(config.buttonTwoPin);
+  btnOne = new five.Button(config.btnOnePin);
+  btnOneDowned = false;
 
-  buttonOne.on('down', function() {
+  btnTwo = new five.Button(config.buttonTwoPin);
+  btnTwoDowned = false;
+
+  btnOne.on('down', function() {
+    btnOneDowned = true;
+    btnOneTimeout = setTimeout(function() {
+      btnOneDowned = false;
+      console.log('Double click listener disabled for button One');
+    }, 333);
     io.emit('btnPress', 'Button One has been pressed!');
+    if (btnOneDowned) {
+      console.log('Button double clicked!');
+    }
   });
 
   buttonTwo.on('down', function() {
+    btnTwoDowned = true;
+    console.log('Double click listener disabled for button Two');
+    btnOneTimeout = setTimeout(function() {
+      btnTwoDown = false;
+    }, 333);
+
     io.emit('btnPress', 'Button Two has been pressed!');
-    console.log('btn down')
+
+    if (btnTwoDowned) {
+      console.log('Button double pressed!');
+    }
+
   });
-  buttonTwo.on('up', function() {
-    io.emit('btnPress', 'Button Two has been pressed!');
-    console.log('btn up')
-  });
+  
   buttonTwo.on('hold', function() {
     io.emit('btnPress', 'Button Two has been pressed!');
     console.log('btn held')

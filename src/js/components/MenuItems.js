@@ -19,7 +19,7 @@ export class ProfilesMenuItem extends Component {
           <FontAwesome
             className='footer-icon-icon'
             name='users'
-            size='3x'
+            size='2x'
             title='Manage Profiles'/>
             <span className="footer-icon-title">Profiles</span>
         </div>
@@ -43,7 +43,7 @@ export class LeaderboardMenuItem extends Component {
           <FontAwesome
             className='footer-icon-icon'
             name='trophy'
-            size='3x'
+            size='2x'
             title='Leader Boards'/>
             <span className="footer-icon-title">Leaderboard</span>
         </div>
@@ -67,7 +67,7 @@ export class HistoryMenuItem extends Component {
           <FontAwesome
             className='footer-icon-icon'
             name='history'
-            size='3x'
+            size='2x'
             title='Match History'/>
             <span className="footer-icon-title">Match History</span>
         </div>
@@ -91,7 +91,7 @@ export class GameSettingsMenuItem extends Component {
         <FontAwesome
           className='footer-icon-icon'
           name='wrench'
-          size='3x'
+          size='2x'
           title='Settings'/>
           <span className="footer-icon-title">Game Settings</span>
       </div>

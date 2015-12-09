@@ -15,6 +15,7 @@ var reactify = require('reactify');
 var babelify = require('babelify');
 
 var jsFiles = glob.sync('./src/js/index.js');
+var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/*.*'];
 
 var customOpts = {
   entries: jsFiles,
@@ -50,8 +51,15 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('public/css'));
 });
 
+gulp.task('statics', function() {
+  gutil.log(gutil.colors.bgMagenta('Building public assets...'));
+  gutil.beep();
+  return gulp.src(staticFiles,{base: './src'})
+      .pipe(gulp.dest('public'))
+})
+
 gulp.task('watch', function () {
   gulp.watch('src/**/*.scss', ['styles']);
 });
 
-gulp.task('default', ['styles', 'js', 'watch']);
+gulp.task('default', ['styles', 'statics', 'js', 'watch']);
