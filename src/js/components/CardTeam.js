@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import classNames from 'classnames'
 import Score from './Score'
 import CardBottom from './CardBottom'
-import EmptyCard from './EmptyCard'
+import CardEmpty from './CardEmpty'
 import _ from 'underscore'
 
-export default class TeamCard extends Component {
+export default class CardTeam extends Component {
   constructor(props) {
     super(props)
   }
@@ -26,7 +26,7 @@ export default class TeamCard extends Component {
                       <CardBottom />
                   </div>
     } else {
-        cardBody = <EmptyCard {...this.props} />
+        cardBody = <CardEmpty {...this.props} />
     }
 
     return (

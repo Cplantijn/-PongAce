@@ -1,14 +1,17 @@
 import  {
   ADD_POINT,
   ADD_TEAM,
-  SHOW_PLAYER_MODAL,
-  HIDE_PLAYER_MODAL
+  SHOW_MENU,
+  HIDE_MENU
 } from '../actions/scores'
 import _ from 'underscore'
 
 const initialState = {
   gameActive: false,
-  playerModalShown: false,
+  menuOpen: false,
+  menu: {
+    activeIndex: null
+  },
   cardData: {
     cardOneData: {},
     cardTwoData: {},
@@ -27,18 +30,21 @@ function reducer(state = initialState, action) {
       }
     case ADD_TEAM:
       return {
-        ...state,
+        ...state
       }
-    case SHOW_PLAYER_MODAL:
+    case SHOW_MENU:
+      var tMenu = state.menu
+      tMenu.activeIndex = action.menuIndex
       return {
         ...state,
-        playerModalShown: true,
+        menuOpen: true,
+        menu: tMenu
       }
-    case HIDE_PLAYER_MODAL:
-    return {
-      ...state,
-      playerModalShown: false,
-    }
+    case HIDE_MENU:
+      return {
+        ...state,
+        menuOpen: false
+      }
     default:
       return state
   }
