@@ -102,7 +102,13 @@ body{
         justify-content: center;
         align-items: center;
         .icon-logo{
-          color: $secondary_color;
+          display: inline-block;
+          position: relative;
+          top: 0.1em;
+          width: 1.5em;
+          height: 1em;
+          background: url('../img/pong_logo.svg') center center no-repeat;
+          background-size: cover;
         }
         h1 {
           font-family: $pier_bold;
@@ -147,13 +153,9 @@ body{
             color: $secondary_color;
           }
           .footer-icon-icon{
-            padding: 0.5em 0.5em 0.1em 0.5em;
             &:hover {
               @include pulsate;
             }
-          }
-          .footer-icon-title{
-            padding-bottom: 0.5em;
           }
         }
       }

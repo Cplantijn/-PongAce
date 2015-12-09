@@ -65,13 +65,13 @@
 }
 
 @mixin pulsate {
-  @include animate(pulsate, 1.2s, infinite, normal);
+  @include animate(pulsate, 2s, infinite, normal);
 }
 
 @mixin menuAnimationIn {
-  @include animate(menuAnimationIn, .2s, 1, normal);
+  @include animate(menuAnimationIn, .5s, 1, normal);
 }
 
 @mixin menuAnimationOut {
-  @include animate(menuAnimationOut, .2s, 1, normal);
+  @include animate(menuAnimationOut, .5s, 1, normal);
 }
