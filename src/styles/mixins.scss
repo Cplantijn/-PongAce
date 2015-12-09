@@ -69,9 +69,9 @@
 }
 
 @mixin menuAnimationIn {
-  @include animate(menuAnimationIn, .3s, 1, normal);
+  @include animate(menuAnimationIn, .2s, 1, normal);
 }
 
 @mixin menuAnimationOut {
-  @include animate(menuAnimationOut, .3s, 1, normal);
+  @include animate(menuAnimationOut, .2s, 1, normal);
 }
