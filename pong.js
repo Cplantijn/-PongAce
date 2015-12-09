@@ -30,6 +30,15 @@ board.on('ready', function() {
 
   buttonTwo.on('down', function() {
     io.emit('btnPress', 'Button Two has been pressed!');
+    console.log('btn down')
+  });
+  buttonTwo.on('up', function() {
+    io.emit('btnPress', 'Button Two has been pressed!');
+    console.log('btn up')
+  });
+  buttonTwo.on('hold', function() {
+    io.emit('btnPress', 'Button Two has been pressed!');
+    console.log('btn held')
   });
 
 });

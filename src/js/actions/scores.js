@@ -2,8 +2,8 @@ var actions = exports = module.exports
 
 exports.ADD_POINT = 'ADD_POINT'
 exports.ADD_TEAM = 'ADD_TEAM'
-exports.SHOW_PLAYER_MODAL = 'SHOW_PLAYER_MODAL'
-exports.HIDE_PLAYER_MODAL = 'HIDE_PLAYER_MODAL'
+exports.SHOW_MENU = 'SHOW_MENU'
+exports.HIDE_MENU = 'HIDE_MENU'
 
 
 exports.addPoint = function(index) {
@@ -21,14 +21,15 @@ exports.addTeam = function(index, name) {
   }
 }
 
-exports.showPlayerModal = function() {
+exports.showMenu = function(menuIndex) {
   return {
-    type: actions.SHOW_PLAYER_MODAL
+    type: actions.SHOW_MENU,
+    menuIndex: menuIndex
   }
 }
 
-exports.hidePlayerModal = function() {
+exports.hideMenu = function() {
   return {
-    type: actions.HIDE_PLAYER_MODAL
+    type: actions.HIDE_MENU
   }
 }

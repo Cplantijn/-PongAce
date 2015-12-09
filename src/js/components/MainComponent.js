@@ -2,22 +2,24 @@ import React, { Component } from 'react'
 import _ from 'underscore'
 import Footer from './Footer'
 import TopBar from './TopBar'
-import TeamCard from './TeamCard'
+import CardTeam from './CardTeam'
+import MenuOverlay from './MenuOverlay'
 
 export default class MainComponent extends Component {
   constructor(props) {
     super(props)
   }
   render() {
-    var { cardData } = this.props
+    var { cardData, gameActive, closeMenu} = this.props
     return (
       <div className="main-component container-fluid">
         <TopBar />
         <div className="card-component-container">
-          <TeamCard teamIndex={0} cardType="team-1" {...this.props} />
-          <TeamCard teamIndex={1} cardType="team-2" {...this.props} />
+          <MenuOverlay {...this.props}/>
+          <CardTeam teamIndex={0} cardType="team-1" {...this.props} />
+          <CardTeam teamIndex={1} cardType="team-2" {...this.props} />
         </div>
-        <Footer />
+        <Footer {...this.props}/>
       </div>
     )
   }

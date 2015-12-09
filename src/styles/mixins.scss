@@ -47,6 +47,31 @@
   }
 }
 
+@include keyframes(menuAnimationIn) {
+	from {
+    transform: translateY(100%);
+  }
+	to{
+    transform: translateY(0%);
+  }
+}
+@include keyframes(menuAnimationOut) {
+	from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
 @mixin pulsate {
   @include animate(pulsate, 1.2s, infinite, normal);
+}
+
+@mixin menuAnimationIn {
+  @include animate(menuAnimationIn, .3s, 1, normal);
+}
+
+@mixin menuAnimationOut {
+  @include animate(menuAnimationOut, .3s, 1, normal);
 }
