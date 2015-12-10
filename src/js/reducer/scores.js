@@ -2,7 +2,8 @@ import  {
   ADD_POINT,
   ADD_TEAM,
   SHOW_MENU,
-  HIDE_MENU
+  HIDE_MENU,
+  CREATE_NEW_PLAYER
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -10,7 +11,9 @@ const initialState = {
   gameActive: false,
   menuOpen: false,
   menu: {
-    activeIndex: null
+    activeIndex: null,
+    profilesData: {
+    }
   },
   cardData: {
     cardOneData: {},
@@ -45,6 +48,10 @@ function reducer(state = initialState, action) {
         ...state,
         menuOpen: false
       }
+      case CREATE_NEW_PLAYER:
+        return {
+          ...state
+        }
     default:
       return state
   }

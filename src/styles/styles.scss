@@ -28,6 +28,8 @@ body{
     display: flex;
     flex-direction: row;
     .main-menu-overlay {
+      display: flex;
+      flex-direction: column;
       position:absolute;
       background: $main_color;
       top: 0;right: 0;bottom: 0;left: 0;
@@ -41,6 +43,72 @@ body{
         @include menuAnimationOut;
         visibility:hidden;
         transform:translateY(100%);
+      }
+      .menu-top {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        .hide-menu-container {
+          padding: 0 3em;
+          cursor: pointer;
+        }
+      }
+      .menu-content-container {
+        display: flex;
+        flex: 18;
+        .menu-content{
+          display: flex;
+          flex: 1;
+          .player-add-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid $profile_menu_border;
+            .header {
+            padding-left: 0.5em;
+            text-transform: uppercase;
+            font-family: $pier_bold;
+            letter-spacing: 0.1em;
+            flex: 1
+            }
+            .player-add-form-container{
+              flex: 10;
+              display: flex;
+              padding-left: 1em;
+              flex-direction: column;
+              align-items: flex-start;
+              .input-group {
+                padding-bottom: 1em;
+                width: 75%;
+                input{
+                  width:100%;
+                  padding: 0.5em;
+                  color: #333;
+                  text-align: center;
+                  border-radius: 0.25rem;
+                  border: 0;
+                }
+                button{
+                  background-color: $menu_btn;
+                  border: 1px solid $menu_btn_border;
+                  &:hover{
+                    background-color: $menu_btn_border;
+                  }
+                }
+              }
+            }
+          }
+          .player-search-manage {
+            flex: 3;
+            display: flex;
+            .header {
+            padding-left: 2em;
+            text-transform: uppercase;
+            font-family: $pier_bold;
+            letter-spacing: 0.1em;
+            }
+          }
+        }
       }
     }
     .team-card-component{
@@ -81,7 +149,7 @@ body{
       color: $grey;
       border: 1px solid $grey;
       &:hover {
-        @include pulsate;
+        @include pulsate_grow;
         background: $main_color;
         color: $white;
         border: 1px solid $main_color;
@@ -95,7 +163,6 @@ body{
     &.top-bar{
       background-color: $white;
       box-shadow: 0px 0px 10px $element_shadow;
-      border-bottom: 2px solid $main_color;
       .logo-container{
         text-align: center;
         display: flex;
@@ -103,27 +170,15 @@ body{
         align-items: center;
         .icon-logo{
           display: inline-block;
-          position: relative;
-          top: 0.1em;
-          width: 1.5em;
-          height: 1em;
+          width: 2.5em;
+          height: 2em;
           background: url('../img/pong_logo.svg') center center no-repeat;
           background-size: cover;
-        }
-        h1 {
-          font-family: $pier_bold;
-          letter-spacing: 0.1em;
-          color: $main_color;
-          .smaller {
-            padding-left: 0.2em;
-            font-family: $pier_regular;
-          }
         }
       }
     }
     &.footer-bar{
       box-shadow: 0px 0px 10px $element_shadow;
-      border-top: 2px solid $main_color;
       background-color: $white;
       z-index: 5;
       display: flex;
@@ -144,17 +199,43 @@ body{
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          color: $main_color;
-          &.active {
-            color: $secondary_color;
+          color: $grey;
+          cursor:pointer;
+          &.profile {
+            &:hover {
+              color: $main_color;
+            }
+            &.active {
+              color: $main_color;
+            }
           }
-          &:hover{
-            cursor: pointer;
-            color: $secondary_color;
+          &.leaderboard {
+            &:hover {
+              color: $gold_color;
+            }
+            &.active {
+              color: $gold_color;
+            }
+          }
+          &.history {
+            &:hover {
+              color: $secondary_color;
+            }
+            &.active {
+              color: $secondary_color;
+            }
+          }
+          &.settings {
+            &:hover {
+              color: $green_color;
+            }
+            &.active {
+              color: $green_color;
+            }
           }
           .footer-icon-icon{
             &:hover {
-              @include pulsate;
+              @include pulsate_grow;
             }
           }
         }

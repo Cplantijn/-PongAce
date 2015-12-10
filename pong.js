@@ -29,37 +29,33 @@ board.on('ready', function() {
   btnOne = new five.Button(config.btnOnePin);
   btnOneDowned = false;
 
-  btnTwo = new five.Button(config.buttonTwoPin);
+  btnTwo = new five.Button(config.btnTwoPin);
   btnTwoDowned = false;
 
   btnOne.on('down', function() {
-    btnOneDowned = true;
     btnOneTimeout = setTimeout(function() {
       btnOneDowned = false;
-      console.log('Double click listener disabled for button One');
     }, 333);
     io.emit('btnPress', 'Button One has been pressed!');
     if (btnOneDowned) {
       console.log('Button double clicked!');
     }
+    btnOneDowned = true;
   });
 
-  buttonTwo.on('down', function() {
-    btnTwoDowned = true;
-    console.log('Double click listener disabled for button Two');
-    btnOneTimeout = setTimeout(function() {
-      btnTwoDown = false;
+  btnTwo.on('down', function() {
+    btnTwoTimeout = setTimeout(function() {
+      btnTwoDowned = false;
     }, 333);
-
+    console.log('Button pressed!');
     io.emit('btnPress', 'Button Two has been pressed!');
-
     if (btnTwoDowned) {
-      console.log('Button double pressed!');
+      console.log('Those buttons were pressed together!');
     }
-
+    btnTwoDowned = true;
   });
-  
-  buttonTwo.on('hold', function() {
+
+  btnTwo.on('hold', function() {
     io.emit('btnPress', 'Button Two has been pressed!');
     console.log('btn held')
   });
@@ -111,12 +107,12 @@ function createGameHistoryTable() {
 //   });
 // });
 //
-db.serialize(function() {
-  db.all("SELECT * FROM profile", function(err, res) {
-    console.log(res);
-  });
-});
-db.close();
+// db.serialize(function() {
+//   db.all("SELECT * FROM profile", function(err, res) {
+//     console.log(res);
+//   });
+// });
+// db.close();
 //
 //createGameHistoryTable();
 //createProfileTable();
