@@ -19,11 +19,12 @@ var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/*.*'];
 
 var customOpts = {
   entries: jsFiles,
-  debug: true,
-  transform:  [babelify, reactify]
+  debug: true
 };
 var opts = assign({}, watchify.args, customOpts);
-var b = watchify(browserify(opts));
+var b = watchify(browserify(opts).transform(babelify.configure({
+  presets: ['es2015','react']
+})));
 
 gulp.task('js', bundle);
 b.on('update', bundle);

@@ -35,7 +35,7 @@
           animation-direction: $direction;
 }
 
-@include keyframes(pulsate) {
+@include keyframes(pulsate_grow) {
   0% {
     transform: scale(1.0);
   }
@@ -63,9 +63,8 @@
     transform: translateY(100%);
   }
 }
-
-@mixin pulsate {
-  @include animate(pulsate, 2s, infinite, normal);
+@mixin pulsate_grow {
+  @include animate(pulsate_grow, 2s, infinite, normal);
 }
 
 @mixin menuAnimationIn {
