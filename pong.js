@@ -21,7 +21,7 @@ var port = process.env.PORT || 3000;
 
 //API Routes
 app.post('/create/player', function(req, res) {
-  var inserted = db.createNewProfile(req.body.name, res);
+  db.createNewProfile(req.body.name, res);
 });
 
 board = new five.Board();

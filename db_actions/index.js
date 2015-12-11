@@ -73,7 +73,7 @@ exports.fetchPlayers = function() {
   });
 }
 
-function dbCallback(e,res) {
+function dbCallback(e, res) {
   res.send(e)
 }
 // exports.closeConnection = function() {
