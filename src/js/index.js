@@ -2,12 +2,21 @@
 
 import React, { Component } from 'react'
 import ReactDOM, { render } from 'react-dom'
-import { createStore } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import createLogger from 'redux-logger'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import App from './containers/App'
 import pongReducer from './reducer/scores'
 
-let store = createStore(pongReducer)
+const loggerMiddleware = createLogger()
+
+const createStoreWithMiddleWare = applyMiddleware(
+  thunkMiddleware,
+  loggerMiddleware
+)(createStore)
+
+let store = createStoreWithMiddleWare(pongReducer)
 render(
   <Provider store={store}>
     <App />

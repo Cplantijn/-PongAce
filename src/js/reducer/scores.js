@@ -3,7 +3,9 @@ import  {
   ADD_TEAM,
   SHOW_MENU,
   HIDE_MENU,
-  CREATE_NEW_PLAYER
+  CREATE_NEW_PLAYER,
+  CREATING_PLAYER,
+  CREATED_PLAYER
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -48,10 +50,19 @@ function reducer(state = initialState, action) {
         ...state,
         menuOpen: false
       }
-      case CREATE_NEW_PLAYER:
-        return {
-          ...state
-        }
+    case CREATING_PLAYER:
+      return {
+        ...state,
+        isCreatingPlayer: true
+      }
+    case CREATE_NEW_PLAYER:
+      return {
+        ...state
+      }
+    case CREATED_PLAYER:
+      return {
+        ...state
+      }
     default:
       return state
   }

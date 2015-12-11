@@ -19,7 +19,11 @@ export default class ProfilesMenuBody extends Component {
     }
   }
   _submitNewPlayer() {
-    
+    var { createNewPlayer } = this.props
+    createNewPlayer(this.playerName)
+  }
+  _filterPlayerList() {
+
   }
   render() {
     var { menuOpen, menu} = this.props
@@ -45,7 +49,18 @@ export default class ProfilesMenuBody extends Component {
           </div>
         </div>
         <div className="player-search-manage">
-          <h2 className="header" >View</h2>
+          <h2 className="header">View</h2>
+          <div className="player-list-view-container">
+            <div className="player-filter-input-container">
+              <input
+                type="text"
+                placeholder="Filter Players"
+                onKeyUp={this._filterPlayerList} />
+            </div>
+            <div className="player-list-container">
+              <ul></ul>
+            </div>
+          </div>
         </div>
       </div>
     )
