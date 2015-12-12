@@ -5,7 +5,8 @@ import  {
   HIDE_MENU,
   CREATE_NEW_PLAYER,
   CREATING_PLAYER,
-  CREATED_PLAYER
+  CREATED_PLAYER,
+  SHOW_MESSAGE
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -22,8 +23,10 @@ const initialState = {
     cardTwoData: {},
   },
   userMessage: {
-    active: false,
-    messages: []
+    type: null,
+    show: false,
+    message: null,
+    shake: false
   }
 }
 
@@ -38,8 +41,8 @@ function reducer(state = initialState, action) {
         ...state
       }
     case SHOW_MENU:
-      var tMenu = state.menu
-      tMenu.activeIndex = action.menuIndex
+      var tMenu = state.menu;
+      tMenu.activeIndex = action.menuIndex;
       return {
         ...state,
         menuOpen: true,
@@ -62,6 +65,18 @@ function reducer(state = initialState, action) {
     case CREATED_PLAYER:
       return {
         ...state
+      }
+    case SHOW_MESSAGE:
+      var tUserMessage = state.userMessage;
+      tUserMessage.message = action.message;
+      if (tUserMessage.show == true) {
+        tUserMessage.shake = true;
+      }
+      tUserMessage.type = action.messageType
+      tUserMessage.show = true;
+      return {
+        ...state,
+        userMessage: tUserMessage
       }
     default:
       return state

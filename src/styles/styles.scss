@@ -149,7 +149,7 @@ body{
       color: $grey;
       border: 1px solid $grey;
       &:hover {
-        @include pulsate_grow;
+        @include pulsateGrow;
         background: $main_color;
         color: $white;
         border: 1px solid $main_color;
@@ -161,8 +161,10 @@ body{
     flex: 2;
     display: flex;
     &.top-bar{
+      position: relative;
       background-color: $white;
       box-shadow: 0px 0px 10px $element_shadow;
+      flex-direction: column;
       .logo-container{
         text-align: center;
         display: flex;
@@ -174,6 +176,32 @@ body{
           height: 2em;
           background: url('../img/pong_logo.svg') center center no-repeat;
           background-size: cover;
+        }
+      }
+      .top-content-container{
+        position: absolute;
+        top:0;right:0;bottom:0;left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.logo-container{
+          &.msg-shown{
+            -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+            @include rotateFoldBottom;
+          }
+        }
+        &.message-container{
+          &.msg-shown {
+            z-index:1;
+            letter-spacing: 0.03em;
+            @include moveFromTopFade;
+            &.danger{
+              background: $error;
+              color: $white;
+              font-family: $pier_bold;
+            }
+          }
         }
       }
     }
@@ -235,7 +263,7 @@ body{
           }
           .footer-icon-icon{
             &:hover {
-              @include pulsate_grow;
+              @include pulsateGrow;
             }
           }
         }

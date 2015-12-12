@@ -4,6 +4,7 @@ export const ADD_POINT = 'ADD_POINT'
 export const ADD_TEAM = 'ADD_TEAM'
 export const SHOW_MENU = 'SHOW_MENU'
 export const HIDE_MENU = 'HIDE_MENU'
+export const SHOW_MESSAGE = 'SHOW_MESSAGE'
 export const CREATE_NEW_PLAYER = 'CREATE_NEW_PLAYER'
 export const CREATING_PLAYER = 'CREATING_PLAYER'
 export const CREATED_PLAYER = 'CREATED_PLAYER'
@@ -35,21 +36,23 @@ export function showMenu(menuIndex) {
 }
 
 export function createNewPlayer(playerName) {
-  if (playerName.length) {
+  if (playerName.trim().length) {
     return dispatch => {
       dispatch(insertPlayer)
       return fetch('/create/player', {
             method:'POST',
             headers: contentType,
             body: JSON.stringify({
-              "name": playerName
+              "name": playerName.trim()
             })
           })
           .then(response => response.json())
           .then(json => dispatch(createPlayer(playerName, json)))
     }
   } else {
-    alert('not long enough, bruh!')
+    return dispatch => {
+      dispatch(showMessage('danger', 'Player name is empty. Try again.'))
+    }
   }
 }
 
@@ -59,9 +62,16 @@ export function hideMenu() {
   }
 }
 
+function showMessage(type, message) {
+  return {
+    type: actions.SHOW_MESSAGE,
+    message: message,
+    messageType: type
+  }
+}
+
 function createPlayer(playerName, json) {
   if (json.errno && json.errno == 19) {
-    alert('Name exists already!')
   }
   return {
     type: actions.CREATED_PLAYER

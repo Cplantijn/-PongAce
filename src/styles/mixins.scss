@@ -35,7 +35,7 @@
           animation-direction: $direction;
 }
 
-@include keyframes(pulsate_grow) {
+@include keyframes(pulsateGrow) {
   0% {
     transform: scale(1.0);
   }
@@ -63,8 +63,30 @@
     transform: translateY(100%);
   }
 }
-@mixin pulsate_grow {
-  @include animate(pulsate_grow, 2s, infinite, normal);
+@include keyframes(rotateFoldBottom) {
+	from {}
+	to {
+    opacity: 0;
+     transform: translateY(100%) rotateX(-90deg);
+   }
+}
+
+@include keyframes(moveFromTopFade) {
+  from {
+    opacity: 0.3;
+    transform: translateY(-100%);
+  }
+
+}
+
+@mixin rotateFoldBottom {
+  @include animate(rotateFoldBottom, .7s, 1, normal);
+}
+@mixin moveFromTopFade {
+  @include animate(moveFromTopFade, .7s, 1, normal);
+}
+@mixin pulsateGrow {
+  @include animate(pulsateGrow, 2s, infinite, normal);
 }
 
 @mixin menuAnimationIn {

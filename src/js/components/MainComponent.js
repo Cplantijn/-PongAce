@@ -7,13 +7,12 @@ import MenuOverlay from './MenuOverlay'
 
 export default class MainComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   render() {
-    var { cardData, gameActive, closeMenu} = this.props
     return (
       <div className="main-component container-fluid">
-        <TopBar />
+        <TopBar userMessage={this.props.userMessage}/>
         <div className="card-component-container">
           <MenuOverlay {...this.props}/>
           <CardTeam teamIndex={0} cardType="team-1" {...this.props} />
