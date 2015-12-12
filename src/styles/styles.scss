@@ -162,7 +162,7 @@ body{
     display: flex;
     &.top-bar{
       position: relative;
-      background-color: $white;
+      background-color: $dark;
       box-shadow: 0px 0px 10px $element_shadow;
       flex-direction: column;
       .logo-container{
@@ -179,6 +179,7 @@ body{
         }
       }
       .top-content-container{
+        background: $white;
         position: absolute;
         top:0;right:0;bottom:0;left: 0;
         display: flex;
@@ -200,6 +201,11 @@ body{
               background: $error;
               color: $white;
               font-family: $pier_bold;
+            }
+            h1{
+              &.shake{
+                @include shakeMessage;
+              }
             }
           }
         }

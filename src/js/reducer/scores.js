@@ -1,13 +1,10 @@
 import { combineReducers } from 'redux'
 import  {
-  ADD_POINT,
-  ADD_TEAM,
   SHOW_MENU,
   HIDE_MENU,
-  CREATE_NEW_PLAYER,
-  CREATING_PLAYER,
-  CREATED_PLAYER,
-  SHOW_MESSAGE
+  SHOW_MESSAGE,
+  HIDE_MESSAGE,
+  REMOVE_SHAKE
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -27,39 +24,63 @@ function menu(state = {
       tMenu.isOpen = true;
       return {
         ...state,
-        menu: tMenu
+        ...tMenu
       }
     case HIDE_MENU:
       var tMenu = state;
       tMenu.isOpen = false;
       return {
         ...state,
-        menu: tMenu
+        ...menu
       }
     default:
       return state;
   }
 }
 
-function message(state = {
+function userMessage(state = {
   isShowing: false,
   type: null,
-  message: ''
+  message: '',
+  shake: false
 }, action) {
   switch(action.type) {
     case SHOW_MESSAGE:
-      return Object.assign({}, state, {
-        isShowing: true,
-        type: action.messageType,
-        message: action.message
-      })
+      var tMsg = state;
+      if (tMsg.isShowing == true) {
+        tMsg.shake = true;
+      }
+      tMsg.isShowing = true;
+      tMsg.message = action.message;
+      tMsg.type = action.messageType;
+      return {
+        ...state,
+        ...tMsg
+      }
+    case HIDE_MESSAGE:
+      var tMsg = state;
+      tMsg.isShowing = false;
+      tMsg.message = '';
+      tMsg.type = null;
+      tMsg.shake = false;
+      return {
+        ...state,
+        ...tMsg
+      }
+    case REMOVE_SHAKE:
+      var tMsg = state;
+      tMsg.shake = false;
+      return {
+        ...state,
+        ...tMsg
+      }
     default:
       return state;
   }
 }
 
 const pongReducer = combineReducers({
-  message,
+  userMessage,
   menu
 })
 

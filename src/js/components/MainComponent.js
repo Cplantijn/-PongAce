@@ -12,7 +12,7 @@ export default class MainComponent extends Component {
   render() {
     return (
       <div className="main-component container-fluid">
-        <TopBar/>
+        <TopBar {...this.props}/>
         <div className="card-component-container">
           <MenuOverlay {...this.props}/>
           { /*}<CardTeam teamIndex={0} cardType="team-1" {...this.props} />

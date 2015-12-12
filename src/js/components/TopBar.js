@@ -7,10 +7,16 @@ export default class TopBar extends Component {
     super(props);
   }
   render() {
+    var { userMessage } = this.props;
+    var outCls = classNames({
+      'top-content-container': true,
+      'logo-container': true,
+      'msg-shown': userMessage.isShowing
+    })
     return (
       <div className="top-bar pong-section">
-          {/*<Message userMessage={this.props.userMessage} /> */}
-          <div className='top-content-container logo-container'>
+          <Message userMessage={userMessage} />
+          <div className={outCls}>
             <h1 className="logo-header"><span className="icon-logo"></span></h1>
           </div>
       </div>
