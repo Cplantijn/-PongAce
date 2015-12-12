@@ -36,24 +36,22 @@ export function showMenu(menuIndex) {
 }
 
 export function createNewPlayer(playerName) {
-  if (playerName.trim().length) {
-    return dispatch => {
-      dispatch(insertPlayer)
-      return fetch('/create/player', {
-            method:'POST',
-            headers: contentType,
-            body: JSON.stringify({
-              "name": playerName.trim()
+  return dispatch => {
+      dispatch(createPlayer);
+      if (playerName.trim().length) {
+        return fetch('/create/player', {
+              method:'POST',
+              headers: contentType,
+              body: JSON.stringify({
+                "name": playerName.trim()
+              })
             })
-          })
-          .then(response => response.json())
-          .then(json => dispatch(createPlayer(playerName, json)))
+            .then(response => response.json())
+            .then(json => dispatch(createPlayer(playerName, json)))
+      } else {
+        dispatch(createPlayer('danger', 'Player name is empty. Try again.'))
+      }
     }
-  } else {
-    return dispatch => {
-      dispatch(showMessage('danger', 'Player name is empty. Try again.'))
-    }
-  }
 }
 
 export function hideMenu() {
@@ -71,14 +69,6 @@ function showMessage(type, message) {
 }
 
 function createPlayer(playerName, json) {
-  if (json.errno && json.errno == 19) {
-  }
-  return {
-    type: actions.CREATED_PLAYER
-  }
-}
-
-function insertPlayer(playerName) {
   return {
     type: actions.CREATING_PLAYER
   }

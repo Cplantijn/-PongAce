@@ -10,12 +10,8 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    const { dispatch, addTeam} = this.props;
     var self = this;
     this.socket = io();
-    this.socket.on('btnPress', function() {
-      addTeam('test');
-    })
   }
   render() {
     return (
@@ -26,11 +22,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    gameActive: state.gameActive,
-    menuOpen: state.menuOpen,
-    menu: state.menu,
-    cardData: state.cardData,
-    userMessage: state.userMessage
+    menu: state.menu
   }
 }
 
