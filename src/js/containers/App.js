@@ -10,11 +10,11 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    const { dispatch, addTeam} = this.props
-    var self = this
-    this.socket = io()
+    const { dispatch, addTeam} = this.props;
+    var self = this;
+    this.socket = io();
     this.socket.on('btnPress', function() {
-      addTeam('test')
+      addTeam('test');
     })
   }
   render() {

@@ -17,6 +17,7 @@ const createStoreWithMiddleWare = applyMiddleware(
 )(createStore)
 
 let store = createStoreWithMiddleWare(pongReducer)
+
 render(
   <Provider store={store}>
     <App />
