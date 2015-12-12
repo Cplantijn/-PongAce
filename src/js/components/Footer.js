@@ -9,26 +9,24 @@ export default class Footer extends Component {
     super(props)
   }
   _toggleMenuAndShow(menuIndex) {
-    var { menuOpen, hideMenu, showMenu, menu } = this.props
-    if (menu.activeIndex !== menuIndex && menuOpen) {
+    var { hideMenu, showMenu, menu } = this.props
+    if (menu.activeIndex !== menuIndex && menu.isOpen) {
       hideMenu()
       setTimeout(function(){
         showMenu(menuIndex)
       }, 400)
-    } else if (menu.activeIndex === menuIndex && menuOpen) {
+    } else if (menu.activeIndex === menuIndex && menu.isOpen) {
       hideMenu()
-    } else if (menu.activeIndex === menuIndex && !menuOpen) {
+    } else if (menu.activeIndex === menuIndex && !menu.isOpen) {
       showMenu(menuIndex)
     } else {
       showMenu(menuIndex)
     }
   }
   render() {
-    var { menuOpen } = this.props
     var cls = classNames({
       'pong-section': true,
       'footer-bar': true,
-      'hide-shadow': menuOpen
     })
     return (
       <div className={cls}>

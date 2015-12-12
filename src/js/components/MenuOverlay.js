@@ -14,7 +14,7 @@ export default class MenuOverlay extends Component {
     hideMenu()
   }
   render() {
-    var { menuOpen, menu} = this.props
+    var { menu } = this.props
     var styles,
         menus = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'],
         activeMenu = menu.activeIndex ? menus[menu.activeIndex] : 'profiles',
@@ -22,8 +22,8 @@ export default class MenuOverlay extends Component {
 
     var menuCls = classNames({
       'main-menu-overlay': true,
-      'closed': !menuOpen,
-      'opened': menuOpen
+      'closed': !menu.isOpen,
+      'opened': menu.isOpen
     });
 
     var styles = {
