@@ -1,18 +1,18 @@
 var actions = exports = module.exports
 
-export const ADD_POINT = 'ADD_POINT'
-export const ADD_TEAM = 'ADD_TEAM'
 export const SHOW_MENU = 'SHOW_MENU'
 export const HIDE_MENU = 'HIDE_MENU'
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
-export const CREATE_NEW_PLAYER = 'CREATE_NEW_PLAYER'
-export const CREATING_PLAYER = 'CREATING_PLAYER'
-export const CREATED_PLAYER = 'CREATED_PLAYER'
+export const HIDE_MESSAGE = 'HIDE_MESSAGE'
+export const REMOVE_SHAKE = 'REMOVE_SHAKE'
 
 const contentType = {
   'accept': 'application/json',
   'content-type': 'application/json'
 }
+
+var msgTimeout, msgShakeTimeout;
+
 export function addPoint(index) {
   return {
     type: actions.ADD_POINT,
@@ -37,6 +37,8 @@ export function showMenu(menuIndex) {
 
 export function createNewPlayer(playerName) {
   return dispatch => {
+      clearTimeout(msgTimeout);
+      clearTimeout(msgShakeTimeout);
       dispatch(createPlayer);
       if (playerName.trim().length) {
         return fetch('/create/player', {
@@ -49,7 +51,14 @@ export function createNewPlayer(playerName) {
             .then(response => response.json())
             .then(json => dispatch(createPlayer(playerName, json)))
       } else {
-        dispatch(createPlayer('danger', 'Player name is empty. Try again.'))
+        msgTimeout = setTimeout(function() {
+          dispatch(hideMessage())
+        }, 5000);
+
+        msgShakeTimeout = setTimeout(function() {
+          dispatch(removeMsgShake())
+        }, 1000);
+        dispatch(showMessage('danger', 'Player name is empty. Try again.'))
       }
     }
 }
@@ -60,11 +69,22 @@ export function hideMenu() {
   }
 }
 
+export function removeMsgShake() {
+  return {
+    type: actions.REMOVE_SHAKE
+  }
+}
 function showMessage(type, message) {
   return {
     type: actions.SHOW_MESSAGE,
     message: message,
     messageType: type
+  }
+}
+
+function hideMessage(type, message) {
+  return {
+    type: actions.HIDE_MESSAGE
   }
 }
 
