@@ -5,6 +5,15 @@
 @import 'colors';
 @import 'fonts';
 
+::-webkit-input-placeholder {
+   color: $white;
+   opacity: 0.5;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: $white;
+   opacity: 0.5;
+}
+
 body{
   overflow: hidden;
   color: #333;
@@ -37,12 +46,15 @@ body{
       &.opened {
         @include menuAnimationIn;
         visibility: visible;
-        transform:translateY(0%);
+        transform: translateY(0%);
+        -moz-transform: translateY(0%);
+
       }
       &.closed {
         @include menuAnimationOut;
         visibility:hidden;
-        transform:translateY(100%);
+        transform: translateY(100%);
+        -moz-transform: translateY(100%);
       }
       .menu-top {
         display: flex;
@@ -59,8 +71,48 @@ body{
         .menu-content{
           display: flex;
           flex: 1;
+          .spacer{
+            flex:1;
+            &.mid-spacer{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .line{
+                height:80%;
+                border-left: 2px solid rgba(255,255,255,0.2);
+              }
+            }
+          }
+          input{
+            width:100%;
+            padding: 0.5em;
+            color: $white;
+            background: transparent;
+            text-align: center;
+            border: 0;
+            border-bottom: 2px solid $white;
+            &:focus {
+              outline: 0;
+            }
+            &:placeholder{
+              color:blue;
+            }
+          }
+          button{
+            background-color: transparent;
+            color: $white;
+            border: 2px solid $white;
+            transition: 0.1s linear all;
+            &:hover{
+              background-color: $white;
+              color: $main_color;
+            }
+            &:focus {
+              outline: 0;
+            }
+          }
           .player-add-container {
-            flex: 1;
+            flex: 6;
             display: flex;
             flex-direction: column;
             border-left: 1px solid $profile_menu_border;
@@ -79,33 +131,50 @@ body{
               align-items: flex-start;
               .input-group {
                 padding-bottom: 1em;
-                width: 75%;
-                input{
-                  width:100%;
-                  padding: 0.5em;
-                  color: #333;
-                  text-align: center;
-                  border-radius: 0.25rem;
-                  border: 0;
-                }
-                button{
-                  background-color: $menu_btn;
-                  border: 1px solid $menu_btn_border;
-                  &:hover{
-                    background-color: $menu_btn_border;
-                  }
-                }
+                width: 100%;
               }
             }
           }
-          .player-search-manage {
-            flex: 3;
+          .player-manage-container {
+            flex: 24;
             display: flex;
+            flex-direction: column;
             .header {
-            padding-left: 2em;
-            text-transform: uppercase;
-            font-family: $pier_bold;
-            letter-spacing: 0.1em;
+              text-transform: uppercase;
+              font-family: $pier_bold;
+              letter-spacing: 0.1em;
+              flex:1;
+            }
+            .player-manage{
+              flex:10;
+              display: flex;
+              .player-list-container {
+                flex: 1;
+                position: relative;
+                .player-list {
+                  margin-top: 1em;
+                  li {
+                    img {
+                      height: 72px;
+                      width: 72px;
+                      border-radius: 50%;
+                      margin-right: 0.5em;
+                    }
+                  }
+                  &::after {
+                    content:"";
+                    height: 10em;
+                    bottom:0;
+                    width: 100%;
+                    position:absolute;
+                    z-index:5;
+                    background: linear-gradient(180deg, transparent , $main_color 60%);
+                  }
+                }
+              }
+              .player-view-container {
+                flex: 4;
+              }
             }
           }
         }
@@ -191,22 +260,39 @@ body{
             transform-origin: 50% 0%;
             @include rotateFoldBottom;
           }
+          &.msg-hidden{
+            opacity: 1;
+            -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+            @include moveFromBottomFade;
+          }
         }
         &.message-container{
+          letter-spacing: 0.03em;
+          background: transparent;
+          color: $white;
+          font-family: $pier_bold;
+          &.danger{
+            background: $danger;
+          }
+          &.success{
+            background: $success;
+          }
           &.msg-shown {
             z-index:1;
-            letter-spacing: 0.03em;
             @include moveFromTopFade;
-            &.danger{
-              background: $error;
-              color: $white;
-              font-family: $pier_bold;
-            }
             h1{
               &.shake{
                 @include shakeMessage;
               }
             }
+          }
+          &.msg-hidden{
+            opacity: 0;
+            z-index: 1;
+            -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+            @include rotateFoldTop;
           }
         }
       }

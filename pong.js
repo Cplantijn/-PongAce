@@ -15,6 +15,8 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 3000;
 
+//db.createGameHistoryTable();
+//db.createProfileTable();
 // io.on('connection', function() {
 //   console.log('client connected');
 // });
@@ -23,6 +25,10 @@ var port = process.env.PORT || 3000;
 app.post('/create/player', function(req, res) {
   db.createNewProfile(req.body.name, res);
 });
+
+app.post('/fetch/players', function(req, res) {
+  db.fetchPlayers(req.body.filter, res);
+})
 
 board = new five.Board();
 board.on('ready', function() {

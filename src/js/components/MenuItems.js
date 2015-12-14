@@ -8,11 +8,11 @@ export class ProfilesMenuItem extends Component {
     super(props)
   }
   render() {
-    var { onClick, menuOpen, menu } = this.props
+    var { onClick, menu } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'profile': true,
-      'active': (menuOpen && menu.activeIndex === 0)
+      'active': (menu.isOpen && menu.activeIndex === 0)
     })
     return (
         <div
@@ -34,11 +34,11 @@ export class LeaderboardMenuItem extends Component {
     super(props)
   }
   render() {
-    var { onClick, menuOpen, menu } = this.props
+    var { onClick, menu } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'leaderboard': true,
-      'active': (menuOpen && menu.activeIndex === 1)
+      'active': (menu.isOpen && menu.activeIndex === 1)
     })
     return (
         <div
@@ -60,11 +60,11 @@ export class HistoryMenuItem extends Component {
     super(props)
   }
   render() {
-    var { onClick, menuOpen, menu } = this.props
+    var { onClick, menu } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'history': true,
-      'active': (menuOpen && menu.activeIndex === 2)
+      'active': (menu.isOpen && menu.activeIndex === 2)
     })
     return (
         <div
@@ -86,11 +86,11 @@ export class GameSettingsMenuItem extends Component {
     super(props)
   }
   render() {
-    var { onClick, menuOpen, menu } = this.props
+    var { onClick, menu } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'settings': true,
-      'active': (menuOpen && menu.activeIndex === 3)
+      'active': (menu.isOpen && menu.activeIndex === 3)
     })
     return (
       <div

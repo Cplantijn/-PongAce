@@ -5,24 +5,31 @@ var db           = new sqlite3.Database(config.dbFile);
 function openConnection() {
   return new sqlite3.Database(config.dbFile)
 }
+
 exports.createProfileTable = function() {
   var db = openConnection();
   db.serialize(function() {
     db.run("CREATE TABLE profile ( \
              id INTEGER PRIMARY KEY, \
              name TEXT, \
-             standard_pose_img_loc TEXT, \
-             winning_post_img_loc TEXT, \
+             standard_pose_img_name TEXT DEFAULT 'default_standard.jpg', \
+             winning_post_img_name TEXT DEFAULT 'default_winning.jpg', \
              solo_wins INTEGER DEFAULT 0, \
              solo_losses INTEGER DEFAULT 0, \
              doubles_wins INTEGER DEFAULT 0, \
              doubles_losses INTEGER DEFAULT 0, \
+             updated_on DATETIME, \
              unique(name))");
+   //Update trigger
+   db.run("CREATE TRIGGER update_player \
+           AFTER UPDATE ON profile \
+             BEGIN \
+               UPDATE profile SET updated_on = datetime('now','localtime') \
+               WHERE id = NEW.id; \
+             END;");
   });
-  console.log('profile table created!')
-  db.close(function() {
-    console.log('closing DB connection');
-  });
+  console.log('profile table and trigger created!')
+  db.close();
 }
 
 exports.createGameHistoryTable = function() {
@@ -38,9 +45,7 @@ exports.createGameHistoryTable = function() {
               game_type TEXT)");
   });
   console.log('history table created!')
-  db.close(function() {
-    console.log('closing DB connection');
-  });
+  db.close();
 }
 
 exports.createNewProfile = function(playerName, res) {
@@ -48,49 +53,29 @@ exports.createNewProfile = function(playerName, res) {
   db.serialize(function() {
     var stmt = db.prepare("INSERT INTO profile(name) VALUES(?)");
     stmt.run(playerName, function(err) {
-      if (err) {
-        dbCallback(err, res)
-        return
-      } else {
-        dbCallback(true, res)
-        return
-      }
+      var result = err || true;
+        dbCallback(result, res)
     });
     stmt.finalize();
   });
   db.close();
 }
 
-exports.fetchPlayers = function() {
+exports.fetchPlayers = function(filter, res) {
   var db = openConnection();
   db.serialize(function() {
-    db.all("SELECT * FROM profile", function(err, res) {
-      console.log(res);
-    });
+    //Run a ? statement instead of string concatonation
+    var sql = "SELECT * FROM profile \
+               WHERE lower(name) LIKE '%"+filter+"%' \
+               ORDER BY updated_on DESC";
+    db.all(sql, function(err, result) {
+      var response = err || result;
+      dbCallback(response, res);
+    })
   });
-  db.close(function() {
-    console.log('closing DB connection');
-  });
+  db.close();
 }
 
 function dbCallback(e, res) {
   res.send(e)
 }
-// exports.closeConnection = function() {
-//   db.close();
-// }
-// db.serialize(function() {
-//   db.run("INSERT INTO history(team_one_player_id, team_two_player_id, team_one_point, team_two_point) VALUES('1','2','12','14')");
-// });
-
-
-//
-// db.serialize(function() {
-//   db.all("SELECT * FROM profile", function(err, res) {
-//     console.log(res);
-//   });
-// });
-// db.close();
-//
-//createGameHistoryTable();
-//createProfileTable();

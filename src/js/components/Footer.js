@@ -9,7 +9,10 @@ export default class Footer extends Component {
     super(props)
   }
   _toggleMenuAndShow(menuIndex) {
-    var { hideMenu, showMenu, menu } = this.props
+    var { hideMenu, showMenu, menu, fetchPlayers } = this.props;
+    if (menuIndex === 0 && menuIndex !== menu.activeIndex) {
+      fetchPlayers('');
+    }
     if (menu.activeIndex !== menuIndex && menu.isOpen) {
       hideMenu()
       setTimeout(function(){
@@ -18,6 +21,7 @@ export default class Footer extends Component {
     } else if (menu.activeIndex === menuIndex && menu.isOpen) {
       hideMenu()
     } else if (menu.activeIndex === menuIndex && !menu.isOpen) {
+
       showMenu(menuIndex)
     } else {
       showMenu(menuIndex)

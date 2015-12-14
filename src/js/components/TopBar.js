@@ -11,7 +11,8 @@ export default class TopBar extends Component {
     var outCls = classNames({
       'top-content-container': true,
       'logo-container': true,
-      'msg-shown': userMessage.isShowing
+      'msg-shown': userMessage.isShowing,
+      'msg-hidden': (!userMessage.isShowing && userMessage.message.trim().length)
     })
     return (
       <div className="top-bar pong-section">

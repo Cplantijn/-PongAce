@@ -23,7 +23,8 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     menu: state.menu,
-    userMessage: state.userMessage
+    userMessage: state.userMessage,
+    playerList: state.playerList
   }
 }
 
