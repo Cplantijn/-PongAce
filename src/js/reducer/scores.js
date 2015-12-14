@@ -4,7 +4,8 @@ import  {
   HIDE_MENU,
   SHOW_MESSAGE,
   HIDE_MESSAGE,
-  REMOVE_SHAKE
+  REMOVE_SHAKE,
+  LIST_PLAYERS
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -16,6 +17,9 @@ function pong(state = {}, action) {
 function menu(state = {
   isOpen: false,
   activeIndex: null,
+  profilesData: {
+    playerList: {}
+  }
 }, action) {
   switch(action.type) {
     case SHOW_MENU:
@@ -31,10 +35,23 @@ function menu(state = {
       tMenu.isOpen = false;
       return {
         ...state,
-        ...menu
+        ...tMenu
       }
     default:
       return state;
+  }
+}
+
+function playerList(state = {}, action) {
+  switch (action.type) {
+    case LIST_PLAYERS:
+      var tList = state;
+      tList = action.playerList;
+      return {
+        ...tList
+      }
+    default:
+      return state
   }
 }
 
@@ -47,7 +64,9 @@ function userMessage(state = {
   switch(action.type) {
     case SHOW_MESSAGE:
       var tMsg = state;
-      if (tMsg.isShowing == true) {
+      if (tMsg.isShowing == true &&
+          tMsg.type == action.messageType &&
+          tMsg.message == action.message) {
         tMsg.shake = true;
       }
       tMsg.isShowing = true;
@@ -60,8 +79,6 @@ function userMessage(state = {
     case HIDE_MESSAGE:
       var tMsg = state;
       tMsg.isShowing = false;
-      tMsg.message = '';
-      tMsg.type = null;
       tMsg.shake = false;
       return {
         ...state,
@@ -81,6 +98,7 @@ function userMessage(state = {
 
 const pongReducer = combineReducers({
   userMessage,
+  playerList,
   menu
 })
 
