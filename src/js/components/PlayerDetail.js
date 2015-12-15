@@ -11,6 +11,7 @@ export default class PlayerDetail extends Component {
     var {changePlayerQuote} = this.props;
     if (e.which == 13) {
       changePlayerQuote(id, this.refs.playerQuote.value)
+      this.refs.playerQuote.value = 
     }
     return true;
   }

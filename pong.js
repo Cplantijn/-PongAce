@@ -11,6 +11,8 @@ var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
     btnOneTimeout, btnTwoTimeout;
 
 app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/player_img', express.static(path.join(__dirname, 'player_img')));
+
 app.use(bodyParser.json());
 
 var port = process.env.PORT || 3000;
