@@ -24,7 +24,8 @@ function mapStateToProps(state) {
   return {
     menu: state.menu,
     userMessage: state.userMessage,
-    playerList: state.playerList
+    playerList: state.playerList,
+    activePlayerDetail: state.activePlayerDetail
   }
 }
 

@@ -21,7 +21,9 @@ export default class Footer extends Component {
     } else if (menu.activeIndex === menuIndex && menu.isOpen) {
       hideMenu()
     } else if (menu.activeIndex === menuIndex && !menu.isOpen) {
-
+      if (menu.activeIndex === 0) {
+        fetchPlayers('');
+      }
       showMenu(menuIndex)
     } else {
       showMenu(menuIndex)

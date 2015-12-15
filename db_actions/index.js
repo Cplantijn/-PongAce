@@ -12,17 +12,26 @@ exports.createProfileTable = function() {
     db.run("CREATE TABLE profile ( \
              id INTEGER PRIMARY KEY, \
              name TEXT, \
+             color TEXT, \
+             quote TEXT, \
              standard_pose_img_name TEXT DEFAULT 'default_standard.jpg', \
-             winning_post_img_name TEXT DEFAULT 'default_winning.jpg', \
+             winning_pose_img_name TEXT DEFAULT 'default_winning.jpg', \
              solo_wins INTEGER DEFAULT 0, \
              solo_losses INTEGER DEFAULT 0, \
              doubles_wins INTEGER DEFAULT 0, \
              doubles_losses INTEGER DEFAULT 0, \
              updated_on DATETIME, \
              unique(name))");
-   //Update trigger
+   //Update and Create trigger
+   //TODO: Figure out how to do both update and insert in one command is poss.
    db.run("CREATE TRIGGER update_player \
            AFTER UPDATE ON profile \
+             BEGIN \
+               UPDATE profile SET updated_on = datetime('now','localtime') \
+               WHERE id = NEW.id; \
+             END;");
+   db.run("CREATE TRIGGER insert_player \
+           AFTER INSERT ON profile \
              BEGIN \
                UPDATE profile SET updated_on = datetime('now','localtime') \
                WHERE id = NEW.id; \
@@ -48,6 +57,19 @@ exports.createGameHistoryTable = function() {
   db.close();
 }
 
+exports.updatePlayerQuote = function(id, quote, res) {
+  var db = openConnection();
+  db.serialize(function() {
+    var sql = "UPDATE profile SET quote ='"+quote+"' WHERE id ="+id;
+    db.run(sql, function(err) {
+      var result = err || true;
+        dbCallback(result, res)
+    });
+  });
+  db.close();
+
+}
+
 exports.createNewProfile = function(playerName, res) {
   var db = openConnection();
   db.serialize(function() {
@@ -61,11 +83,27 @@ exports.createNewProfile = function(playerName, res) {
   db.close();
 }
 
+exports.fetchPlayerInfo = function(playerId, res) {
+  var db = openConnection();
+  db.serialize(function() {
+    var sql = "SELECT * FROM profile WHERE id=?";
+    db.get(sql, playerId, function(err, result) {
+      var response = err || result;
+      dbCallback(response, res);
+    })
+  })
+  db.close();
+
+}
+
 exports.fetchPlayers = function(filter, res) {
   var db = openConnection();
   db.serialize(function() {
     //Run a ? statement instead of string concatonation
-    var sql = "SELECT * FROM profile \
+    var sql = "SELECT id, name, standard_pose_img_name, \
+                      (solo_wins + doubles_wins) AS wins, \
+                      (solo_losses + doubles_losses) as losses \
+              FROM profile \
                WHERE lower(name) LIKE '%"+filter+"%' \
                ORDER BY updated_on DESC";
     db.all(sql, function(err, result) {
@@ -76,6 +114,16 @@ exports.fetchPlayers = function(filter, res) {
   db.close();
 }
 
+exports.tester = function(query) {
+  var db = openConnection();
+  db.serialize(function() {
+    db.exec(query, function(err, result) {
+      var response = err || result;
+      console.log(response);
+    })
+  });
+  db.close();
+}
 function dbCallback(e, res) {
   res.send(e)
 }
