@@ -5,7 +5,8 @@ import  {
   SHOW_MESSAGE,
   HIDE_MESSAGE,
   REMOVE_SHAKE,
-  LIST_PLAYERS
+  LIST_PLAYERS,
+  SHOW_PLAYER_DETAIL,
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -45,10 +46,21 @@ function menu(state = {
 function playerList(state = {}, action) {
   switch (action.type) {
     case LIST_PLAYERS:
-      var tList = state;
-      tList = action.playerList;
+      var tList = action.playerList;
       return {
         ...tList
+      }
+    default:
+      return state
+  }
+}
+
+function activePlayerDetail(state = {}, action) {
+  switch (action.type) {
+    case SHOW_PLAYER_DETAIL:
+      var tPlayer = action.playerInfo;
+      return {
+        ...tPlayer
       }
     default:
       return state
@@ -99,6 +111,7 @@ function userMessage(state = {
 const pongReducer = combineReducers({
   userMessage,
   playerList,
+  activePlayerDetail,
   menu
 })
 

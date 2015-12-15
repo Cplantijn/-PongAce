@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 
 var port = process.env.PORT || 3000;
 
+//db.tester('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE name="profile"');
 //db.createGameHistoryTable();
 //db.createProfileTable();
 // io.on('connection', function() {
@@ -28,6 +29,14 @@ app.post('/create/player', function(req, res) {
 
 app.post('/fetch/players', function(req, res) {
   db.fetchPlayers(req.body.filter, res);
+});
+
+app.get('/fetch/player/:id', function(req, res) {
+  db.fetchPlayerInfo(req.params.id, res);
+});
+
+app.post('/update/player/quote', function(req, res) {
+  db.updatePlayerQuote(req.body.id, req.body.quote, res);
 })
 
 board = new five.Board();

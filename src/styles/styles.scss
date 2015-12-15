@@ -1,6 +1,7 @@
 @import 'vendor/reset';
 @import 'vendor/bootstrap/bootstrap';
 @import 'vendor/font-awesome/font-awesome';
+@import 'vendor/perfect-scrollbar/perfect-scrollbar';
 @import 'mixins';
 @import 'colors';
 @import 'fonts';
@@ -18,6 +19,11 @@ body{
   overflow: hidden;
   color: #333;
   font-family: $pier_regular;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 .modal {
   display: flex !important;
@@ -138,91 +144,192 @@ body{
           .player-manage-container {
             flex: 24;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
+            .player-list-master-container {
+              flex: 1;
+            }
+            .player-view-master-container{
+              display: flex;
+              flex: 3;
+              transition: 0.1s linear all;
+              flex-direction: column;
+              &.player-shown{
+                background: rgba(0,0,0,0.2);
+              }
+              .player-view{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: stretch;
+                .empty-player-msg{
+                  align-items: center;
+                  justify-content: center;
+                  display: flex;
+                  opacity: 0.5;
+                  font-family: $pier_bold;
+                }
+                .player-content{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  .header{
+                    text-align: center;
+                    flex: 1;
+                  }
+                  .image-set-container{
+                    flex: 3;
+                    display: flex;
+                    justify-content: center;
+                    .image-center-container{
+                      width: 75%;
+                      display: flex;
+                      justify-content: space-around;
+                      flex-direction: row;
+                      .image-container{
+                        display: flex;
+                        flex: 1;
+                        flex-direction: column;
+                        .single-image{
+                          display: flex;
+                          justify-content: center;
+                          img{
+                            height: 8em;
+                            width: 8em;
+                            border-radius: 50%;
+                          }
+                        }
+                        .label-container {
+                          margin-top: 1em;
+                          display: flex;
+                          justify-content: center;
+                          .image-label{
+                            border: 1px solid $white;
+                            background:transparent;
+                            color: $white;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .player-quote{
+                    flex: 2;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    input {
+                      width: 75%;
+                      padding: 0.25em;
+                      border-bottom: 1px solid $white;
+                    }
+                  }
+                  .player-history{
+                    flex: 4;
+                    display: flex;
+                    align-items: center;
+                    .score {
+                      flex:1;
+                      display: flex;
+                      justify-content: center;
+                      flex-direction:column;
+                      border-right: 1px solid $white;
+                      &:last-of-type{
+                        border-right:0;
+                      }
+                      .score-title{
+                        opacity: 0.5;
+                        text-align:center;
+                      }
+                      .score-value{
+                        text-align:center;
+                        font-family: $pier_bold;
+                      }
+                    }
+                  }
+                }
+              }
+            }
             .header {
               text-transform: uppercase;
               font-family: $pier_bold;
               letter-spacing: 0.1em;
               flex:1;
             }
-            .player-manage{
+            .player-list-view{
               flex:10;
               display: flex;
               .player-list-container {
                 flex: 1;
-                position: relative;
                 .player-list {
-                  margin-top: 1em;
+                  min-width: 100%;
                   li {
-                    img {
-                      height: 72px;
-                      width: 72px;
-                      border-radius: 50%;
-                      margin-right: 0.5em;
+                    display:flex;
+                    padding: 1em 0;
+                    position: relative;
+                    transition: 0.2s linear all;
+                    &.active {
+                      background: rgba(0,0,0,0.2);
+                    }
+                    &:hover{
+                      background: rgba(255,255,255,0.1);
+                      cursor: pointer;
+                    }
+                    .image-container{
+                      flex: 1;
+                      align-items: center;
+                      display: flex;
+                      img {
+                        width: 3em;
+                        height:3em;
+                        border-radius: 50%;
+                        margin-right: 0.5em;
+                      }
+                    }
+                    .detail {
+                      position: relative;
+                      flex: 4;
+                      display: flex;
+                      align-items: stretch;
+                      flex-direction: column;
+                      .player-name {
+                        text-align: center;
+                        font-family: $pier_bold;
+                      }
+                      .quick-stats{
+                        display: flex;
+                        justify-content: space-around;
+                        flex-direction: row;
+                        .score-container{
+                          flex: 1;
+                          display:flex;
+                          justify-content: center;
+                          flex-direction: column;
+                          .score-component{
+                            font-size: 0.7em;
+                            .score-title{
+                              letter-spacing: 0.4em;
+                              text-transform: uppercase;
+                              opacity: 0.5;
+                            }
+                            display: flex;
+                            justify-content: center;
+                          }
+                        }
+                      }
+                      &::after{
+                        content: "";
+                        bottom: -1em;
+                        right: 20%;
+                        left: 20%;
+                        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+                        position: absolute;
+                      }
                     }
                   }
-                  &::after {
-                    content:"";
-                    height: 10em;
-                    bottom:0;
-                    width: 100%;
-                    position:absolute;
-                    z-index:5;
-                    background: linear-gradient(180deg, transparent , $main_color 60%);
-                  }
                 }
-              }
-              .player-view-container {
-                flex: 4;
               }
             }
           }
         }
-      }
-    }
-    .team-card-component{
-      flex:1;
-      display: flex;
-      flex-direction: column;
-      border-radius: 0.33em;
-      margin: 1em;
-      &.active{
-        background: $white;
-        box-shadow: 0px 0px 2px $element_shadow;
-      }
-      &.inactive{
-        border: 0.3em dotted $light_grey;
-        align-items: center;
-        justify-content: center;
-        h2{
-          color: $grey;
-          text-align: center;
-          padding-bottom: 1em;
-        }
-      }
-      .team-card-score-component{
-        flex: 3;
-        border-top-left-radius: 0.33em;
-        border-top-right-radius: 0.33em;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      .team-card-bottom-component{
-        flex: 1;
-      }
-    }
-    .btn-join-game{
-      padding: 1.3em 6em;
-      background: transparent;
-      color: $grey;
-      border: 1px solid $grey;
-      &:hover {
-        @include pulsateGrow;
-        background: $main_color;
-        color: $white;
-        border: 1px solid $main_color;
-        box-shadow: 3px 4px 2px $element_shadow;
       }
     }
   }
@@ -241,8 +348,8 @@ body{
         align-items: center;
         .icon-logo{
           display: inline-block;
-          width: 2.5em;
-          height: 2em;
+          width: 1.8em;
+          height: 1.25em;
           background: url('../img/pong_logo.svg') center center no-repeat;
           background-size: cover;
         }
@@ -354,6 +461,8 @@ body{
             }
           }
           .footer-icon-icon{
+            //Overriding 2x scaling;
+            font-size: 1.75em;
             &:hover {
               @include pulsateGrow;
             }
