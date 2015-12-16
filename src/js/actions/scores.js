@@ -177,12 +177,15 @@ export function createNewPlayer(playerName) {
 }
 
 export function fetchPlayers(filter) {
+  clearTimeout(msgTimeout);
+  clearTimeout(msgShakeTimeout);
   return dispatch => {
     return fetch('/fetch/players', {
       method:'POST',
       headers: contentType,
       body: JSON.stringify({
-        "filter": filter.trim()
+        "filter": filter.trim(),
+        "sort" : 'updated_on DESC'
       })
     })
     .then(response => response.json())
@@ -193,6 +196,12 @@ export function fetchPlayers(filter) {
         dispatch(showPlayerList(json));
       }
     })
+    msgTimeout = setTimeout(function() {
+      dispatch(hideMessage())
+    }, 4600);
+    msgShakeTimeout = setTimeout(function() {
+      dispatch(removeMsgShake())
+    }, 1000);
   }
 }
 

@@ -108,7 +108,7 @@ exports.fetchPlayerInfo = function(playerId, res) {
 
 }
 
-exports.fetchPlayers = function(filter, res) {
+exports.fetchPlayers = function(filter, sort, res) {
   var db = openConnection();
   db.serialize(function() {
     //Run a ? statement instead of string concatonation
@@ -117,7 +117,7 @@ exports.fetchPlayers = function(filter, res) {
                       (solo_losses + doubles_losses) as losses \
               FROM profile \
                WHERE lower(name) LIKE '%"+filter+"%' \
-               ORDER BY updated_on DESC";
+               ORDER BY " +sort;
     db.all(sql, function(err, result) {
       var response = err || result;
       dbCallback(response, res);

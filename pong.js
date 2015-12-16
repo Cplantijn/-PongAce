@@ -34,7 +34,7 @@ app.post('/create/player', function(req, res) {
 });
 
 app.post('/fetch/players', function(req, res) {
-  db.fetchPlayers(req.body.filter, res);
+  db.fetchPlayers(req.body.filter, req.body.sort, res);
 });
 
 app.get('/fetch/player/:id', function(req, res) {

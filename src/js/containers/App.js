@@ -23,6 +23,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     menu: state.menu,
+    game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,
     activePlayerDetail: state.activePlayerDetail

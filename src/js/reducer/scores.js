@@ -55,6 +55,16 @@ function playerList(state = {}, action) {
   }
 }
 
+function game(state = {
+  active: false,
+  hasFinished: false
+}, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
 function activePlayerDetail(state = {}, action) {
   switch (action.type) {
     case SHOW_PLAYER_DETAIL:
@@ -110,6 +120,7 @@ function userMessage(state = {
 
 const pongReducer = combineReducers({
   userMessage,
+  game,
   playerList,
   activePlayerDetail,
   menu

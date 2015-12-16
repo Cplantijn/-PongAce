@@ -31,17 +31,49 @@ html, body {
   justify-content: center;
 }
 .main-component {
-  background-color: $main_bg_color;
+  background: linear-gradient(to top, $main_bg_color, $white);
   height: 100vh;
   display: flex;
   padding: 0;
   flex-direction: column;
   justify-content: stretch;
-  .card-component-container{
+  .game-component-container{
     position: relative;
     flex:16;
     display: flex;
     flex-direction: row;
+    justify-content: stretch;
+    &.no-game{
+      align-items: center;
+    }
+    .no-game-banner-container{
+      flex: 1;
+      background: $secondary_color;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 3em 0;
+      font-family: $pier_bold;
+      transition: 0.1s linear all;
+      h1{
+        color: $white;
+      }
+      .logo{
+        width: 4.825em;
+        height: 3em;
+        margin-left: 1em;
+        margin-right: 1em;
+        display: inline-block;
+        background: url('../img/pong_logo_wht.svg');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+      }
+      &:hover{
+        background: $secondary_highlight;
+      }
+    }
     .main-menu-overlay {
       display: flex;
       flex-direction: column;
