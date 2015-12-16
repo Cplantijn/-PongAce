@@ -11,9 +11,12 @@ export default class PlayerDetail extends Component {
     var {changePlayerQuote} = this.props;
     if (e.which == 13) {
       changePlayerQuote(id, this.refs.playerQuote.value)
-      this.refs.playerQuote.value = 
     }
     return true;
+  }
+  _uploadPic(type, e) {
+    var { activePlayerDetail, changePlayerPic } = this.props;
+    changePlayerPic(activePlayerDetail.id, type, e.target.files[0]);
   }
   render() {
     var {activePlayerDetail} = this.props;
@@ -22,36 +25,55 @@ export default class PlayerDetail extends Component {
                 </div>;
     if (_.size(activePlayerDetail) > 0) {
       var quote = activePlayerDetail.quote ? activePlayerDetail.quote : '';
-      console.log(quote);
+      var standardPicStyle = {
+        backgroundImage: 'url("/player_img/'+ activePlayerDetail.standard_pose_img_name + '")'
+      }
+      var winningPicStyle = {
+        backgroundImage: 'url("/player_img/'+ activePlayerDetail.winning_pose_img_name + '")'
+      }
       detail = <div className="player-content">
                 <div className="header"><h2>{activePlayerDetail.name}</h2></div>
                 <div className="image-set-container">
                   <div className="image-center-container">
                     <div className="image-container">
-                      <div className="single-image">
-                        <img src={"../img/players/"+activePlayerDetail.standard_pose_img_name} alt="Standard Pose" />
+                      <div className="single-image" style={standardPicStyle}>
+                        <input onChange={this._uploadPic.bind(this, 'standard')} type="file" accept="image/*" />
+                        <div className="overlay">
+                          <FontAwesome
+                            name="camera"
+                            size="2x"
+                            className="overlay-icon" />
+                            <span>Edit Picture</span>
+                        </div>
                       </div>
                       <div className="label-container">
                         <span className="label image-label">Standard Picture</span>
                       </div>
                     </div>
                     <div className="image-container">
-                      <div className="single-image">
-                        <img src={"../img/players/"+activePlayerDetail.winning_pose_img_name} alt="Winning Pose" />
+                      <div className="single-image" style={winningPicStyle}>
+                        <input onChange={this._uploadPic.bind(this, 'winning')}type="file" accept="image/*" />
+                        <div className="overlay">
+                          <FontAwesome
+                            name="camera"
+                            size="2x"
+                            className="overlay-icon" />
+                            <span>Edit Picture</span>
+                        </div>
                       </div>
                       <div className="label-container">
-                        <span className="label image-label">Standard Picture</span>
+                        <span className="label image-label">Winning Picture</span>
                       </div>
                     </div>
                   </div>
                </div>
-               <div className="player-quote">
-               <input
-                  placeholder="Player Quote"
-                  ref="playerQuote"
-                  value={quote}
-                  onKeyUp={this._quoteChange.bind(this, activePlayerDetail.id)}/>
-               </div>
+               { /*<div className="player-quote">
+                 <input
+                   placeholder="Player Quote"
+                   ref="playerQuote"
+                   value={quote}
+                   onKeyUp={this._quoteChange.bind(this, activePlayerDetail.id)}/>
+               </div> */}
                <div className="player-history">
                <div className="score">
                 <div className="score-title">SOLO <br /> WINS</div>

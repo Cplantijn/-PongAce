@@ -41,6 +41,19 @@ exports.createProfileTable = function() {
   db.close();
 }
 
+exports.updatePlayerPicture = function(id, picType, fullName, res) {
+  var column = picType === 'standard' ? 'standard_pose_img_name' : 'winning_pose_img_name';
+  var db = openConnection();
+    db.serialize(function() {
+      var sql = 'UPDATE profile SET '+column+'="'+fullName+'" WHERE id='+id;
+      db.run(sql, function(err) {
+        var result = err || true;
+          dbCallback(result, res);
+      });
+    });
+    db.close();
+}
+
 exports.createGameHistoryTable = function() {
   var db = openConnection();
   db.serialize(function() {
@@ -67,7 +80,6 @@ exports.updatePlayerQuote = function(id, quote, res) {
     });
   });
   db.close();
-
 }
 
 exports.createNewProfile = function(playerName, res) {

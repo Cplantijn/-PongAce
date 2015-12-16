@@ -1,5 +1,4 @@
 var actions = exports = module.exports
-
 export const SHOW_MENU = 'SHOW_MENU'
 export const HIDE_MENU = 'HIDE_MENU'
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
@@ -13,6 +12,9 @@ const contentType = {
   'content-type': 'application/json'
 }
 
+const imageContentType = {
+  'content-type': 'text/plain'
+}
 var msgTimeout, msgShakeTimeout;
 
 export function addPoint(index) {
@@ -37,7 +39,6 @@ export function showMenu(menuIndex) {
   }
 }
 
-
 export function fetchPlayerDetails(playerId) {
   return dispatch => {
     return fetch('/fetch/player/'+playerId)
@@ -55,8 +56,40 @@ export function fetchPlayerDetails(playerId) {
     }
 }
 
+export function changePlayerPic(playerId, picType, file, res) {
+  var ext = file.name.match(/\.(jpg|png|jpeg)$/i);
+  return dispatch => {
+    clearTimeout(msgTimeout);
+    clearTimeout(msgShakeTimeout);
+    if (ext == null) {
+      dispatch(showMessage('danger','Must be .jpg or .png file'));
+    } else {
+      var data = new FormData;
+      data.append('file', file);
+      data.append('picType', picType);
+      data.append('id', playerId);
+      return fetch('/update/player/picture',{
+        method:'POST',
+        body: data
+      })
+      .then(response => response.json())
+      .then(function(json) {
+        if(json.errno || json.error) {
+          dispatch(showMessage('danger','An error has occurred'));
+        }
+        dispatch(fetchPlayerDetails(playerId));
+        //TODO: Do not get value by raw javascript. Maybe use state?
+        var currentFilter = document.getElementById('player-profile-filter-input').value;
+        dispatch(fetchPlayers(currentFilter));
+      })
+    }
+    msgTimeout = setTimeout(function() {
+      dispatch(hideMessage())
+    }, 4600);
+  }
+}
+
 export function changePlayerQuote(playerId, text) {
-  console.log(text);
   text = text.trim();
   return dispatch => {
     clearTimeout(msgTimeout);

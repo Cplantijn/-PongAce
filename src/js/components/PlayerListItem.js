@@ -21,18 +21,18 @@ export default class PlayerListItem extends Component {
     return (
       <li className={liCls}
           onClick={this._fetchPlayerDetails.bind(this, playerId)}>
-        <div className="image-container">
-          <img src={"../img/players/"+playerImg} />
-        </div>
+        <div className="image-container"        >
+          <img src={"/player_img/"+playerImg} />
+</div>
         <div className="detail">
           <div className="player-name">{playerName}</div>
           <div className="quick-stats">
             <div className="score-container">
-              <div className="score-component"><span className="score-title">WINS</span></div>
+              <div className="score-component"><span className="score-title">WIN</span></div>
               <div className="score-component"><span>{wins}</span></div>
             </div>
             <div className="score-container">
-              <div className="score-component"><span className="score-title">LOSSES</span></div>
+              <div className="score-component"><span className="score-title">LOSS</span></div>
               <div className="score-component"><span>{losses}</span></div>
             </div>
           </div>

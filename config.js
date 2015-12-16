@@ -1,3 +1,6 @@
+
+var pool = 'abcdefghijklmnopqrstuvwxyz';
+pool = pool + pool.toUpperCase() +'_0123456789';
 module.exports = {
   'dbFile':'pong.db',
   'btnOnePin': 2,
@@ -27,5 +30,8 @@ module.exports = {
       'backgroundColor':'#f7ff7',
       'pageTextColor':'#333'
     }
-  }
+  },
+  'imageDir':'./player_img/',
+  'imageTempDir': './uploads/',
+  'imageNameSeed': pool
 }

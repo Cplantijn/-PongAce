@@ -46,8 +46,13 @@
   },
   "dependencies": {
     "body-parser": "^1.14.1",
+    "chance": "^0.8.0",
     "classnames": "^2.2.1",
+    "connect-busboy": "0.0.2",
     "express": "^4.13.3",
+    "formidable": "^1.0.17",
+    "fs-extra": "^0.26.2",
+    "gm": "^1.21.1",
     "isomorphic-fetch": "^2.2.0",
     "johnny-five": "^0.9.14",
     "perfect-scrollbar": "^0.6.8",

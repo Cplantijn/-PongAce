@@ -113,6 +113,7 @@ export default class ProfilesMenuBody extends Component {
                   <div className="input-group">
                     <input
                       type="text"
+                      id="player-profile-filter-input"
                       placeholder="Filter Players"
                       ref="playerFilterInput"
                       onKeyUp={this._filterPlayerList.bind(this)} />
