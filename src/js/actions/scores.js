@@ -1,6 +1,6 @@
 var actions = exports = module.exports
-export const SHOW_MENU = 'SHOW_MENU'
-export const HIDE_MENU = 'HIDE_MENU'
+export const SHOW_OVERLAY = 'SHOW_OVERLAY'
+export const HIDE_OVERLAY = 'HIDE_OVERLAY'
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
 export const HIDE_MESSAGE = 'HIDE_MESSAGE'
 export const REMOVE_SHAKE = 'REMOVE_SHAKE'
@@ -32,12 +32,19 @@ export function addTeam(index, name) {
   }
 }
 
-export function showMenu(menuIndex) {
+export function showOverlay(overlayIndex) {
   return {
-    type: actions.SHOW_MENU,
-    menuIndex: menuIndex
+    type: actions.SHOW_OVERLAY,
+    overlayIndex:overlayIndex
   }
 }
+
+export function hideOverlay() {
+  return {
+    type: actions.HIDE_OVERLAY
+  }
+}
+
 
 export function fetchPlayerDetails(playerId) {
   return dispatch => {
@@ -209,12 +216,6 @@ function loadPlayerInfo(playerInfo) {
   return {
     type: actions.SHOW_PLAYER_DETAIL,
     playerInfo: playerInfo
-  }
-}
-
-export function hideMenu() {
-  return {
-    type: actions.HIDE_MENU
   }
 }
 

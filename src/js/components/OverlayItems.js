@@ -3,16 +3,16 @@ import FontAwesome from 'react-fontawesome'
 import classNames from 'classNames'
 import { overlayScreens } from '../../../config'
 
-export class ProfilesMenuItem extends Component {
+export class ProfilesOverlayItem extends Component {
   constructor(props) {
     super(props)
   }
   render() {
-    var { onClick, menu } = this.props
+    var { onClick, overlay } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'profile': true,
-      'active': (menu.isOpen && menu.activeIndex === 0)
+      'active': (overlay.isOpen && overlay.activeIndex === 0)
     })
     return (
         <div
@@ -29,16 +29,16 @@ export class ProfilesMenuItem extends Component {
   }
 }
 
-export class LeaderboardMenuItem extends Component {
+export class LeaderboardOverlayItem extends Component {
   constructor(props) {
     super(props)
   }
   render() {
-    var { onClick, menu } = this.props
+    var { onClick, overlay } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'leaderboard': true,
-      'active': (menu.isOpen && menu.activeIndex === 1)
+      'active': (overlay.isOpen && overlay.activeIndex === 1)
     })
     return (
         <div
@@ -55,16 +55,16 @@ export class LeaderboardMenuItem extends Component {
   }
 }
 
-export class HistoryMenuItem extends Component {
+export class HistoryOverlayItem extends Component {
   constructor(props) {
     super(props)
   }
   render() {
-    var { onClick, menu } = this.props
+    var { onClick, overlay } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'history': true,
-      'active': (menu.isOpen && menu.activeIndex === 2)
+      'active': (overlay.isOpen && overlay.activeIndex === 2)
     })
     return (
         <div
@@ -81,16 +81,16 @@ export class HistoryMenuItem extends Component {
   }
 }
 
-export class GameSettingsMenuItem extends Component {
+export class GameSettingsOverlayItem extends Component {
   constructor(props) {
     super(props)
   }
   render() {
-    var { onClick, menu } = this.props
+    var { onClick, overlay } = this.props
     var cls = classNames({
       'footer-icon-pair': true,
       'settings': true,
-      'active': (menu.isOpen && menu.activeIndex === 3)
+      'active': (overlay.isOpen && overlay.activeIndex === 3)
     })
     return (
       <div

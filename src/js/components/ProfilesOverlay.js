@@ -6,7 +6,7 @@ import ps from 'perfect-scrollbar'
 import PlayerDetail from './PlayerDetail'
 import _ from 'underscore'
 
-export default class ProfilesMenuBody extends Component {
+export default class ProfilesOverlayBody extends Component {
   constructor(props) {
     super(props)
   }
@@ -41,7 +41,7 @@ export default class ProfilesMenuBody extends Component {
     fetchPlayers(this.refs.playerFilterInput.value.toLowerCase());
   }
   render() {
-    var { menuOpen, menu, playerList, active,
+    var { overlayOpen, overlay, playerList, active,
           fetchPlayerDetails, activePlayerDetail} = this.props;
     var players = null, activeId = null, empty = true;
     if (_.size(activePlayerDetail) > 0) {
@@ -72,7 +72,7 @@ export default class ProfilesMenuBody extends Component {
       'player-shown': !empty
     });
     return (
-      <div className="menu-content">
+      <div className="overlay-content">
         <div className="player-add-container">
           <h2 className="header" >Create</h2>
           <div className="player-add-form-container">

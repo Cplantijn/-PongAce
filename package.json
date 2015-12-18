@@ -53,6 +53,7 @@
     "formidable": "^1.0.17",
     "fs-extra": "^0.26.2",
     "gm": "^1.21.1",
+    "howler": "^1.1.28",
     "isomorphic-fetch": "^2.2.0",
     "johnny-five": "^0.9.14",
     "perfect-scrollbar": "^0.6.8",

@@ -22,7 +22,7 @@ class App extends Component {
 
 function mapStateToProps(state) {
   return {
-    menu: state.menu,
+    overlay: state.overlay,
     game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,

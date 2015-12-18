@@ -15,7 +15,7 @@ var reactify = require('reactify');
 var babelify = require('babelify');
 
 var jsFiles = glob.sync('./src/js/index.js');
-var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/**/*.*'];
+var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/*.*', './src/sound/*.*'];
 
 var customOpts = {
   entries: jsFiles,

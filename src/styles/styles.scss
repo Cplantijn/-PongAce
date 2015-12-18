@@ -46,35 +46,41 @@ html, body {
     &.no-game{
       align-items: center;
     }
-    .no-game-banner-container{
-      flex: 1;
-      background: $secondary_color;
+    .main-game-content{
+      flex:1;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      padding: 3em 0;
-      font-family: $pier_bold;
-      transition: 0.1s linear all;
-      h1{
-        color: $white;
-      }
-      .logo{
-        width: 4.825em;
-        height: 3em;
-        margin-left: 1em;
-        margin-right: 1em;
-        display: inline-block;
-        background: url('../img/pong_logo_wht.svg');
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-      }
-      &:hover{
-        background: $secondary_highlight;
+      flex-direction: row;
+      justify-content: stretch;
+      .no-game-banner-container{
+        flex: 1;
+        background: $secondary_color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 3em 0;
+        font-family: $pier_bold;
+        transition: 0.1s linear all;
+        h1{
+          color: $white;
+        }
+        .logo{
+          width: 4.825em;
+          height: 3em;
+          margin-left: 1em;
+          margin-right: 1em;
+          display: inline-block;
+          background: url('../img/pong_logo_wht.svg');
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: cover;
+        }
+        &:hover{
+          background: $secondary_highlight;
+        }
       }
     }
-    .main-menu-overlay {
+    .main-overlay {
       display: flex;
       flex-direction: column;
       position:absolute;
@@ -82,31 +88,31 @@ html, body {
       top: 0;right: 0;bottom: 0;left: 0;
       transition: 0.5s linear all;
       &.opened {
-        @include menuAnimationIn;
+        @include overlayAnimationIn;
         visibility: visible;
         transform: translateY(0%);
         -moz-transform: translateY(0%);
 
       }
       &.closed {
-        @include menuAnimationOut;
+        @include overlayAnimationOut;
         visibility:hidden;
         transform: translateY(100%);
         -moz-transform: translateY(100%);
       }
-      .menu-top {
+      .overlay-top {
         display: flex;
         justify-content: center;
         flex: 1;
-        .hide-menu-container {
+        .hide-overlay-container {
           padding: 0 3em;
           cursor: pointer;
         }
       }
-      .menu-content-container {
+      .overlay-content-container {
         display: flex;
         flex: 18;
-        .menu-content{
+        .overlay-content{
           display: flex;
           flex: 1;
           .spacer{
@@ -153,7 +159,7 @@ html, body {
             flex: 6;
             display: flex;
             flex-direction: column;
-            border-left: 1px solid $profile_menu_border;
+            border-left: 1px solid $profile_overlay_border;
             .header {
             padding-left: 0.5em;
             text-transform: uppercase;

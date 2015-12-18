@@ -1,32 +1,32 @@
 import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
 import classNames from 'classNames'
-import { ProfilesMenuItem, LeaderboardMenuItem, HistoryMenuItem, GameSettingsMenuItem } from './MenuItems'
+import { ProfilesOverlayItem, LeaderboardOverlayItem, HistoryOverlayItem, GameSettingsOverlayItem } from './OverlayItems'
 
 
 export default class Footer extends Component {
   constructor(props) {
     super(props)
   }
-  _toggleMenuAndShow(menuIndex) {
-    var { hideMenu, showMenu, menu, fetchPlayers } = this.props;
-    if (menuIndex === 0 && menuIndex !== menu.activeIndex) {
+  _toggleOverlay(overlayIndex) {
+    var { hideOverlay, showOverlay, overlay, fetchPlayers } = this.props;
+    if (overlayIndex === 0 && overlayIndex !== overlay.activeIndex) {
       fetchPlayers('');
     }
-    if (menu.activeIndex !== menuIndex && menu.isOpen) {
-      hideMenu()
+    if (overlay.activeIndex !== overlayIndex && overlay.isOpen) {
+      hideOverlay();
       setTimeout(function(){
-        showMenu(menuIndex)
+        showOverlay(overlayIndex)
       }, 400)
-    } else if (menu.activeIndex === menuIndex && menu.isOpen) {
-      hideMenu()
-    } else if (menu.activeIndex === menuIndex && !menu.isOpen) {
-      if (menu.activeIndex === 0) {
+    } else if (overlay.activeIndex === overlayIndex && overlay.isOpen) {
+      hideOverlay()
+    } else if (overlay.activeIndex === overlayIndex && !overlay.isOpen) {
+      if (overlay.activeIndex === 0) {
         fetchPlayers('');
       }
-      showMenu(menuIndex)
+      showOverlay(overlayIndex)
     } else {
-      showMenu(menuIndex)
+      showOverlay(overlayIndex)
     }
   }
   render() {
@@ -37,10 +37,10 @@ export default class Footer extends Component {
     return (
       <div className={cls}>
         <div className="footer-container">
-          <ProfilesMenuItem onClick={this._toggleMenuAndShow.bind(this)} {...this.props} />
-          <LeaderboardMenuItem onClick={this._toggleMenuAndShow.bind(this)} {...this.props} />
-          <HistoryMenuItem onClick={this._toggleMenuAndShow.bind(this)} {...this.props} />
-          <GameSettingsMenuItem onClick={this._toggleMenuAndShow.bind(this)} {...this.props} />
+          <ProfilesOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
+          <LeaderboardOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
+          <HistoryOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
+          <GameSettingsOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import  {
-  SHOW_MENU,
-  HIDE_MENU,
+  SHOW_OVERLAY,
+  HIDE_OVERLAY,
   SHOW_MESSAGE,
   HIDE_MESSAGE,
   REMOVE_SHAKE,
@@ -15,7 +15,7 @@ function pong(state = {}, action) {
 
 }
 
-function menu(state = {
+function overlay(state = {
   isOpen: false,
   activeIndex: null,
   profilesData: {
@@ -23,20 +23,20 @@ function menu(state = {
   }
 }, action) {
   switch(action.type) {
-    case SHOW_MENU:
-      var tMenu = state;
-      tMenu.activeIndex = action.menuIndex;
-      tMenu.isOpen = true;
+    case SHOW_OVERLAY:
+      var tOverlay = state;
+      tOverlay.activeIndex = action.overlayIndex;
+      tOverlay.isOpen = true;
       return {
         ...state,
-        ...tMenu
+        ...tOverlay
       }
-    case HIDE_MENU:
-      var tMenu = state;
-      tMenu.isOpen = false;
+    case HIDE_OVERLAY:
+      var tOverlay = state;
+      tOverlay.isOpen = false;
       return {
         ...state,
-        ...tMenu
+        ...tOverlay
       }
     default:
       return state;
@@ -123,7 +123,7 @@ const pongReducer = combineReducers({
   game,
   playerList,
   activePlayerDetail,
-  menu
+  overlay
 })
 
 export default pongReducer

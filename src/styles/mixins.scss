@@ -47,7 +47,7 @@
   }
 }
 
-@include keyframes(menuAnimationIn) {
+@include keyframes(overlayAnimationIn) {
 	from {
     transform: translateY(100%);
   }
@@ -55,7 +55,7 @@
     transform: translateY(0%);
   }
 }
-@include keyframes(menuAnimationOut) {
+@include keyframes(overlayAnimationOut) {
 	from {
     transform: translateY(0%);
   }
@@ -133,10 +133,10 @@
   @include animate(pulsateGrow, 2s, infinite, normal);
 }
 
-@mixin menuAnimationIn {
-  @include animate(menuAnimationIn, .5s, 1, normal);
+@mixin overlayAnimationIn {
+  @include animate(overlayAnimationIn, .5s, 1, normal);
 }
 
-@mixin menuAnimationOut {
-  @include animate(menuAnimationOut, .5s, 1, normal);
+@mixin overlayAnimationOut {
+  @include animate(overlayAnimationOut, .5s, 1, normal);
 }
