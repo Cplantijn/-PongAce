@@ -104,6 +104,9 @@ html, body {
         display: flex;
         justify-content: center;
         flex: 1;
+        &.hidden{
+          display: none;
+        }
         .hide-overlay-container {
           padding: 0 3em;
           cursor: pointer;

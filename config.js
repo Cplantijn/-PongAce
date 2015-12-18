@@ -27,7 +27,7 @@ module.exports = {
       'menuIconColor':'#355834'
     },
     'characterSelect': {
-      'backgroundColor':'#f7ff7',
+      'backgroundColor':'#f7f7f7',
       'pageTextColor':'#333'
     }
   },

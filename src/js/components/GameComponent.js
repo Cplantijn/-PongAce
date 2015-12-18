@@ -6,8 +6,16 @@ export default class GameComponent extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    var {game} = this.props;
+
+  }
   _startGame() {
-    showCharacterSelect();
+    var { showOverlay } = this.props;
+    showOverlay(4);
+  }
+  _handleKeyPress(){
+    alert('hey');
   }
   render() {
     var {game} = this.props;
