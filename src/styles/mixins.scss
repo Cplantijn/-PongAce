@@ -13,7 +13,7 @@
   }
 }
 
-@mixin animate($name, $duration, $iteration, $direction) {
+@mixin animate($name, $duration, $iteration, $timing, $direction) {
   -webkit-animation-duration: $duration;
      -moz-animation-duration: $duration;
        -o-animation-duration: $duration;
@@ -33,6 +33,12 @@
      -moz-animation-direction: $direction;
        -o-animation-direction: $direction;
           animation-direction: $direction;
+
+  -webkit-animation-timing-function: $timing;
+     -moz-animation-timing-function: $timing;
+       -o-animation-timing-function: $timing;
+          animation-timing-function: $timing;
+
 }
 
 @include keyframes(pulsateGrow) {
@@ -103,6 +109,18 @@
   }
 }
 
+@include keyframes(smallPulse) {
+  0% {
+    transform: scale(1.0);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1.0);
+  }
+}
+
 @include keyframes(moveFromBottomFade) {
   from { opacity: 0.3;
         transform: translateY(100%);
@@ -110,33 +128,37 @@
 }
 
 @mixin shakeMessage {
-  @include animate(shakeMessage, 1s, 1, normal)
+  @include animate(shakeMessage, 1s, 1, ease, normal)
 }
 
 @mixin rotateFoldBottom {
-  @include animate(rotateFoldBottom, .9s, 1, normal);
+  @include animate(rotateFoldBottom, .9s, 1, ease, normal);
 }
 
 @mixin rotateFoldTop {
-  @include animate(rotateFoldTop, .9s, 1, normal)
+  @include animate(rotateFoldTop, .9s, 1, ease, normal)
 }
 
 @mixin moveFromTopFade {
-  @include animate(moveFromTopFade, .9s, 1, normal);
+  @include animate(moveFromTopFade, .9s, 1, ease, normal);
 }
 
 @mixin moveFromBottomFade {
-  @include animate(moveFromBottomFade, .9s, 1, normal);
+  @include animate(moveFromBottomFade, .9s, 1, ease, normal);
 }
 
 @mixin pulsateGrow {
-  @include animate(pulsateGrow, 2s, infinite, normal);
+  @include animate(pulsateGrow, 2s, infinite, ease, normal);
+}
+
+@mixin smallPulse {
+  @include animate(smallPulse, 1.5s, infinite, linear, normal);
 }
 
 @mixin overlayAnimationIn {
-  @include animate(overlayAnimationIn, .5s, 1, normal);
+  @include animate(overlayAnimationIn, .5s, 1, ease, normal);
 }
 
 @mixin overlayAnimationOut {
-  @include animate(overlayAnimationOut, .5s, 1, normal);
+  @include animate(overlayAnimationOut, .5s, 1, ease, normal);
 }

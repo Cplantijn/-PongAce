@@ -9,6 +9,8 @@ export const LIST_PLAYERS = 'LIST_PLAYERS'
 export const CLEAR_PLAYER_LIST = 'CLEAR_PLAYER_LIST'
 export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL'
 export const START_SELECTION = 'START_SELECTION'
+export const END_SELECTION = 'END_SELECTION'
+export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION'
 
 const contentType = {
   'accept': 'application/json',
@@ -20,12 +22,31 @@ const imageContentType = {
 }
 var msgTimeout, msgShakeTimeout;
 
+export function endSelection() {
+  return {
+    type: actions.END_SELECTION
+  }
+}
 export function startSelection(group, player) {
+  var msgType = group == 'groupOne' ? 'group-one': 'group-two';
   return dispatch => {
       dispatch(hideMessage());
-      dispatch(showMessage('info','Select a Player'));
+      dispatch(showMessage(msgType, 'SELECT A PLAYER'));
       dispatch(selectionStart(group, player));
     }
+}
+
+export function hideMessage(type, message) {
+  return {
+    type: actions.HIDE_MESSAGE
+  }
+}
+
+export function highlightSelection(id) {
+  return {
+    type: actions.HIGHLIGHT_SELECTION,
+    id: id
+  }
 }
 
 export function addPoint(index) {
@@ -66,7 +87,7 @@ export function fetchPlayerDetails(playerId) {
                 dispatch(showMessage('danger', 'Something went wrong.'));
                 msgTimeout = setTimeout(function() {
                   dispatch(hideMessage())
-                }, 4600);
+                }, 3000);
               } else {
                 dispatch(loadPlayerInfo(json));
               }
@@ -103,7 +124,7 @@ export function changePlayerPic(playerId, picType, file, res) {
     }
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage())
-    }, 4600);
+    }, 3000);
   }
 }
 
@@ -116,7 +137,7 @@ export function changePlayerQuote(playerId, text) {
       dispatch(showMessage('danger','Quote cannot be empty'));
       msgTimeout = setTimeout(function() {
         dispatch(hideMessage())
-      }, 4600)
+      }, 3000)
     } else {
       return fetch('/update/player/quote', {
         method:'POST',
@@ -140,7 +161,7 @@ export function changePlayerQuote(playerId, text) {
         }
         msgTimeout = setTimeout(function() {
           dispatch(hideMessage())
-        }, 4600);
+        }, 3000);
       })
     }
   }
@@ -156,7 +177,7 @@ export function createNewPlayer(playerName) {
           dispatch(showMessage('danger', 'Player Name is too long.'));
           msgTimeout = setTimeout(function() {
             dispatch(hideMessage())
-          }, 4600);
+          }, 3000);
         } else {
           return fetch('/create/player', {
                 method:'POST',
@@ -178,13 +199,13 @@ export function createNewPlayer(playerName) {
                 }
                 msgTimeout = setTimeout(function() {
                   dispatch(hideMessage())
-                }, 4600);
+                }, 3000);
               })
         }
       } else {
         msgTimeout = setTimeout(function() {
           dispatch(hideMessage())
-        }, 4600);
+        }, 3000);
 
         msgShakeTimeout = setTimeout(function() {
           dispatch(removeMsgShake())
@@ -217,7 +238,7 @@ export function fetchPlayers(filter, sort) {
     })
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage())
-    }, 4600);
+    }, 3000);
     msgShakeTimeout = setTimeout(function() {
       dispatch(removeMsgShake())
     }, 1000);
@@ -255,11 +276,6 @@ function showMessage(type, message) {
     type: actions.SHOW_MESSAGE,
     message: message,
     messageType: type
-  }
-}
-function hideMessage(type, message) {
-  return {
-    type: actions.HIDE_MESSAGE
   }
 }
 

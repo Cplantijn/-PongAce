@@ -45,7 +45,8 @@ export default class Overlay extends Component {
         className={oCls}
         style={styles}>
         <HideOverlay hideOverlay={hideOverlay} show={show} />
-        <div className="overlay-content-container">
+        <div
+          className="overlay-content-container">
           {overlayBody}
         </div>
       </div>

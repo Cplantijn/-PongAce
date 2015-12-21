@@ -12,19 +12,67 @@ export default class PlayerSelectOverlay extends Component {
       urls: ['../sound/smash_theme.mp3', '../sound/smash_theme.ogg']
     });
   }
-  componentDidMount(){
+  componentDidMount() {
     //this.howler.play();
+    document.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
-  componentWillUnmount(){
-    this.howler.stop();
+  componentWillUnmount() {
+    var { hideMessage, endSelection } = this.props;
+    hideMessage();
+    endSelection();
+    //this.howler.stop();
+    document.removeEventListener('keydown', this._handleKeyDown.bind(this));
+  }
+  _handleKeyDown(e) {
+    var { playerGroup, playerList, highlightSelection } = this.props;
+    var key = e.which;
+    var acceptKeys = [37, 38, 39, 40, 13]; //Left, Up, Right, Down, Enter
+    if (playerGroup.isSelecting) {
+      if (acceptKeys.indexOf(key) > -1){
+        if (key == 13) {
+          alert('go!');
+        } else {
+          var currentSelectionId = playerGroup.highlightId,
+              currentSelectIndex, selectionFound = false;
+
+          if (currentSelectionId == null) {
+            for (var i = 0; i < _.size(playerList); i++) {
+              if (playerList[i].highlight) {
+                currentSelectionId = playerList[i].id;
+                highlightSelection(playerList[i].id);
+              }
+            }
+          }
+
+          for (var i = 0; i < _.size(playerList) && !selectionFound; i++) {
+              if (playerList[i].id == currentSelectionId) {
+                currentSelectIndex = i;
+                selectionFound == true;
+              }
+          }
+          //Left key
+          if (key == 37 && currentSelectIndex > 0) {
+            currentSelectIndex = currentSelectIndex - 1;
+          } else if (key == 38 && currentSelectIndex > 9) {
+            currentSelectIndex = currentSelectIndex - 10;
+          } else if (key == 39 && (_.size(playerList) > currentSelectIndex + 1)) {
+            currentSelectIndex = currentSelectIndex + 1;
+          } else if (key == 40 && (_.size(playerList) > currentSelectIndex + 10)) {
+            currentSelectIndex = currentSelectIndex + 10;
+          }
+          highlightSelection(playerList[currentSelectIndex].id);
+        }
+      }
+    }
   }
   render() {
-    var { startSelection, playerList, playerGroup } = this.props;
-    var playerRows = null, playerContainer = null;
-    var row = 0;
+    var { startSelection, playerList, playerGroup, highlightSelection, playerGroup, selectingGroup, selectingPlayer } = this.props;
+    var playerRows = null, playerContainer = null, row = 0;
+
+
     if (_.size(playerList) > 0) {
       playerContainer = _.groupBy(playerList, function(player, i) {
-        if (i % 12 == 0) {
+        if (i % 10 == 0) {
           row ++;
         }
         return row;
@@ -33,12 +81,17 @@ export default class PlayerSelectOverlay extends Component {
         return (
           <PlayerTileRow
             key={j}
-            players={playerRow} />
+            players={playerRow}
+            playerGroup={playerGroup}
+            isSelecting={playerGroup.isSelecting}
+            selectingGroup={playerGroup.selectingGroup}
+            selectingPlayer={playerGroup.selectingPlayer}
+            highlightSelection={highlightSelection} />
         )
       });
     }
     return (
-      <div className="player-select-container">
+      <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>
         <div className="header-container"><h1>Choose your player</h1></div>
         <div className="roster-container">
           <div className="tile-container">

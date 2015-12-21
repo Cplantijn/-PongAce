@@ -15,7 +15,9 @@ export default class Message extends Component {
       'danger': userMessage.type === 'danger',
       'success': userMessage.type === 'success',
       'info': userMessage.type === 'info',
-      'warning': userMessage.type === 'warning'
+      'warning': userMessage.type === 'warning',
+      'group-one': userMessage.type === 'group-one',
+      'group-two': userMessage.type === 'group-two'
     });
     var shakeCls = classNames({
       'shake': userMessage.shake

@@ -9,12 +9,14 @@ export default class PlayerSelection extends Component {
   render() {
     var { startSelection, show, player, group, playerType, contracted} = this.props;
     var { active } = player;
+
     var cls = classNames({
       'player': true,
       'player-two': playerType == 'playerTwo',
       'group-two': group == 'groupTwo',
       'contracted': contracted,
-      'hidden': !show
+      'hidden': !show,
+      'selecting': player.selecting
     });
     var playerSelection = null;
     if (show) {
@@ -25,11 +27,11 @@ export default class PlayerSelection extends Component {
       }
     }
     return (
-      <div
-        className={cls}
-        onClick={startSelection.bind(this, group, playerType)}>
-        {playerSelection}
-      </div>
+        <div
+          className={cls}
+          onClick={startSelection.bind(this, group, playerType)}>
+          {playerSelection}
+        </div>
     )
   }
 }

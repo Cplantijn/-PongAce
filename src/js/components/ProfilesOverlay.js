@@ -14,8 +14,8 @@ export default class ProfilesOverlay extends Component {
     var  ul = this.refs.playerList;
     {/* ctnHeight = this.refs.playerListMasterContainer.offsetHeight,
     // viewCtn = this.refs.viewPlayerHeader.offsetHeight,
-    // flrHeight = this.refs.playerFilterInput.offsetHeight;
-    //ul.style.height = 710; */}
+    // flrHeight = this.refs.playerFilterInput.offsetHeight; */}
+    ul.style.height = 710;
     ps.initialize(ul, {
       suppressScrollX: true
     });

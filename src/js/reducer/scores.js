@@ -8,30 +8,12 @@ import  {
   LIST_PLAYERS,
   CLEAR_PLAYER_LIST,
   SHOW_PLAYER_DETAIL,
-  START_SELECTION
+  START_SELECTION,
+  END_SELECTION,
+  HIGHLIGHT_SELECTION
 } from '../actions/scores'
 import _ from 'underscore'
 
-function pong(state = {
-    isSelecting: false,
-    selectingPlayer: {
-      group: null,
-      player: null
-    }
-  }, action) {
-  switch (action.type) {
-    case START_SELECTION:
-      var tPong = state;
-      tPong.isSelecting = true;
-      tPong.selectingPlayer.group = action.group;
-      tPong.selectingPlayer.player = action.player;
-      return {
-        ...tPong
-      }
-    default:
-      return state;
-  }
-};
 
 function overlay(state = {
   isOpen: false,
@@ -73,6 +55,41 @@ function playerList(state = {}, action) {
       return {
         ...tList
       }
+    case START_SELECTION:
+      var tList = state;
+      var hightlightFound = false;
+      for (var i = 0; i < _.size(tList); i++) {
+        tList[i].highlight = false;
+      }
+      for (var i = 0; i < _.size(tList) && !hightlightFound; i++) {
+        if (tList[i].selected == false) {
+          tList[i].highlight = true;
+          hightlightFound = true;
+        }
+      }
+      return {
+        ...tList
+      }
+    case END_SELECTION:
+      var tList = state;
+      for (var i = 0; i < _.size(tList); i++) {
+        tList[i].highlight = false;
+        tList[i].selected = false;
+      }
+      return {
+        ...tList
+      }
+    case HIGHLIGHT_SELECTION:
+      var tList = state;
+      for (var i = 0; i < _.size(tList); i++) {
+        tList[i].highlight = false;
+        if (tList[i].id == action.id) {
+          tList[i].highlight = true;
+        }
+      }
+      return {
+        ...tList
+      }
     default:
       return state
   }
@@ -92,6 +109,7 @@ function playerGroup( state =  {
     groupOne: {
         playerOne:{
           id: null,
+          selecting: false,
           active: false,
           name: null,
           standard_pose: null,
@@ -99,6 +117,7 @@ function playerGroup( state =  {
         },
         playerTwo:{
           id: null,
+          selecting: false,
           active: false,
           name: null,
           standard_pose: null,
@@ -109,6 +128,7 @@ function playerGroup( state =  {
         playerOne:{
           id: null,
           active: false,
+          selecting: false,
           name: null,
           standard_pose: null,
           winning_pose: null
@@ -116,13 +136,47 @@ function playerGroup( state =  {
         playerTwo:{
           id: null,
           active: false,
+          selecting: false,
           name: null,
           standard_pose: null,
           winning_pose: null
         }
-    }
+    },
+    isSelecting: false,
+    highlightId: null
   }, action) {
   switch (action.type) {
+    case START_SELECTION:
+      var tPong = state;
+      tPong.isSelecting = true;
+      tPong.groupOne.playerOne.selecting = false;
+      tPong.groupOne.playerTwo.selecting = false;
+      tPong.groupTwo.playerOne.selecting = false;
+      tPong.groupTwo.playerTwo.selecting = false;
+      tPong[action.group][action.player].selecting = true;
+      tPong.highlightId = null;
+      tPong.selectingGroup = action.group;
+      tPong.selectingPlayer = action.player;
+      return {
+        ...tPong
+      }
+    case END_SELECTION:
+      var tPong = state;
+      tPong.isSelecting = false;
+      tPong.groupOne.playerOne.selecting = false;
+      tPong.groupOne.playerTwo.selecting = false;
+      tPong.groupTwo.playerOne.selecting = false;
+      tPong.groupTwo.playerTwo.selecting = false;
+      tPong.highlightId = null;
+      return {
+        ...tPong
+      }
+    case HIGHLIGHT_SELECTION:
+      var tPong = state;
+      tPong.highlightId = action.id;
+      return {
+        ...tPong
+      }
     default:
       return state
   }
@@ -184,11 +238,10 @@ function userMessage(state = {
 }
 
 const pongReducer = combineReducers({
-  pong,
   userMessage,
-  playerGroup,
   game,
   playerList,
+  playerGroup,
   activePlayerDetail,
   overlay
 })

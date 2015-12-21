@@ -119,6 +119,13 @@ exports.fetchPlayers = function(filter, sort, res) {
                WHERE lower(name) LIKE '%"+filter+"%' \
                ORDER BY " +sort;
     db.all(sql, function(err, result) {
+      if (!err) {
+        result = result.map(function(e) {
+          e.selected = false;
+          e.highlight = false;
+          return e;
+        })
+      }
       var response = err || result;
       dbCallback(response, res);
     })
