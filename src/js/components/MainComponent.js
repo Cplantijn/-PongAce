@@ -5,13 +5,15 @@ import TopBar from './TopBar'
 import classNames from 'classNames'
 import Overlay from './Overlay'
 import GameComponent from './GameComponent'
+import {Howl, Howler} from 'howler'
 
 export default class MainComponent extends Component {
   constructor(props) {
     super(props);
-  }
-  _startGame() {
-    alert('STARTING GAME!');
+    //preloading Howler into Cache
+    this.howler = new Howl({
+      urls: ['../sound/smash_theme.mp3', '../sound/smash_theme.mp3']
+    });
   }
   render() {
     var {game} = this.props;

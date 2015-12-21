@@ -114,19 +114,19 @@
 }
 
 @mixin rotateFoldBottom {
-  @include animate(rotateFoldBottom, .7s, 1, normal);
+  @include animate(rotateFoldBottom, .9s, 1, normal);
 }
 
 @mixin rotateFoldTop {
-  @include animate(rotateFoldTop, 0.7s, 1, normal)
+  @include animate(rotateFoldTop, .9s, 1, normal)
 }
 
 @mixin moveFromTopFade {
-  @include animate(moveFromTopFade, .7s, 1, normal);
+  @include animate(moveFromTopFade, .9s, 1, normal);
 }
 
 @mixin moveFromBottomFade {
-  @include animate(moveFromBottomFade, 0.7s, 1, normal);
+  @include animate(moveFromBottomFade, .9s, 1, normal);
 }
 
 @mixin pulsateGrow {

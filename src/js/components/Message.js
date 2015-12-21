@@ -13,7 +13,9 @@ export default class Message extends Component {
       'msg-shown': userMessage.isShowing,
       'msg-hidden': !userMessage.isShowing,
       'danger': userMessage.type === 'danger',
-      'success': userMessage.type === 'success'
+      'success': userMessage.type === 'success',
+      'info': userMessage.type === 'info',
+      'warning': userMessage.type === 'warning'
     });
     var shakeCls = classNames({
       'shake': userMessage.shake

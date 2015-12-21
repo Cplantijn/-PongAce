@@ -11,7 +11,8 @@ export default class GameComponent extends Component {
 
   }
   _startGame() {
-    var { showOverlay } = this.props;
+    var { showOverlay, fetchPlayers } = this.props;
+    fetchPlayers('','id ASC');
     showOverlay(4);
   }
   _handleKeyPress(){
@@ -26,7 +27,7 @@ export default class GameComponent extends Component {
                   onClick={this._startGame.bind(this)}>
                     <h1>Play</h1>
                     <div className="logo"></div>
-                    <h1>Pong!</h1>
+                    <h1>Pong</h1>
                  </div>
     } else {
       mainBody = <h1>"Game Here"</h1>;

@@ -6,14 +6,32 @@ import  {
   HIDE_MESSAGE,
   REMOVE_SHAKE,
   LIST_PLAYERS,
+  CLEAR_PLAYER_LIST,
   SHOW_PLAYER_DETAIL,
+  START_SELECTION
 } from '../actions/scores'
 import _ from 'underscore'
 
-
-function pong(state = {}, action) {
-
-}
+function pong(state = {
+    isSelecting: false,
+    selectingPlayer: {
+      group: null,
+      player: null
+    }
+  }, action) {
+  switch (action.type) {
+    case START_SELECTION:
+      var tPong = state;
+      tPong.isSelecting = true;
+      tPong.selectingPlayer.group = action.group;
+      tPong.selectingPlayer.player = action.player;
+      return {
+        ...tPong
+      }
+    default:
+      return state;
+  }
+};
 
 function overlay(state = {
   isOpen: false,
@@ -50,6 +68,11 @@ function playerList(state = {}, action) {
       return {
         ...tList
       }
+    case CLEAR_PLAYER_LIST:
+      var tList = {};
+      return {
+        ...tList
+      }
     default:
       return state
   }
@@ -59,6 +82,46 @@ function game(state = {
   active: false,
   hasFinished: false
 }, action) {
+  switch (action.type) {
+    default:
+      return state
+  }
+}
+
+function playerGroup( state =  {
+    groupOne: {
+        playerOne:{
+          id: null,
+          active: false,
+          name: null,
+          standard_pose: null,
+          winning_pose: null
+        },
+        playerTwo:{
+          id: null,
+          active: false,
+          name: null,
+          standard_pose: null,
+          winning_pose: null
+        }
+    },
+    groupTwo: {
+        playerOne:{
+          id: null,
+          active: false,
+          name: null,
+          standard_pose: null,
+          winning_pose: null
+        },
+        playerTwo:{
+          id: null,
+          active: false,
+          name: null,
+          standard_pose: null,
+          winning_pose: null
+        }
+    }
+  }, action) {
   switch (action.type) {
     default:
       return state
@@ -76,6 +139,8 @@ function activePlayerDetail(state = {}, action) {
       return state
   }
 }
+
+
 
 function userMessage(state = {
   isShowing: false,
@@ -119,7 +184,9 @@ function userMessage(state = {
 }
 
 const pongReducer = combineReducers({
+  pong,
   userMessage,
+  playerGroup,
   game,
   playerList,
   activePlayerDetail,

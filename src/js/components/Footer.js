@@ -11,18 +11,18 @@ export default class Footer extends Component {
   _toggleOverlay(overlayIndex) {
     var { hideOverlay, showOverlay, overlay, fetchPlayers } = this.props;
     if (overlayIndex === 0 && overlayIndex !== overlay.activeIndex) {
-      fetchPlayers('');
+      fetchPlayers('','updated_on DESC');
     }
     if (overlay.activeIndex !== overlayIndex && overlay.isOpen) {
       hideOverlay();
       setTimeout(function(){
         showOverlay(overlayIndex)
-      }, 400)
+      }, 600)
     } else if (overlay.activeIndex === overlayIndex && overlay.isOpen) {
       hideOverlay()
     } else if (overlay.activeIndex === overlayIndex && !overlay.isOpen) {
       if (overlay.activeIndex === 0) {
-        fetchPlayers('');
+        fetchPlayers('','updated_on DESC');
       }
       showOverlay(overlayIndex)
     } else {
