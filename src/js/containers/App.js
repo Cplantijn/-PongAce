@@ -23,6 +23,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     overlay: state.overlay,
+    playerGroup: state.playerGroup,
     game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,

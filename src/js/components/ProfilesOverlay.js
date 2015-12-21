@@ -6,17 +6,16 @@ import ps from 'perfect-scrollbar'
 import PlayerDetail from './PlayerDetail'
 import _ from 'underscore'
 
-export default class ProfilesOverlayBody extends Component {
+export default class ProfilesOverlay extends Component {
   constructor(props) {
     super(props)
   }
   componentDidMount() {
-    var  ul = this.refs.playerList,
-    ctnHeight = this.refs.playerListMasterContainer.offsetHeight,
-    viewCtn = this.refs.viewPlayerHeader.offsetHeight,
-    flrHeight = this.refs.playerFilterInput.offsetHeight;
-
-    ul.style.height = ctnHeight - flrHeight - viewCtn;
+    var  ul = this.refs.playerList;
+    {/* ctnHeight = this.refs.playerListMasterContainer.offsetHeight,
+    // viewCtn = this.refs.viewPlayerHeader.offsetHeight,
+    // flrHeight = this.refs.playerFilterInput.offsetHeight;
+    //ul.style.height = 710; */}
     ps.initialize(ul, {
       suppressScrollX: true
     });
@@ -38,10 +37,10 @@ export default class ProfilesOverlayBody extends Component {
   }
   _filterPlayerList() {
     var { fetchPlayers } = this.props;
-    fetchPlayers(this.refs.playerFilterInput.value.toLowerCase());
+    fetchPlayers(this.refs.playerFilterInput.value.toLowerCase(), 'updated_on DESC');
   }
   render() {
-    var { overlayOpen, overlay, playerList, active,
+    var { overlayOpen, hideOverlay, overlay, playerList, active,
           fetchPlayerDetails, activePlayerDetail} = this.props;
     var players = null, activeId = null, empty = true;
     if (_.size(activePlayerDetail) > 0) {
@@ -51,7 +50,7 @@ export default class ProfilesOverlayBody extends Component {
     if (_.size(playerList) > 0) {
       players = _.map(playerList, function(player, i) {
         var placement = (i % 2 === 0 || i === 0) ? 'even' : 'odd';
-        var playerName = player.name.length > 16 ? '    '+player.name.slice(0, 13) + '...': player.name;
+        var playerName = player.name.length > 23 ? '    '+player.name.slice(0, 21) + '...': player.name;
         return (
           <PlayerListItem
             key={player.id}
@@ -72,7 +71,7 @@ export default class ProfilesOverlayBody extends Component {
       'player-shown': !empty
     });
     return (
-      <div className="overlay-content">
+      <div className="profiles-container">
         <div className="player-add-container">
           <h2 className="header" >Create</h2>
           <div className="player-add-form-container">

@@ -31,7 +31,7 @@ html, body {
   justify-content: center;
 }
 .main-component {
-  background: linear-gradient(to top, $main_bg_color, $white);
+  background: $main_bg_color;
   height: 100vh;
   display: flex;
   padding: 0;
@@ -58,17 +58,18 @@ html, body {
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        padding: 3em 0;
+        padding: 6em 0;
         font-family: $pier_bold;
         transition: 0.1s linear all;
         h1{
           color: $white;
+          font-size: 8em;
         }
         .logo{
-          width: 4.825em;
-          height: 3em;
-          margin-left: 1em;
-          margin-right: 1em;
+          width: 12rem;
+          height: 8rem;
+          margin-left: 3em;
+          margin-right: 3em;
           display: inline-block;
           background: url('../img/pong_logo_wht.svg');
           background-repeat: no-repeat;
@@ -104,6 +105,9 @@ html, body {
         display: flex;
         justify-content: center;
         flex: 1;
+        &.hidden{
+          display: none;
+        }
         .hide-overlay-container {
           padding: 0 3em;
           cursor: pointer;
@@ -112,7 +116,158 @@ html, body {
       .overlay-content-container {
         display: flex;
         flex: 18;
-        .overlay-content{
+        .player-select-container{
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          .header-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            h1 {
+              font-family: $pier_bold;
+              text-transform: uppercase;
+              color: $white;
+              letter-spacing: 0.08em;
+            }
+          }
+          .roster-container{
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .player-tile-row{
+              display: flex;
+              .player-tile{
+                height: 7em;
+                width: 7em;
+                margin: 0.5em;
+                border-radius: 0.33em;
+                overflow: hidden;
+                background: $dark;
+                background-size: cover;
+                background-position: center center;
+                display: flex;
+                flex-direction: column-reverse;
+                cursor: pointer;
+                .player-header{
+                  text-align: center;
+                  background: $dark;
+                  color: $white;
+                  padding: 0.2em;
+                  opacity: 0.9;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+              }
+            }
+          }
+          .selection-container{
+            flex: 3;
+            display:flex;
+            .player-group{
+              flex: 6;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: center;
+              .player {
+                position:relative;
+                border: 5px dashed $element_shadow;
+                flex: 1;
+                display: flex;
+                border-radius: 50%;
+                align-items: center;
+                color: #B5B5B5;
+                max-width: 14em;
+                height: 14em;
+                max-height: 14em;
+                transition: 0.3s linear all;
+                &.group-two {
+                  .empty {
+                    background: url('../img/pong_add_two.svg');
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                  }
+                }
+                &.player-two {
+                  margin-left: 4em;
+                  &.contracted {
+                    margin-left: 2em;
+                    border: 2px dashed $dark;
+                    max-width: 4em;
+                    max-height: 4em;
+                  }
+                }
+                .empty{
+                  background: url('../img/pong_add_one.svg');
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                  flex: 1;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 60%;
+
+                }
+                &:hover{
+                  cursor: pointer;
+                  &::after{
+                    background: url('../img/pong_add_hover.svg');
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: 60% auto;
+                    display: flex;
+                    align-items:center;
+                    justify-content: center;
+                    content: "";
+                    position:absolute;
+                    top: 0; right: 0; bottom: 0; left: 0;
+                    background-color:$light_grey;
+                    opacity: 0.4;
+                    border-radius: 50%;
+                  }
+                }
+                &.hidden{
+                  display: none;
+                }
+              }
+            }
+            .player-group-seperator{
+              opacity: 0.8;
+              flex: 1;
+              display: flex;
+              flex-direction:column;
+              .line-container{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                .line{
+                  flex: 1;
+                  border: 1px solid $light_grey;
+                }
+              }
+              .logo-container{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .logo{
+                  background: url('../img/pong-vs.svg');
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                  height: 6em;
+                  width: 6em;
+                  position: relative;
+                }
+              }
+            }
+          }
+        }
+        .profiles-container{
           display: flex;
           flex: 1;
           .spacer{
@@ -130,6 +285,7 @@ html, body {
           input{
             width:100%;
             padding: 0.5em;
+            font-size: 1.8em;
             color: $white;
             background: transparent;
             text-align: center;
@@ -188,7 +344,7 @@ html, body {
             }
             .player-view-master-container{
               display: flex;
-              flex: 3;
+              flex: 2;
               transition: 0.1s linear all;
               flex-direction: column;
               &.player-shown{
@@ -211,8 +367,13 @@ html, body {
                   display: flex;
                   flex-direction: column;
                   .header{
+                    align-items: center;
                     text-align: center;
                     flex: 1;
+                    h2 {
+                      font-size: 4em;
+                      text-transform: none;
+                    }
                   }
                   .image-set-container{
                     flex: 3;
@@ -220,6 +381,7 @@ html, body {
                     justify-content: center;
                     .image-center-container{
                       width: 75%;
+                      align-items: center;
                       display: flex;
                       justify-content: space-around;
                       flex-direction: row;
@@ -232,8 +394,8 @@ html, body {
                         .single-image{
                           display: flex;
                           justify-content: center;
-                          height: 10em;
-                          width: 10em;
+                          height: 16em;
+                          width: 16em;
                           border-radius: 50%;
                           background-position: center center;
                           background-size: cover;
@@ -269,23 +431,13 @@ html, body {
                           display: flex;
                           justify-content: center;
                           .image-label{
+                            font-size: 1.5em;
                             border: 1px solid $white;
                             background:transparent;
                             color: $white;
                           }
                         }
                       }
-                    }
-                  }
-                  .player-quote{
-                    flex: 2;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    input {
-                      width: 75%;
-                      padding: 0.25em;
-                      border-bottom: 1px solid $white;
                     }
                   }
                   .player-history{
@@ -322,6 +474,7 @@ html, body {
             }
             .player-list-view{
               flex:10;
+              height: 710px;
               display: flex;
               .player-list-container {
                 flex: 1;
@@ -344,8 +497,8 @@ html, body {
                       align-items: center;
                       display: flex;
                       img {
-                        width: 3.4em;
-                        height:3.4em;
+                        width: 4.6em;
+                        height:4.6em;
                         border-radius: 50%;
                         margin-right: 0.5em;
                       }
@@ -357,10 +510,13 @@ html, body {
                       align-items: stretch;
                       flex-direction: column;
                       .player-name {
+                        font-size: 1.5em;
+                        letter-spacing: 0.08em;
                         text-align: center;
                         font-family: $pier_bold;
                       }
                       .quick-stats{
+                        font-size: 1.2em;
                         display: flex;
                         justify-content: space-around;
                         flex-direction: row;
@@ -384,8 +540,8 @@ html, body {
                       &::after{
                         content: "";
                         bottom: -1em;
-                        right: 20%;
-                        left: 20%;
+                        right: 0;
+                        left: 0;
                         border-bottom: 2px solid rgba(255, 255, 255, 0.1);
                         position: absolute;
                       }
@@ -414,8 +570,8 @@ html, body {
         align-items: center;
         .icon-logo{
           display: inline-block;
-          width: 1.8em;
-          height: 1.25em;
+          width:  2.7em;
+          height: 1.875em;
           background: url('../img/pong_logo.svg') center center no-repeat;
           background-size: cover;
         }
@@ -450,6 +606,9 @@ html, body {
           }
           &.success{
             background: $success;
+          }
+          &.info{
+            background: $info;
           }
           &.msg-shown {
             z-index:1;

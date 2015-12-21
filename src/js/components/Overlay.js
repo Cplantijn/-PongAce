@@ -3,22 +3,21 @@ import FontAwesome from 'react-fontawesome'
 import classNames from 'classNames'
 import config from '../../../config'
 import ProfilesOverlay from './ProfilesOverlay'
+import PlayerSelectOverlay from './PlayerSelectOverlay'
+import HideOverlay from './HideOverlay'
+
 
 
 export default class Overlay extends Component {
   constructor(props) {
     super(props)
   }
-  _hideOverlay() {
-    var { hideOverlay } = this.props
-    hideOverlay()
-  }
   render() {
-    var { overlay } = this.props
+    var { overlay, hideOverlay } = this.props
     var styles,
         overlays = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'],
         activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles',
-        overlayBody = <div></div>;
+        overlayBody, show = true;
 
     var oCls = classNames({
       'main-overlay': true,
@@ -32,23 +31,20 @@ export default class Overlay extends Component {
     }
     switch(activeOverlay) {
       case 'profiles':
-        overlayBody = <ProfilesOverlay {...this.props}/>
+        overlayBody = <ProfilesOverlay {...this.props}/>;
+        break;
+      case 'characterSelect':
+        show = false;
+        overlayBody = <PlayerSelectOverlay {...this.props}/>;
+        break;
+      default:
+      overlayBody = <div></div>;
     }
     return (
       <div
         className={oCls}
         style={styles}>
-        <div className="overlay-top">
-          <div
-            className="hide-overlay-container"
-            onClick={this._hideOverlay.bind(this)}>
-            <FontAwesome
-              className='hide-overlay-icon'
-              name='caret-down'
-              size='2x'
-              title='Collapse'/>
-          </div>
-        </div>
+        <HideOverlay hideOverlay={hideOverlay} show={show} />
         <div className="overlay-content-container">
           {overlayBody}
         </div>

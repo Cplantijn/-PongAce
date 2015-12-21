@@ -1,11 +1,14 @@
 var actions = exports = module.exports
+import { polyfill } from 'es6-promise'
 export const SHOW_OVERLAY = 'SHOW_OVERLAY'
 export const HIDE_OVERLAY = 'HIDE_OVERLAY'
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
 export const HIDE_MESSAGE = 'HIDE_MESSAGE'
 export const REMOVE_SHAKE = 'REMOVE_SHAKE'
 export const LIST_PLAYERS = 'LIST_PLAYERS'
+export const CLEAR_PLAYER_LIST = 'CLEAR_PLAYER_LIST'
 export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL'
+export const START_SELECTION = 'START_SELECTION'
 
 const contentType = {
   'accept': 'application/json',
@@ -16,6 +19,14 @@ const imageContentType = {
   'content-type': 'text/plain'
 }
 var msgTimeout, msgShakeTimeout;
+
+export function startSelection(group, player) {
+  return dispatch => {
+      dispatch(hideMessage());
+      dispatch(showMessage('info','Select a Player'));
+      dispatch(selectionStart(group, player));
+    }
+}
 
 export function addPoint(index) {
   return {
@@ -87,7 +98,7 @@ export function changePlayerPic(playerId, picType, file, res) {
         dispatch(fetchPlayerDetails(playerId));
         //TODO: Do not get value by raw javascript. Maybe use state?
         var currentFilter = document.getElementById('player-profile-filter-input').value;
-        dispatch(fetchPlayers(currentFilter));
+        dispatch(fetchPlayers(currentFilter, 'updated_on DESC'));
       })
     }
     msgTimeout = setTimeout(function() {
@@ -163,7 +174,7 @@ export function createNewPlayer(playerName) {
                   }, 1000);
                 } else {
                   dispatch(showMessage('success', 'Player created: ' + playerName));
-                  dispatch(fetchPlayers(''));
+                  dispatch(fetchPlayers('','updated_on DESC'));
                 }
                 msgTimeout = setTimeout(function() {
                   dispatch(hideMessage())
@@ -183,16 +194,17 @@ export function createNewPlayer(playerName) {
     }
 }
 
-export function fetchPlayers(filter) {
+export function fetchPlayers(filter, sort) {
   clearTimeout(msgTimeout);
   clearTimeout(msgShakeTimeout);
   return dispatch => {
+    dispatch(clearPlayerList());
     return fetch('/fetch/players', {
       method:'POST',
       headers: contentType,
       body: JSON.stringify({
         "filter": filter.trim(),
-        "sort" : 'updated_on DESC'
+        "sort" : sort
       })
     })
     .then(response => response.json())
@@ -225,6 +237,12 @@ function removeMsgShake() {
   }
 }
 
+function clearPlayerList() {
+  return {
+    type: actions.CLEAR_PLAYER_LIST
+  }
+}
+
 function showPlayerList(playerList) {
   return {
     type: actions.LIST_PLAYERS,
@@ -239,9 +257,16 @@ function showMessage(type, message) {
     messageType: type
   }
 }
-
 function hideMessage(type, message) {
   return {
     type: actions.HIDE_MESSAGE
+  }
+}
+
+function selectionStart(group, player){
+  return {
+    type: actions.START_SELECTION,
+    group: group,
+    player: player,
   }
 }

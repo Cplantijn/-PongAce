@@ -6,8 +6,17 @@ export default class GameComponent extends Component {
   constructor(props) {
     super(props);
   }
+  componentDidMount() {
+    var {game} = this.props;
+
+  }
   _startGame() {
-    showCharacterSelect();
+    var { showOverlay, fetchPlayers } = this.props;
+    fetchPlayers('','id ASC');
+    showOverlay(4);
+  }
+  _handleKeyPress(){
+    alert('hey');
   }
   render() {
     var {game} = this.props;
@@ -18,7 +27,7 @@ export default class GameComponent extends Component {
                   onClick={this._startGame.bind(this)}>
                     <h1>Play</h1>
                     <div className="logo"></div>
-                    <h1>Pong!</h1>
+                    <h1>Pong</h1>
                  </div>
     } else {
       mainBody = <h1>"Game Here"</h1>;
