@@ -51,7 +51,7 @@ export function modifyPoint(group, event) {
 export function endGame() {
   return dispatch => {
     clearTimeout(msgTimeout);
-    dispatch(showMessage('warning', 'This game has ended'));
+    dispatch(showMessage('warning', 'THE GAME HAS ENDED'));
     dispatch(gameEnd());
     dispatch(groupReset());
     msgTimeout = setTimeout(function() {

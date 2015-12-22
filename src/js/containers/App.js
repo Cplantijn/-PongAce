@@ -14,7 +14,6 @@ class App extends Component {
     this.socket = io();
     this.socket.on('btnHold', function(side) {
       if (playerGroup.game.active) {
-        //Dock Point from side
         modifyPoint(side, 'REMOVE');
       } else {
         if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
@@ -38,11 +37,40 @@ class App extends Component {
         }
       }
     });
-
+    window.addEventListener('keydown', function(e) {
+      if (e.which == 49) {
+        modifyPoint('groupOne', 'ADD');
+      }else if (e.which == 50) {
+        modifyPoint('groupTwo', 'ADD');
+      }else if (e.which == 189) {
+        if (playerGroup.game.active) {
+          modifyPoint('groupOne', 'REMOVE');
+        }
+        if (playerGroup.groupTwo.ready) {
+          toggleReady('groupOne', true);
+        } else{
+          toggleReady('groupOne', false);
+        }
+      }else if (e.which == 187) {
+        if (playerGroup.game.active) {
+          modifyPoint('groupTwo', 'REMOVE');
+        }
+        if (playerGroup.groupOne.ready) {
+          toggleReady('groupTwo', true);
+        } else{
+          toggleReady('groupTwo', false);
+        }
+      }
+    });
     this.socket.on('btnDown', function(side) {
       if (playerGroup.game.active) {
         modifyPoint(side, 'ADD');
       }
+    });
+
+    //Testing override
+    document.addEventListener('keydown', function(e) {
+      console.log(e)
     })
   }
   render() {

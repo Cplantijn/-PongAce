@@ -3,6 +3,7 @@ import classNames from 'classNames'
 import GameGroupContainer from './GameGroupContainer'
 import ServingBanner from './ServingBanner'
 import GameQuit from './GameQuit'
+import WinnerPopUp from './WinnerPopUp'
 
 export default class GameComponent extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ export default class GameComponent extends Component {
     var serving = playerGroup.groupOne.serving ? 'groupOne' : 'groupTwo';
     if (playerGroup.game.active) {
       mainBody = <div className="master-game-container">
+                  <WinnerPopUp playerGroup={playerGroup}/>
                   <ServingBanner side={serving}/>
                   <GameQuit endGame={endGame}/>
                   <GameGroupContainer

@@ -55,6 +55,92 @@ html, body {
         flex: 1;
         display: flex;
         position: relative;
+        .winner-pop{
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          z-index: 10;
+          left: 0;
+          top: 0;
+          display: none;
+          opacity: 0;
+          display: flex;
+          &.group-one {
+            background: $main-color
+          }
+          &.group-two {
+            background: $secondary_color;
+          }
+          .message-container {
+            flex: 1;
+            display: flex;
+            color: $white;
+            align-items: center;
+            justify-content: center;
+            font-family: $pier_bold;
+            h2 {
+              font-size: 4em;
+            }
+          }
+          .winner-container {
+            flex: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .winning-player{
+              margin: 0 3em;
+              min-width: 24em;
+              min-height: 24em;
+              height: 24em;
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center center;
+              border-radius: 50%;
+              border: 0.5em solid $white;
+            }
+          }
+          .score-container{
+            flex: 1;
+            display: flex;
+            color: $white;
+            .winning-score, .losing-score {
+              flex: 4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              h2 {
+                font-size: 7em;
+                .raw-score {
+                  opacity: 0.8;
+                  opacity: 0.8;
+                  font-size: 0.5em;
+                  position: relative;
+                  bottom: 0.8em;
+                }
+              }
+            }
+            .winning-score{
+              justify-content: flex-end;
+            }
+            .losing-score{
+              justify-content: flex-start;
+            }
+            .score-padding{
+              flex: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .loser-container{
+            flex: 2;
+          }
+          &.open{
+            display: flex;
+            flex-direction:column;
+            opacity: 1;
+          }
+        }
         .quit-container {
           position: absolute;
           background: $white;
@@ -112,9 +198,14 @@ html, body {
               display: flex;
               align-items: center;
               justify-content: center;
+              color: $white;
               h1{
                 font-size: 20em;
+              }
+              .arrow-up {
                 color: $white;
+                padding-bottom: 0.5em;
+                font-size: 8em;
               }
             }
           }
@@ -123,16 +214,33 @@ html, body {
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            .player {
-              flex: 1;
-              margin: 0 2em;
-              background-size: cover;
-              border: 0.5em solid $white;
-              border-radius: 50%;
-              min-height: 14em;
-              min-width: 14em;
-              max-width: 14em;
-              height: 14em;
+            .player-pic-container {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              .player {
+                flex: 1;
+                margin: 0 2em;
+                background-size: cover;
+                border: 0.5em solid $white;
+                border-radius: 50%;
+                min-height: 14em;
+                min-width: 14em;
+                max-width: 14em;
+                height: 14em;
+              }
+              .label {
+                font-size: 1.2em;
+                background: $white;
+                margin-top: 0.5em;
+                border-radius: 0.5em;
+                &.group-one{
+                  color: $main_color;
+                }
+                &.group-two{
+                  color: $secondary_color;
+                }
+              }
             }
           }
           &.group-one {

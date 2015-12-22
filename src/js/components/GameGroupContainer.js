@@ -20,6 +20,8 @@ export default class GameGroupContainer extends Component {
           return (
             <PlayerGamePic
               key={count}
+              group={group}
+              name={val.name}
               standardPose={val.standardPose}
               winningPose={val.winningPose} />
           )
@@ -39,7 +41,7 @@ export default class GameGroupContainer extends Component {
       up = <FontAwesome
             className="arrow-up"
             name='arrow-up'
-            size='2x' />
+            size='5x' />
     }
 
     return (

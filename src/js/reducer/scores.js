@@ -42,6 +42,7 @@ const initialGroupState = {
       },
       ready: false,
       score: 0,
+      rawScore: 0,
       up: false,
       serving: false
   },
@@ -65,6 +66,7 @@ const initialGroupState = {
       },
       ready: false,
       score: 0,
+      rawScore: 0,
       up: false,
       serving: false
   },
@@ -76,7 +78,8 @@ const initialGroupState = {
     gamePoint: 21,
     serveInterval: 5,
     lastSwitchPoint: 0
-  }
+  },
+  winner: null
 }
 
 function overlay(state = {
@@ -225,6 +228,8 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.groupTwo.ready = false;
       tGrp.groupOne.score = 0;
       tGrp.groupTwo.score = 0;
+      tGrp.groupOne.rawScore = 0;
+      tGrp.groupTwo.rawScore = 0;
       tGrp.groupOne.serving = false;
       tGrp.groupTwo.serving = false;
       tGrp.groupOne.up = false;
@@ -266,7 +271,7 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.selectingGroup = null;
       tGrp.selectingPlayer = null;
       tGrp.selectedIds =[];
-
+      tGrp.winner = null;
       return {
         ...tGrp
       }
@@ -295,9 +300,13 @@ function playerGroup( state = initialGroupState, action) {
       }
     case MODIFY_POINT:
       var tGrp = state;
+      var { gamePoint } = tGrp.game;
       var value = action.event == 'ADD' ? 1 : -1;
-      var score = tGrp[action.group].score + value;
-      tGrp[action.group].score = score > -1 ? score: 0;
+      var rawScore = tGrp[action.group].rawScore + value;
+      tGrp[action.group].rawScore = rawScore > -1 ? rawScore: 0;
+
+      tGrp[action.group].score = tGrp[action.group].rawScore > gamePoint ? gamePoint : tGrp[action.group].rawScore;
+
       var totalScore = tGrp.groupOne.score + tGrp.groupTwo.score;
 
       if (action.event == 'ADD') {
@@ -314,14 +323,54 @@ function playerGroup( state = initialGroupState, action) {
         }
       }
 
-      var { gamePoint } = tGrp.game;
+      //TODO: Please do a better job here, i get it you havnt slept in a while.
       var oneScore = tGrp.groupOne.score;
       var twoScore = tGrp.groupTwo.score;
+      var oneRawScore = tGrp.groupOne.rawScore;
+      var twoRawScore = tGrp.groupTwo.rawScore;
+
       var group = action.group;
 
-      if ((oneScore == gamePoint) || (twoScore == gamePoint)) {
-
+      if (oneScore == gamePoint - 1) {
+        tGrp.groupTwo.serving = true;
+        tGrp.groupOne.serving = false;
+      } else if (twoScore == gamePoint - 1) {
+        tGrp.groupOne.serving = true;
+        tGrp.groupTwo.serving = false;
       }
+
+      if (oneRawScore == twoRawScore) {
+        tGrp.groupOne.up = false;
+        tGrp.groupTwo.up = false;
+      }
+
+      if (oneRawScore == twoRawScore + 1 && oneRawScore >= gamePoint) {
+        tGrp.groupOne.up = true;
+        tGrp.groupTwo.up = false;
+        tGrp.groupOne.serving = false;
+        tGrp.groupTwo.serving = true;
+      }
+
+      if (twoRawScore == oneRawScore + 1 && twoRawScore >= gamePoint) {
+        tGrp.groupOne.up = false;
+        tGrp.groupTwo.up = true;
+        tGrp.groupOne.serving = true;
+        tGrp.groupTwo.serving = false;
+      }
+
+      if ((oneRawScore >= (twoRawScore + 2)) && oneRawScore >= gamePoint) {
+        tGrp.groupOne.up = false;
+        tGrp.groupTwo.up = false;
+        tGrp.winner = 'groupOne';
+      }
+
+      if ((twoRawScore >= (oneRawScore + 2)) && twoRawScore >= gamePoint) {
+        tGrp.groupOne.up = false;
+        tGrp.groupTwo.up = false;
+        tGrp.winner = 'groupTwo';
+      }
+
+
       return {
         ...tGrp
       }
