@@ -154,6 +154,7 @@ function playerGroup( state = initialGroupState, action) {
   switch (action.type) {
     case START_SELECTION:
       var tGrp = state;
+      console.log(action);
       tGrp.isSelecting = true;
       tGrp.groupOne.playerOne.selecting = false;
       tGrp.groupOne.playerTwo.selecting = false;

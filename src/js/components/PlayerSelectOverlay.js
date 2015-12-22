@@ -29,13 +29,23 @@ export default class PlayerSelectOverlay extends Component {
     resetGroups();
   }
   _handleKeyDown(e) {
-    var { playerGroup, playerList, highlightSelection } = this.props;
+    var { playerGroup, playerList, highlightSelection, joinGroup } = this.props;
+    var { highlightId, selectingPlayer, selectingGroup, isSelecting } = playerGroup;
+
     var key = e.which;
     var acceptKeys = [37, 38, 39, 40, 13]; //Left, Up, Right, Down, Enter
-    if (playerGroup.isSelecting) {
+    if (isSelecting) {
       if (acceptKeys.indexOf(key) > -1){
         if (key == 13) {
-          alert('go!');
+          var player = null;
+          for (var i = 0; i < _.size(playerList); i++) {
+            if (playerList[i].highlight) {
+              player = playerList[i];
+            }
+          }
+          var {id, name, standardPose, winningPose } = player;
+
+          joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
         } else {
           var currentSelectionId = playerGroup.highlightId,
               currentSelectIndex, selectionFound = false;
@@ -105,6 +115,7 @@ export default class PlayerSelectOverlay extends Component {
             size='2x'
             className='refresh-icon'
             onClick={this._resetGroups.bind(this)}
+            title="clear selections"
             name='refresh'/>
         </div>
         <div className="roster-container">
