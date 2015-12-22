@@ -10,17 +10,40 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    var {game, playerGroup, readyUp } = this.props;
+    var {playerGroup, toggleReady, hideOverlay, modifyPoint } = this.props;
     this.socket = io();
     this.socket.on('btnHold', function(side) {
-      if (game.active) {
+      if (playerGroup.game.active) {
         //Dock Point from side
+        modifyPoint(side, 'REMOVE');
       } else {
         if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
-          readyUp(side);
+          if (!playerGroup[side].ready) {
+            if (side == 'groupOne') {
+              if (playerGroup.groupTwo.ready) {
+                toggleReady(side, true);
+              } else{
+                toggleReady(side, false);
+              }
+            } else {
+              if (playerGroup.groupOne.ready) {
+                toggleReady(side, true);
+              } else{
+                toggleReady(side, false);
+              }
+            }
+          } else {
+            toggleReady(side, false);
+          }
         }
       }
     });
+
+    this.socket.on('btnDown', function(side) {
+      if (playerGroup.game.active) {
+        modifyPoint(side, 'ADD');
+      }
+    })
   }
   render() {
     return (

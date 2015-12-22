@@ -3,8 +3,14 @@ var pool = 'abcdefghijklmnopqrstuvwxyz';
 pool = pool + pool.toUpperCase() +'_0123456789';
 module.exports = {
   'dbFile':'pong.db',
-  'btnOnePin': 2,
-  'btnTwoPin': 3,
+  'btnOne': {
+    'pin': 2,
+    'holdtime': 1200
+  },
+  'btnTwo': {
+    'pin': 3,
+    'holdtime': 1200
+  },
   'overlayScreens': {
     'profiles': {
       'backgroundColor':'#00213b',

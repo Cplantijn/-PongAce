@@ -37,7 +37,6 @@ export default class PlayerGroup extends Component {
       'group-two': groupCls == 'group-two'
     });
 
-    console.log(group);
     var grpCls = classNames({
       'player-group': true,
       'ready': group.ready

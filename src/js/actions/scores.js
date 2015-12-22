@@ -14,6 +14,10 @@ export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION'
 export const JOIN_GROUP = 'JOIN_GROUP'
 export const RESET_GROUPS = 'RESET_GROUPS'
 export const READY_UP = 'READY_UP'
+export const START_GAME = 'START_GAME'
+export const END_GAME = 'END_GAME'
+export const MODIFY_POINT = 'MODIFY_POINT'
+
 
 const contentType = {
   'accept': 'application/json',
@@ -25,17 +29,47 @@ const imageContentType = {
 }
 var msgTimeout, msgShakeTimeout;
 
+export function startGame() {
+  return {
+    type: actions.START_GAME
+  }
+}
 export function endSelection() {
   return {
     type: actions.END_SELECTION
   }
 }
 
-export function readyUp(side) {
- return {
-   type: actions.READY_UP,
-   side: side
- }
+export function modifyPoint(group, event) {
+  return {
+    type: actions.MODIFY_POINT,
+    event: event,
+    group: group
+  }
+}
+
+export function endGame() {
+  return dispatch => {
+    clearTimeout(msgTimeout);
+    dispatch(showMessage('warning', 'This game has ended'));
+    dispatch(gameEnd());
+    dispatch(groupReset());
+    msgTimeout = setTimeout(function() {
+      dispatch(hideMessage());
+    }, 3000);
+  }
+}
+
+export function toggleReady(side, gameStart) {
+  return dispatch => {
+    dispatch(readyToggle(side));
+    if (gameStart) {
+      clearTimeout(msgTimeout);
+      dispatch(hideMessage());
+      dispatch(startGame());
+      dispatch(hideOverlay());
+    }
+  }
 }
 
 export function startSelection(group, player) {
@@ -73,13 +107,6 @@ export function highlightSelection(id) {
   return {
     type: actions.HIGHLIGHT_SELECTION,
     id: id
-  }
-}
-
-export function addPoint(index) {
-  return {
-    type: actions.ADD_POINT,
-    teamIndex: index
   }
 }
 
@@ -323,6 +350,19 @@ function selectionStart(group, player){
 function groupReset() {
   return {
     type: actions.RESET_GROUPS
+  }
+}
+
+function readyToggle(side) {
+  return {
+    type: actions.READY_UP,
+    side: side
+  }
+}
+
+function gameEnd() {
+  return {
+    type: actions.END_GAME
   }
 }
 

@@ -92,40 +92,39 @@ app.post('/update/player/picture', function(req, res) {
 board = new five.Board();
 board.on('ready', function() {
 
-  btnOne = new five.Button(config.btnOnePin);
+  btnOne = new five.Button(config.btnOne);
   btnOneDowned = false;
 
-  btnTwo = new five.Button(config.btnTwoPin);
+  btnTwo = new five.Button(config.btnTwo);
   btnTwoDowned = false;
 
   btnOne.on('down', function() {
     btnOneTimeout = setTimeout(function() {
       btnOneDowned = false;
     }, 333);
-    console.log('Button One pressed!');
+    io.emit('btnDown', 'groupOne')
     if (btnOneDowned) {
-      io.emit('btnHold', 'btnOne');
+      io.emit('btnDblDown', 'groupOne')
     }
     btnOneDowned = true;
+  });
+
+  btnOne.on('hold', function() {
+    io.emit('btnHold', 'groupOne');
   });
 
   btnTwo.on('down', function() {
     btnTwoTimeout = setTimeout(function() {
       btnTwoDowned = false;
     }, 333);
-    console.log('Button Two pressed!');
+    io.emit('btnDown', 'groupTwo')
     if (btnTwoDowned) {
+      io.emit('btnDblDown', 'groupTwo')
     }
     btnTwoDowned = true;
   });
 
-  btnOne.on('hold', function() {
-    console.log('btn 1 hold')
-    io.emit('btnHold', 'groupOne');
-  });
-
   btnTwo.on('hold', function() {
-    console.log('btn 2 hold')
     io.emit('btnHold', 'groupTwo');
   });
 

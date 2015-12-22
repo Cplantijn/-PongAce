@@ -1,36 +1,41 @@
 import React, { Component } from 'react'
 import classNames from 'classNames'
-
+import GameGroupContainer from './GameGroupContainer'
+import ServingBanner from './ServingBanner'
+import GameQuit from './GameQuit'
 
 export default class GameComponent extends Component {
   constructor(props) {
     super(props);
   }
-  componentDidMount() {
-    var {game} = this.props;
-
-  }
-  _startGame() {
+  _startSelection() {
     var { showOverlay, fetchPlayers } = this.props;
     fetchPlayers('','id ASC');
     showOverlay(4);
   }
-  _handleKeyPress(){
-    alert('hey');
-  }
   render() {
-    var {game} = this.props;
+    var {playerGroup, playerGroup, endGame} = this.props;
     var mainBody;
-    if (!game.active) {
+    var serving = playerGroup.groupOne.serving ? 'groupOne' : 'groupTwo';
+    if (playerGroup.game.active) {
+      mainBody = <div className="master-game-container">
+                  <ServingBanner side={serving}/>
+                  <GameQuit endGame={endGame}/>
+                  <GameGroupContainer
+                    group="groupOne"
+                    activeGroup={playerGroup.groupOne} />
+                  <GameGroupContainer
+                    group="groupTwo"
+                    activeGroup={playerGroup.groupTwo} />
+                </div>;
+    } else {
       mainBody = <div
                   className="no-game-banner-container"
-                  onClick={this._startGame.bind(this)}>
+                  onClick={this._startSelection.bind(this)}>
                     <h1>Play</h1>
                     <div className="logo"></div>
                     <h1>Pong</h1>
                  </div>
-    } else {
-      mainBody = <h1>"Game Here"</h1>;
     }
     return (
       <div className="main-game-content">

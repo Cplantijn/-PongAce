@@ -51,6 +51,98 @@ html, body {
       display: flex;
       flex-direction: row;
       justify-content: stretch;
+      .master-game-container {
+        flex: 1;
+        display: flex;
+        position: relative;
+        .quit-container {
+          position: absolute;
+          background: $white;
+          height: 6em;
+          width: 6em;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,-50%);
+          border-radius: 50%;
+          display:flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          &:hover {
+            color: $white;
+            background-color: $grey
+          }
+        }
+        .banner {
+          position: absolute;
+          top: 0;
+          color: $white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: $group_one_banner;
+          left: 0;
+          right: 50%;
+          height: 5em;
+          transition: 0.5s linear all;
+          &.group-two{
+            background: $group_two_banner;
+            right: 0;
+            left: 50%;
+          }
+          h2 {
+            font-family: $pier_bold;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+          }
+        }
+        .group-container{
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          .score-container{
+            flex: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .score {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              h1{
+                font-size: 20em;
+                color: $white;
+              }
+            }
+          }
+          .player-container{
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            .player {
+              flex: 1;
+              margin: 0 2em;
+              background-size: cover;
+              border: 0.5em solid $white;
+              border-radius: 50%;
+              min-height: 14em;
+              min-width: 14em;
+              max-width: 14em;
+              height: 14em;
+            }
+          }
+          &.group-one {
+            background: $main_color;
+          }
+          &.group-two {
+            background: $secondary_color;
+          }
+        }
+      }
       .no-game-banner-container{
         flex: 1;
         background: $secondary_color;
@@ -126,9 +218,6 @@ html, body {
             display: flex;
             justify-content: center;
             align-items: center;
-            .pulsing {
-              @include smallPulseSlow;
-            }
             h1 {
               font-family: $pier_bold;
               text-transform: uppercase;
@@ -166,7 +255,6 @@ html, body {
                 display: flex;
                 flex-direction: column-reverse;
                 cursor: pointer;
-                transition: 0.1s linear all;
                 .player-header{
                   text-align: center;
                   background: $dark;
@@ -329,10 +417,14 @@ html, body {
               }
               &.ready {
                 &::after{
+                  @include smallPulse;
                   content:'';
                   position: absolute;
                   top:0; right:0; bottom:0; left: 0;
-                  background: yellow;
+                  background: url('../img/ready.svg');
+                  background-position: center center;
+                  background-repeat: no-repeat;
+                  background-size: 80% 80%;
                 }
               }
             }
@@ -664,6 +756,7 @@ html, body {
       background-color: $dark;
       box-shadow: 0px 0px 10px $element_shadow;
       flex-direction: column;
+      overflow: hidden;
       .logo-container{
         text-align: center;
         display: flex;

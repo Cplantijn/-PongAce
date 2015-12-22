@@ -115,11 +115,7 @@ export default class PlayerSelectOverlay extends Component {
     }
 
     if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
-      messageCls = classNames({
-        'pulsing': true
-      });
-
-      message = 'Double tap your side\'s button to ready up';
+      message = 'Hold your side\'s button to ready up';
     }
     return (
       <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>

@@ -13,7 +13,10 @@ import  {
   HIGHLIGHT_SELECTION,
   JOIN_GROUP,
   RESET_GROUPS,
-  READY_UP
+  READY_UP,
+  START_GAME,
+  END_GAME,
+  MODIFY_POINT
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -37,7 +40,10 @@ const initialGroupState = {
         standardPose: null,
         winningPose: null
       },
-      ready: false
+      ready: false,
+      score: 0,
+      up: false,
+      serving: false
   },
   groupTwo: {
       playerOne:{
@@ -57,11 +63,20 @@ const initialGroupState = {
         standardPose: null,
         winningPose: null
       },
-      ready: false
+      ready: false,
+      score: 0,
+      up: false,
+      serving: false
   },
   isSelecting: false,
   highlightId: null,
-  selectedIds: []
+  selectedIds: [],
+  game: {
+    active: false,
+    gamePoint: 21,
+    serveInterval: 5,
+    lastSwitchPoint: 0
+  }
 }
 
 function overlay(state = {
@@ -144,16 +159,6 @@ function playerList(state = {}, action) {
   }
 }
 
-function game(state = {
-  active: false,
-  hasFinished: false
-}, action) {
-  switch (action.type) {
-    default:
-      return state
-  }
-}
-
 function playerGroup( state = initialGroupState, action) {
   switch (action.type) {
     case START_SELECTION:
@@ -167,11 +172,9 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.highlightId = null;
       tGrp.selectingGroup = action.group;
       tGrp.selectingPlayer = action.player;
-
       if (action.player == 'playerTwo') {
         tGrp[action.group][action.player].contracted = false;
       }
-
       return {
         ...tGrp
       }
@@ -212,7 +215,7 @@ function playerGroup( state = initialGroupState, action) {
             tGrp.selectedIds = tGrp.selectedIds.concat(group.playerTwo.id);
           }
         }
-      })
+      });
       return {
         ...tGrp
       }
@@ -220,6 +223,12 @@ function playerGroup( state = initialGroupState, action) {
       var tGrp = state;
       tGrp.groupOne.ready = false;
       tGrp.groupTwo.ready = false;
+      tGrp.groupOne.score = 0;
+      tGrp.groupTwo.score = 0;
+      tGrp.groupOne.serving = false;
+      tGrp.groupTwo.serving = false;
+      tGrp.groupOne.up = false;
+      tGrp.groupTwo.up = false;
 
       tGrp.groupOne.playerOne.active = false;
       tGrp.groupOne.playerOne.id = null;
@@ -257,12 +266,62 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.selectingGroup = null;
       tGrp.selectingPlayer = null;
       tGrp.selectedIds =[];
+
       return {
         ...tGrp
       }
     case READY_UP:
       var tGrp = state;
-      tGrp[action.side].ready = true;
+
+      if (!tGrp.groupOne.ready && !tGrp.groupTwo.ready) {
+        tGrp[action.side].serving = true;
+      }
+
+      tGrp[action.side].ready = !tGrp[action.side].ready;
+
+      if (tGrp.groupOne.ready && tGrp.groupTwo.ready) {
+        tGrp.game.active = true;
+      }
+
+      return {
+        ...tGrp
+      }
+    case END_GAME:
+      var tGrp = state;
+      tGrp.game.active = false;
+      tGrp.lastSwitchPoint = 0;
+      return {
+        ...tGrp
+      }
+    case MODIFY_POINT:
+      var tGrp = state;
+      var value = action.event == 'ADD' ? 1 : -1;
+      var score = tGrp[action.group].score + value;
+      tGrp[action.group].score = score > -1 ? score: 0;
+      var totalScore = tGrp.groupOne.score + tGrp.groupTwo.score;
+
+      if (action.event == 'ADD') {
+        if ((totalScore % tGrp.game.serveInterval == 0) && (totalScore == tGrp.game.lastSwitchPoint + tGrp.game.serveInterval)) {
+          tGrp.groupOne.serving = !tGrp.groupOne.serving;
+          tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
+          tGrp.game.lastSwitchPoint = totalScore;
+        }
+      } else {
+        if (totalScore == tGrp.game.lastSwitchPoint - 1) {
+          tGrp.groupOne.serving = !tGrp.groupOne.serving;
+          tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
+          tGrp.game.lastSwitchPoint = tGrp.game.lastSwitchPoint - tGrp.game.serveInterval;
+        }
+      }
+
+      var { gamePoint } = tGrp.game;
+      var oneScore = tGrp.groupOne.score;
+      var twoScore = tGrp.groupTwo.score;
+      var group = action.group;
+
+      if ((oneScore == gamePoint) || (twoScore == gamePoint)) {
+
+      }
       return {
         ...tGrp
       }
@@ -328,7 +387,6 @@ function userMessage(state = {
 
 const pongReducer = combineReducers({
   userMessage,
-  game,
   playerList,
   playerGroup,
   activePlayerDetail,
