@@ -112,7 +112,8 @@ exports.fetchPlayers = function(filter, sort, res) {
   var db = openConnection();
   db.serialize(function() {
     //Run a ? statement instead of string concatonation
-    var sql = "SELECT id, name, standard_pose_img_name, \
+    var sql = "SELECT id, name, standard_pose_img_name AS standardPose, \
+                      winning_pose_img_name AS winningPose, \
                       (solo_wins + doubles_wins) AS wins, \
                       (solo_losses + doubles_losses) as losses \
               FROM profile \

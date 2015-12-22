@@ -26,10 +26,10 @@ export default class PlayerDetail extends Component {
     if (_.size(activePlayerDetail) > 0) {
       var quote = activePlayerDetail.quote ? activePlayerDetail.quote : '';
       var standardPicStyle = {
-        backgroundImage: 'url("/player_img/'+ activePlayerDetail.standard_pose_img_name + '")'
+        backgroundImage: 'url("/player_img/'+ activePlayerDetail.standardPose + '")'
       }
       var winningPicStyle = {
-        backgroundImage: 'url("/player_img/'+ activePlayerDetail.winning_pose_img_name + '")'
+        backgroundImage: 'url("/player_img/'+ activePlayerDetail.winningPose + '")'
       }
       detail = <div className="player-content">
                 <div className="header"><h2>{activePlayerDetail.name}</h2></div>

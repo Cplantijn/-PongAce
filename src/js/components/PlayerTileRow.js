@@ -8,7 +8,8 @@ export default class PlayerTileRow extends Component {
     super(props);
   }
   render() {
-    var { players, highlightSelection, isSelecting, selectingGroup, selectingPlayer, playerGroup } = this.props;
+    var { players, highlightSelection, isSelecting, selectingGroup,
+          selectingPlayer, playerGroup, joinGroup } = this.props;
     var playerTiles = _.map(players, function(player, i) {
       return (
         <PlayerTileItem
@@ -18,6 +19,7 @@ export default class PlayerTileRow extends Component {
           selectingGroup={selectingGroup}
           selectingPlayer={selectingPlayer}
           player={player}
+          joinGroup={joinGroup}
           highlightSelection={highlightSelection}/>
       )
     })

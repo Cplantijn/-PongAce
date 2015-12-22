@@ -10,10 +10,55 @@ import  {
   SHOW_PLAYER_DETAIL,
   START_SELECTION,
   END_SELECTION,
-  HIGHLIGHT_SELECTION
+  HIGHLIGHT_SELECTION,
+  JOIN_GROUP,
+  RESET_GROUPS
 } from '../actions/scores'
 import _ from 'underscore'
 
+
+const initialGroupState = {
+  groupOne: {
+      playerOne:{
+        id: null,
+        active: false,
+        selecting: false,
+        name: null,
+        standardPose: null,
+        winningPose: null
+      },
+      playerTwo:{
+        id: null,
+        active: false,
+        selecting: false,
+        contracted: true,
+        name: null,
+        standardPose: null,
+        winningPose: null
+      }
+  },
+  groupTwo: {
+      playerOne:{
+        id: null,
+        active: false,
+        selecting: false,
+        name: null,
+        standardPose: null,
+        winningPose: null
+      },
+      playerTwo:{
+        id: null,
+        active: false,
+        selecting: false,
+        contracted: true,
+        name: null,
+        standardPose: null,
+        winningPose: null
+      }
+  },
+  isSelecting: false,
+  highlightId: null
+}
 
 function overlay(state = {
   isOpen: false,
@@ -105,77 +150,89 @@ function game(state = {
   }
 }
 
-function playerGroup( state =  {
-    groupOne: {
-        playerOne:{
-          id: null,
-          selecting: false,
-          active: false,
-          name: null,
-          standard_pose: null,
-          winning_pose: null
-        },
-        playerTwo:{
-          id: null,
-          selecting: false,
-          active: false,
-          name: null,
-          standard_pose: null,
-          winning_pose: null
-        }
-    },
-    groupTwo: {
-        playerOne:{
-          id: null,
-          active: false,
-          selecting: false,
-          name: null,
-          standard_pose: null,
-          winning_pose: null
-        },
-        playerTwo:{
-          id: null,
-          active: false,
-          selecting: false,
-          name: null,
-          standard_pose: null,
-          winning_pose: null
-        }
-    },
-    isSelecting: false,
-    highlightId: null
-  }, action) {
+function playerGroup( state = initialGroupState, action) {
   switch (action.type) {
     case START_SELECTION:
-      var tPong = state;
-      tPong.isSelecting = true;
-      tPong.groupOne.playerOne.selecting = false;
-      tPong.groupOne.playerTwo.selecting = false;
-      tPong.groupTwo.playerOne.selecting = false;
-      tPong.groupTwo.playerTwo.selecting = false;
-      tPong[action.group][action.player].selecting = true;
-      tPong.highlightId = null;
-      tPong.selectingGroup = action.group;
-      tPong.selectingPlayer = action.player;
+      var tGrp = state;
+      tGrp.isSelecting = true;
+      tGrp.groupOne.playerOne.selecting = false;
+      tGrp.groupOne.playerTwo.selecting = false;
+      tGrp.groupTwo.playerOne.selecting = false;
+      tGrp.groupTwo.playerTwo.selecting = false;
+      tGrp[action.group][action.player].selecting = true;
+      tGrp.highlightId = null;
+      tGrp.selectingGroup = action.group;
+      tGrp.selectingPlayer = action.player;
+
+      if (action.player == 'playerTwo') {
+        tGrp[action.group][action.player].contracted = false;
+      }
+
       return {
-        ...tPong
+        ...tGrp
       }
     case END_SELECTION:
-      var tPong = state;
-      tPong.isSelecting = false;
-      tPong.groupOne.playerOne.selecting = false;
-      tPong.groupOne.playerTwo.selecting = false;
-      tPong.groupTwo.playerOne.selecting = false;
-      tPong.groupTwo.playerTwo.selecting = false;
-      tPong.highlightId = null;
+      var tGrp = state;
+      tGrp.isSelecting = false;
+      tGrp.groupOne.playerOne.selecting = false;
+      tGrp.groupOne.playerTwo.selecting = false;
+      tGrp.groupTwo.playerOne.selecting = false;
+      tGrp.groupTwo.playerTwo.selecting = false;
+      tGrp.highlightId = null;
+      tGrp.selectingGroup = null;
+      tGrp.slectingPlayer = null;
       return {
-        ...tPong
+        ...tGrp
       }
     case HIGHLIGHT_SELECTION:
-      var tPong = state;
-      tPong.highlightId = action.id;
+      var tGrp = state;
+      tGrp.highlightId = action.id;
       return {
-        ...tPong
+        ...tGrp
+      }
+    case JOIN_GROUP:
+      var tGrp = state;
+      tGrp[action.group][action.player].id = action.id;
+      tGrp[action.group][action.player].name = action.name;
+      tGrp[action.group][action.player].standardPose = action.standardPose;
+      tGrp[action.group][action.player].winningPose = action.winningPose;
+      tGrp[action.group][action.player].selecting = false;
+      tGrp[action.group][action.player].active = true;
+      return {
+        ...tGrp
+      }
+    case RESET_GROUPS:
+      var tGrp = state;
+      tGrp.groupOne.playerOne.active = false;
+      tGrp.groupOne.playerOne.id = null;
+      tGrp.groupOne.playerOne.name = null;
+      tGrp.groupOne.playerOne.standardPose = null;
+      tGrp.groupOne.playerOne.winningPose = null;
+      tGrp.groupOne.playerOne.selecting = false;
+
+      tGrp.groupOne.playerTwo.active = false;
+      tGrp.groupOne.playerTwo.id = null;
+      tGrp.groupOne.playerTwo.name = null;
+      tGrp.groupOne.playerTwo.standardPose = null;
+      tGrp.groupOne.playerTwo.winningPose = null;
+      tGrp.groupOne.playerTwo.selecting = false;
+
+      tGrp.groupTwo.playerOne.active = false;
+      tGrp.groupTwo.playerOne.id = null;
+      tGrp.groupTwo.playerOne.name = null;
+      tGrp.groupTwo.playerOne.standardPose = null;
+      tGrp.groupTwo.playerOne.winningPose = null;
+      tGrp.groupTwo.playerOne.selecting = false;
+
+      tGrp.groupTwo.playerTwo.active = false;
+      tGrp.groupTwo.playerTwo.id = null;
+      tGrp.groupTwo.playerTwo.name = null;
+      tGrp.groupTwo.playerTwo.standardPose = null;
+      tGrp.groupTwo.playerTwo.winningPose = null;
+      tGrp.groupTwo.playerTwo.selecting = false;
+
+      return {
+        ...tGrp
       }
     default:
       return state

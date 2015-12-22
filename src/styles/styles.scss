@@ -121,6 +121,7 @@ html, body {
           flex: 1;
           flex-direction: column;
           .header-container {
+            position: relative;
             flex: 1;
             display: flex;
             justify-content: center;
@@ -130,6 +131,16 @@ html, body {
               text-transform: uppercase;
               color: $white;
               letter-spacing: 0.08em;
+            }
+            .refresh-icon {
+              color: $white;
+              cursor: pointer;
+              position: absolute;
+              top: 0.6em;
+              right: 1em;
+              &:hover{
+                color: $main_color;
+              }
             }
           }
           .roster-container{
@@ -164,10 +175,10 @@ html, body {
                   text-overflow: ellipsis;
                 }
                 &.highlight {
-                  border: 0.25em solid $main_color;
+                  border: 0.5em solid $main_color;
                   box-shadow: 0px 0px 1em $main_color;
                   &.group-two{
-                    border: 0.25em solid $secondary_color;
+                    border: 0.5em solid $secondary_color;
                     box-shadow: 0px 0px 1em $secondary_color;
                   }
                 }
@@ -183,74 +194,133 @@ html, body {
               flex-direction: row;
               align-items: center;
               justify-content: center;
-              .player {
+              .player-container {
+                flex-direction: column;
                 display: flex;
                 flex: 1;
                 justify-content: center;
                 align-items: center;
-                position:relative;
-                border: 5px dashed $element_shadow;
-                border-radius: 50%;
                 color: #B5B5B5;
-                max-width: 14em;
-                height: 14em;
-                max-height: 14em;
-                flex: 1;
-                display: flex;
-                transition: 0.3s linear all;
-                &.group-two {
-                  .empty {
-                    background: url('../img/pong_add_two.svg');
-                    background-repeat: no-repeat;
-                    background-position: center center;
-                  }
-                }
-                &.player-two {
-                  margin-left: 4em;
-                  &.contracted {
-                    margin-left: 2em;
-                    border: 2px dashed $dark;
-                    max-width: 4em;
-                    max-height: 4em;
-                  }
-                }
-                .empty{
-                  background: url('../img/pong_add_one.svg');
-                  background-repeat: no-repeat;
-                  background-position: center center;
-                  flex: 1;
+                overflow:hidden;
+                .player {
                   display: flex;
-                  justify-content: center;
+                  overflow: hidden;
                   align-items: center;
-                  height: 60%;
-                }
-                &:hover{
-                  cursor: pointer;
-                  &::after{
-                    background: url('../img/pong_add_hover.svg');
+                  justify-content: center;
+                  position: relative;
+                  min-width: 12em;
+                  height: 12em;
+                  min-height: 12em;
+                  border: 5px dashed $element_shadow;
+                  border-radius: 50%;
+                  flex: 1;
+                  transition: 0.2s linear all;
+                  &.group-two {
+                    .empty {
+                      background: url('../img/pong_add_two.svg');
+                      background-repeat: no-repeat;
+                      background-position: center center;
+                    }
+                  }
+                  &.player-two {
+                    margin-left: 8em;
+                    &.contracted {
+                      border: 2px dashed $dark;
+                      min-width: 4em;
+                      min-height: 4em;
+                      margin-left: 6.5em;
+                      height: 0em;
+                    }
+                    &.group-two{
+                      margin-left: 0em;
+                      &.contracted{
+                        margin-left: 0;
+                      }
+                    }
+                  }
+                  .empty{
+                    background: url('../img/pong_add_one.svg');
                     background-repeat: no-repeat;
                     background-position: center center;
-                    background-size: 60% auto;
+                    flex: 1;
                     display: flex;
-                    align-items:center;
                     justify-content: center;
-                    content: "";
-                    position:absolute;
-                    top: 0; right: 0; bottom: 0; left: 0;
-                    background-color:$light_grey;
-                    opacity: 0.4;
-                    border-radius: 50%;
+                    align-items: center;
+                    height: 60%;
+                  }
+                  .placed{
+                    flex: 1;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    display: flex;
+                    position: relative;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  &:hover{
+                    cursor: pointer;
+                    &::after{
+                      background: url('../img/pong_add_hover.svg');
+                      background-repeat: no-repeat;
+                      background-position: center center;
+                      background-size: 60% auto;
+                      display: flex;
+                      align-items:center;
+                      justify-content: center;
+                      content: "";
+                      position:absolute;
+                      top: 0; right: 0; bottom: 0; left: 0;
+                      background-color:$light_grey;
+                      opacity: 0.4;
+                      border-radius: 50%;
+                    }
+                  }
+                  &.selecting {
+                    @include smallPulse;
+                    border-color:$main_color;
+                    &.group-two {
+                      border-color:$secondary_color;
+                    }
                   }
                 }
                 &.hidden{
                   display: none;
                 }
-                &.selecting {
-                  @include smallPulse;
-                  border-color:$main_color;
-                  &.group-two {
-                    border-color:$secondary_color;
-                  }
+                &.moved-right {
+                  align-items: flex-end;
+                  justify-content: center;
+                }
+                &.moved-left {
+                  align-items: flex-start;
+                  justify-content: center;
+                }
+              }
+              .player-title{
+                flex: 1;
+                font-family: $pier_bold;
+                min-width: 12em;
+                display: flex;
+                border-radius: 0.5em;
+                background: black;
+                min-height: 2em;
+                margin-left: 8em;
+                color: $white;
+                justify-content: center;
+                align-items: center;
+                margin-top: 0.5em;
+                &.group-one{
+                  background: $main_color;
+                }
+                &.group-two{
+                  margin-left: 0;
+                  background: $secondary_color;
+                }
+                span {
+                  font-size: 1.1em;
+                  letter-spacing: 0.05em;
+                  flex: 1;
+                  display: block;
+                  text-align: center;
                 }
               }
             }

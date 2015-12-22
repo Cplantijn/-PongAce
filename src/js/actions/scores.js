@@ -11,6 +11,8 @@ export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL'
 export const START_SELECTION = 'START_SELECTION'
 export const END_SELECTION = 'END_SELECTION'
 export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION'
+export const JOIN_GROUP = 'JOIN_GROUP'
+export const RESET_GROUPS = 'RESET_GROUPS'
 
 const contentType = {
   'accept': 'application/json',
@@ -30,12 +32,18 @@ export function endSelection() {
 export function startSelection(group, player) {
   var msgType = group == 'groupOne' ? 'group-one': 'group-two';
   return dispatch => {
+      clearTimeout(msgTimeout);
       dispatch(hideMessage());
       dispatch(showMessage(msgType, 'SELECT A PLAYER'));
       dispatch(selectionStart(group, player));
     }
 }
 
+export function resetGroups() {
+  return {
+    type: actions.RESET_GROUPS
+  }
+}
 export function hideMessage(type, message) {
   return {
     type: actions.HIDE_MESSAGE
@@ -56,12 +64,17 @@ export function addPoint(index) {
   }
 }
 
-export function addTeam(index, name) {
-  return {
-    type: actions.ADD_TEAM,
-    cardIndex: index,
-    name: name
-  }
+export function joinGroup(group, player, id, name, standardPose, winningPose) {
+  var msgType = group == 'groupOne' ? 'group-one': 'group-two';
+  return dispatch => {
+      clearTimeout(msgTimeout);
+      dispatch(playerJoinGroup(group, player, id, name, standardPose, winningPose));
+      dispatch(showMessage(msgType, 'Picked ' + name + '!'));
+      dispatch(endSelection());
+      msgTimeout = setTimeout(function(){
+        dispatch(hideMessage());
+      }, 3000)
+    }
 }
 
 export function showOverlay(overlayIndex) {
@@ -70,6 +83,7 @@ export function showOverlay(overlayIndex) {
     overlayIndex:overlayIndex
   }
 }
+
 
 export function hideOverlay() {
   return {
@@ -284,5 +298,17 @@ function selectionStart(group, player){
     type: actions.START_SELECTION,
     group: group,
     player: player,
+  }
+}
+
+function playerJoinGroup(group, player, id, name, standardPose, winningPose) {
+  return {
+    type: actions.JOIN_GROUP,
+    group: group,
+    player: player,
+    id: id,
+    name: name,
+    standardPose: standardPose,
+    winningPose: winningPose
   }
 }

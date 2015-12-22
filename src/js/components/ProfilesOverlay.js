@@ -58,7 +58,7 @@ export default class ProfilesOverlay extends Component {
             active={player.id == activeId}
             placement={placement}
             fetchPlayerDetails={fetchPlayerDetails}
-            playerImg={player.standard_pose_img_name}
+            playerImg={player.standardPose}
             playerName={playerName}
             wins={player.wins}
             losses={player.losses}/>

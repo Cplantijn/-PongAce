@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PlayerTileRow from './PlayerTileRow'
 import classNames from 'classNames'
 import _ from 'underscore'
-import {Howl, Howler} from 'howler'
+import { Howl, Howler } from 'howler'
+import FontAwesome from 'react-fontawesome'
 import PlayerGroup from './PlayerGroup'
 
 export default class PlayerSelectOverlay extends Component {
@@ -22,6 +23,10 @@ export default class PlayerSelectOverlay extends Component {
     endSelection();
     //this.howler.stop();
     document.removeEventListener('keydown', this._handleKeyDown.bind(this));
+  }
+  _resetGroups() {
+    var { resetGroups } = this.props;
+    resetGroups();
   }
   _handleKeyDown(e) {
     var { playerGroup, playerList, highlightSelection } = this.props;
@@ -66,7 +71,8 @@ export default class PlayerSelectOverlay extends Component {
     }
   }
   render() {
-    var { startSelection, playerList, playerGroup, highlightSelection, playerGroup, selectingGroup, selectingPlayer } = this.props;
+    var { startSelection, playerList, playerGroup, highlightSelection,
+          playerGroup, selectingGroup, selectingPlayer, joinGroup } = this.props;
     var playerRows = null, playerContainer = null, row = 0;
 
 
@@ -83,6 +89,7 @@ export default class PlayerSelectOverlay extends Component {
             key={j}
             players={playerRow}
             playerGroup={playerGroup}
+            joinGroup={joinGroup}
             isSelecting={playerGroup.isSelecting}
             selectingGroup={playerGroup.selectingGroup}
             selectingPlayer={playerGroup.selectingPlayer}
@@ -92,7 +99,14 @@ export default class PlayerSelectOverlay extends Component {
     }
     return (
       <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>
-        <div className="header-container"><h1>Choose your player</h1></div>
+        <div className="header-container">
+          <h1>Choose your player</h1>
+          <FontAwesome
+            size='2x'
+            className='refresh-icon'
+            onClick={this._resetGroups.bind(this)}
+            name='refresh'/>
+        </div>
         <div className="roster-container">
           <div className="tile-container">
             {playerRows}

@@ -13,15 +13,17 @@ export default class PlayerTileItem extends Component {
     }
   }
   _makeSelection() {
-    var { playerGroup, selectingGroup, selectingPlayer } = this.props;
+    var { player, joinGroup, playerGroup, selectingGroup, selectingPlayer, joinGroup } = this.props;
+    var { id, name, standardPose, winningPose } = player;
+    
     if (playerGroup.isSelecting) {
-      console.log(selectingGroup, selectingPlayer);
+      joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
     }
   }
   render() {
     var { playerGroup, player, selectingGroup } = this.props;
     var style = {
-      backgroundImage: 'url("/player_img/'+ player.standard_pose_img_name + '")'
+      backgroundImage: 'url("/player_img/'+ player.standardPose + '")'
     }
     var cls = classNames({
       'player-tile': true,
