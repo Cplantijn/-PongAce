@@ -1,5 +1,6 @@
 var actions = exports = module.exports
 import { polyfill } from 'es6-promise'
+import _ from 'underscore'
 export const SHOW_OVERLAY = 'SHOW_OVERLAY'
 export const HIDE_OVERLAY = 'HIDE_OVERLAY'
 export const SHOW_MESSAGE = 'SHOW_MESSAGE'
@@ -41,10 +42,14 @@ export function endSelection() {
 }
 
 export function modifyPoint(group, event) {
-  return {
-    type: actions.MODIFY_POINT,
-    event: event,
-    group: group
+  return (dispatch, getState) => {
+    dispatch(pointModify(group, event));
+    const { playerGroup } = getState();
+    if (!playerGroup.game.active) {
+      dispatch(gameEnd());
+      dispatch(saveStats(playerGroup));
+      dispatch(showMessage('info','HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
+    }
   }
 }
 
@@ -291,6 +296,7 @@ export function fetchPlayers(filter, sort) {
     .then(response => response.json())
     .then(function(json) {
       if (json.errno) {
+        console.log(json);
         dispatch(showMessage('danger', 'Something\'s up with the database. Check it out bruh.'))
       } else {
         dispatch(showPlayerList(json));
@@ -302,6 +308,47 @@ export function fetchPlayers(filter, sort) {
     msgShakeTimeout = setTimeout(function() {
       dispatch(removeMsgShake())
     }, 1000);
+  }
+}
+
+function saveStats(playerGroup){
+  var { groupOne, groupTwo, winner } = playerGroup;
+  var loser = winner == 'groupOne' ? 'groupTwo': 'groupOne';
+  var gameType = 'singles';
+  var winnerIds = [];
+  var loserIds = [];
+  if (groupOne.playerOne.active && groupOne.playerTwo.active ||
+      groupTwo.playerOne.active && groupTwo.playerTwo.active) {
+        gameType = 'doubles';
+      }
+  //Get Winner Ids
+  _.each(playerGroup[winner], function(player, key) {
+    if (key == 'playerOne' || key == 'playerTwo') {
+        if (player.active) {
+          winnerIds.push(player.id);
+        }
+    }
+  });
+  //Get Loser Ids
+  _.each(playerGroup[loser], function(player, key) {
+    if (key == 'playerOne' || key == 'playerTwo') {
+      if (player.active) {
+        loserIds.push(player.id);
+      }
+    }
+  });
+  return dispatch => {
+    return fetch('/save/winloss', {
+            method: 'POST',
+            headers: contentType,
+            body: JSON.stringify({
+              'winningIds': winnerIds.join(','),
+              'losingIds': loserIds.join(','),
+              'gameType': gameType
+            })
+          })
+          .then(response => response.json())
+          .then(function(json) {console.log(json)})
   }
 }
 
@@ -365,6 +412,16 @@ function gameEnd() {
     type: actions.END_GAME
   }
 }
+
+
+function pointModify(group, event) {
+  return {
+    type: actions.MODIFY_POINT,
+    event: event,
+    group: group
+  }
+}
+
 
 function playerJoinGroup(group, player, id, name, standardPose, winningPose) {
   return {

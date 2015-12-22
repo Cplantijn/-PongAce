@@ -75,6 +75,7 @@ const initialGroupState = {
   selectedIds: [],
   game: {
     active: false,
+    ended: false,
     gamePoint: 21,
     serveInterval: 5,
     lastSwitchPoint: 0
@@ -268,6 +269,8 @@ function playerGroup( state = initialGroupState, action) {
 
 
       tGrp.isSelecting = false;
+      tGrp.game.active = false;
+      tGrp.game.ended = false;
       tGrp.selectingGroup = null;
       tGrp.selectingPlayer = null;
       tGrp.selectedIds =[];
@@ -291,9 +294,24 @@ function playerGroup( state = initialGroupState, action) {
       return {
         ...tGrp
       }
+    case START_GAME:
+      var tGrp = state;
+      tGrp.game.active = true;
+      tGrp.game.ended = false;
+      tGrp.lastSwitchPoint = 0;
+      tGrp.winner = null;
+      tGrp.groupOne.score = 0;
+      tGrp.groupTwo.score = 0;
+      tGrp.groupOne.rawScore = 0;
+      tGrp.groupTwo.rawScore = 0;
+
+      return {
+        ...tGrp
+      }
     case END_GAME:
       var tGrp = state;
       tGrp.game.active = false;
+      tGrp.game.ended = true;
       tGrp.lastSwitchPoint = 0;
       return {
         ...tGrp
@@ -362,14 +380,15 @@ function playerGroup( state = initialGroupState, action) {
         tGrp.groupOne.up = false;
         tGrp.groupTwo.up = false;
         tGrp.winner = 'groupOne';
+        tGrp.game.active = false;
       }
 
       if ((twoRawScore >= (oneRawScore + 2)) && twoRawScore >= gamePoint) {
         tGrp.groupOne.up = false;
         tGrp.groupTwo.up = false;
         tGrp.winner = 'groupTwo';
+        tGrp.game.active = false;
       }
-
 
       return {
         ...tGrp

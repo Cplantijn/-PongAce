@@ -5,7 +5,7 @@ module.exports = {
   'dbFile':'pong.db',
   'btnOne': {
     'pin': 2,
-    'holdtime': 1200
+    'holdtime': 800
   },
   'btnTwo': {
     'pin': 3,

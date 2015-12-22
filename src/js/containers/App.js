@@ -10,11 +10,29 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    var {playerGroup, toggleReady, hideOverlay, modifyPoint } = this.props;
+    var {playerGroup, toggleReady, hideOverlay, modifyPoint, resetGroups } = this.props;
     this.socket = io();
     this.socket.on('btnHold', function(side) {
       if (playerGroup.game.active) {
         modifyPoint(side, 'REMOVE');
+      } else if (!playerGroup.game.active && playerGroup.game.ended) {
+        if (!playerGroup[side].ready) {
+          if (side == 'groupOne') {
+            if (playerGroup.groupTwo.ready) {
+              toggleReady(side, true);
+            } else{
+              toggleReady(side, false);
+            }
+          } else {
+            if (playerGroup.groupOne.ready) {
+              toggleReady(side, true);
+            } else{
+              toggleReady(side, false);
+            }
+          }
+        } else {
+          toggleReady(side, false);
+        }
       } else {
         if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
           if (!playerGroup[side].ready) {
@@ -37,29 +55,11 @@ class App extends Component {
         }
       }
     });
-    window.addEventListener('keydown', function(e) {
-      if (e.which == 49) {
-        modifyPoint('groupOne', 'ADD');
-      }else if (e.which == 50) {
-        modifyPoint('groupTwo', 'ADD');
-      }else if (e.which == 189) {
-        if (playerGroup.game.active) {
-          modifyPoint('groupOne', 'REMOVE');
-        }
-        if (playerGroup.groupTwo.ready) {
-          toggleReady('groupOne', true);
-        } else{
-          toggleReady('groupOne', false);
-        }
-      }else if (e.which == 187) {
-        if (playerGroup.game.active) {
-          modifyPoint('groupTwo', 'REMOVE');
-        }
-        if (playerGroup.groupOne.ready) {
-          toggleReady('groupTwo', true);
-        } else{
-          toggleReady('groupTwo', false);
-        }
+    this.socket.on('btnDblDown', function(side) {
+      console.log('registered');
+      if (!playerGroup.game.active && playerGroup.game.ended) {
+        console.log('reset');
+        resetGroups();
       }
     });
     this.socket.on('btnDown', function(side) {
@@ -68,10 +68,35 @@ class App extends Component {
       }
     });
 
+    // window.addEventListener('keydown', function(e) {
+    //   if (e.which == 49) {
+    //     modifyPoint('groupOne', 'ADD');
+    //   }else if (e.which == 50) {
+    //     modifyPoint('groupTwo', 'ADD');
+    //   }else if (e.which == 189) {
+    //     if (playerGroup.game.active) {
+    //       modifyPoint('groupOne', 'REMOVE');
+    //     }
+    //     if (playerGroup.groupTwo.ready) {
+    //       toggleReady('groupOne', true);
+    //     } else{
+    //       toggleReady('groupOne', false);
+    //     }
+    //   }else if (e.which == 187) {
+    //     if (playerGroup.game.active) {
+    //       modifyPoint('groupTwo', 'REMOVE');
+    //     }
+    //     if (playerGroup.groupOne.ready) {
+    //       toggleReady('groupTwo', true);
+    //     } else{
+    //       toggleReady('groupTwo', false);
+    //     }
+    //   }
+    // });
     //Testing override
-    document.addEventListener('keydown', function(e) {
-      console.log(e)
-    })
+    // document.addEventListener('keydown', function(e) {
+    //   console.log(e)
+    // })
   }
   render() {
     return (

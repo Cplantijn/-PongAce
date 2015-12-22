@@ -19,7 +19,7 @@ export default class MainComponent extends Component {
     var {playerGroup} = this.props;
     var cls = classNames({
       "game-component-container": true,
-      "no-game": !playerGroup.game.active
+      "no-game": !playerGroup.game.active && !playerGroup.game.ended
     });
     return (
       <div className="main-component container-fluid">

@@ -45,6 +45,10 @@ app.post('/update/player/quote', function(req, res) {
   db.updatePlayerQuote(req.body.id, req.body.quote, res);
 });
 
+app.post('/save/winloss', function (req, res) {
+  db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
+})
+
 app.post('/update/player/picture', function(req, res) {
   var form = new formidable.IncomingForm();
   var playerId, picType;
@@ -101,10 +105,10 @@ board.on('ready', function() {
   btnOne.on('down', function() {
     btnOneTimeout = setTimeout(function() {
       btnOneDowned = false;
-    }, 333);
-    io.emit('btnDown', 'groupOne')
+    }, 500);
+    io.emit('btnDown', 'groupOne');
     if (btnOneDowned) {
-      io.emit('btnDblDown', 'groupOne')
+      io.emit('btnDblDown', 'groupOne');
     }
     btnOneDowned = true;
   });
@@ -116,10 +120,10 @@ board.on('ready', function() {
   btnTwo.on('down', function() {
     btnTwoTimeout = setTimeout(function() {
       btnTwoDowned = false;
-    }, 333);
-    io.emit('btnDown', 'groupTwo')
+    }, 500);
+    io.emit('btnDown', 'groupTwo');
     if (btnTwoDowned) {
-      io.emit('btnDblDown', 'groupTwo')
+      io.emit('btnDblDown', 'groupTwo');
     }
     btnTwoDowned = true;
   });

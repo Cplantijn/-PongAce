@@ -134,6 +134,23 @@ html, body {
           }
           .loser-container{
             flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .losing-player{
+              margin: 0 1em;
+              min-width: 8em;
+              min-height: 8em;
+              height: 8em;
+              background-size: cover;
+              background-repeat: no-repeat;
+              filter: grayscale(100%) contrast(110%);
+              -webkit-filter: grayscale(100%) contrast(110%);
+              opacity: 0.9;
+              background-position: center center;
+              border-radius: 50%;
+              border: 0.5em solid #fff;
+            }
           }
           &.open{
             display: flex;
@@ -189,7 +206,7 @@ html, body {
           display: flex;
           flex-direction: column;
           .score-container{
-            flex: 2;
+            flex: 3;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -210,7 +227,7 @@ html, body {
             }
           }
           .player-container{
-            flex: 1;
+            flex: 2;
             display: flex;
             justify-content: center;
             align-items: flex-start;

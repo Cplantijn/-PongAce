@@ -18,7 +18,7 @@ export default class GameComponent extends Component {
     var {playerGroup, playerGroup, endGame} = this.props;
     var mainBody;
     var serving = playerGroup.groupOne.serving ? 'groupOne' : 'groupTwo';
-    if (playerGroup.game.active) {
+    if (playerGroup.game.active || playerGroup.game.ended) {
       mainBody = <div className="master-game-container">
                   <WinnerPopUp playerGroup={playerGroup}/>
                   <ServingBanner side={serving}/>

@@ -20,6 +20,8 @@ export default class WinnerPopUp extends Component {
     });
 
     if (playerGroup.winner) {
+      var winKey = -1;
+      var loseKey = -1;
       var winningMessage='';
       winnerGroup = _.map(playerGroup[winningKey], function(el, key){
         if (key == 'playerOne' || key == 'playerTwo') {
@@ -32,8 +34,29 @@ export default class WinnerPopUp extends Component {
             } else {
               winningMessage+= ' & ' + el.name;
             }
+            winKey++;
             return (
-              <div className="winning-player" style={style} />
+              <div
+                key={winKey}
+                className="winning-player"
+                style={style} />
+            )
+          }
+        }
+      });
+
+      loserGroup = _.map(playerGroup[losingKey], function(el, key){
+        if (key == 'playerOne' || key == 'playerTwo') {
+          if (el.active) {
+            var style = {
+              backgroundImage: 'url("/player_img/'+ el.standardPose + '")'
+            }
+            loseKey++
+            return (
+              <div
+                key={loseKey}
+                className="losing-player"
+                style={style} />
             )
           }
         }
@@ -68,12 +91,14 @@ export default class WinnerPopUp extends Component {
           <div className="winning-score">
             {winningScore}
           </div>
-          <div className="score-padding">-</div>
+          <div className="score-padding">Final Score</div>
           <div className="losing-score">
             {losingScore}
           </div>
         </div>
-        <div className="loser-container" />
+        <div className="loser-container">
+          {loserGroup}
+        </div>
       </div>
     )
   }

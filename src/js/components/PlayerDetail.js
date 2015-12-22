@@ -77,19 +77,19 @@ export default class PlayerDetail extends Component {
                <div className="player-history">
                <div className="score">
                 <div className="score-title">SOLO <br /> WINS</div>
-                <h2 className="score-value">{activePlayerDetail.solo_wins}</h2>
+                <h2 className="score-value">{activePlayerDetail.singlesWins}</h2>
                </div>
                <div className="score">
                 <div className="score-title">SOLO <br /> LOSSES</div>
-                <h2 className="score-value">{activePlayerDetail.solo_losses}</h2>
+                <h2 className="score-value">{activePlayerDetail.singlesLosses}</h2>
                </div>
                <div className="score">
                 <div className="score-title">DOUBLES <br /> WINS</div>
-                <h2 className="score-value">{activePlayerDetail.doubles_wins}</h2>
+                <h2 className="score-value">{activePlayerDetail.doublesWins}</h2>
                </div>
                <div className="score">
                 <div className="score-title">DOUBLES <br /> LOSSES</div>
-                <h2 className="score-value">{activePlayerDetail.doubles_losses}</h2>
+                <h2 className="score-value">{activePlayerDetail.doublesLosses}</h2>
                </div>
                </div>
               </div>
