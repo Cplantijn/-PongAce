@@ -12,7 +12,8 @@ import  {
   END_SELECTION,
   HIGHLIGHT_SELECTION,
   JOIN_GROUP,
-  RESET_GROUPS
+  RESET_GROUPS,
+  READY_UP
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -35,7 +36,8 @@ const initialGroupState = {
         name: null,
         standardPose: null,
         winningPose: null
-      }
+      },
+      ready: false
   },
   groupTwo: {
       playerOne:{
@@ -54,10 +56,12 @@ const initialGroupState = {
         name: null,
         standardPose: null,
         winningPose: null
-      }
+      },
+      ready: false
   },
   isSelecting: false,
-  highlightId: null
+  highlightId: null,
+  selectedIds: []
 }
 
 function overlay(state = {
@@ -106,9 +110,9 @@ function playerList(state = {}, action) {
       for (var i = 0; i < _.size(tList); i++) {
         tList[i].highlight = false;
       }
-      for (var i = 0; i < _.size(tList) && !hightlightFound; i++) {
-        if (tList[i].selected == false) {
-          tList[i].highlight = true;
+      for (var j = 0; j < _.size(tList) && !hightlightFound; j++) {
+        if (tList[j].selected == false) {
+          tList[j].highlight = true;
           hightlightFound = true;
         }
       }
@@ -154,7 +158,6 @@ function playerGroup( state = initialGroupState, action) {
   switch (action.type) {
     case START_SELECTION:
       var tGrp = state;
-      console.log(action);
       tGrp.isSelecting = true;
       tGrp.groupOne.playerOne.selecting = false;
       tGrp.groupOne.playerTwo.selecting = false;
@@ -181,7 +184,7 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.groupTwo.playerTwo.selecting = false;
       tGrp.highlightId = null;
       tGrp.selectingGroup = null;
-      tGrp.slectingPlayer = null;
+      tGrp.selectingPlayer = null;
       return {
         ...tGrp
       }
@@ -193,17 +196,31 @@ function playerGroup( state = initialGroupState, action) {
       }
     case JOIN_GROUP:
       var tGrp = state;
+      tGrp.selectedIds = [];
       tGrp[action.group][action.player].id = action.id;
       tGrp[action.group][action.player].name = action.name;
       tGrp[action.group][action.player].standardPose = action.standardPose;
       tGrp[action.group][action.player].winningPose = action.winningPose;
       tGrp[action.group][action.player].selecting = false;
       tGrp[action.group][action.player].active = true;
+      _.each(tGrp, function(group, key) {
+        if (key == 'groupOne' || key == 'groupTwo') {
+          if (group.playerOne.id) {
+            tGrp.selectedIds = tGrp.selectedIds.concat(group.playerOne.id);
+          }
+          if (group.playerTwo.id) {
+            tGrp.selectedIds = tGrp.selectedIds.concat(group.playerTwo.id);
+          }
+        }
+      })
       return {
         ...tGrp
       }
     case RESET_GROUPS:
       var tGrp = state;
+      tGrp.groupOne.ready = false;
+      tGrp.groupTwo.ready = false;
+
       tGrp.groupOne.playerOne.active = false;
       tGrp.groupOne.playerOne.id = null;
       tGrp.groupOne.playerOne.name = null;
@@ -217,6 +234,8 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.groupOne.playerTwo.standardPose = null;
       tGrp.groupOne.playerTwo.winningPose = null;
       tGrp.groupOne.playerTwo.selecting = false;
+      tGrp.groupOne.playerTwo.contracted = true;
+
 
       tGrp.groupTwo.playerOne.active = false;
       tGrp.groupTwo.playerOne.id = null;
@@ -231,7 +250,19 @@ function playerGroup( state = initialGroupState, action) {
       tGrp.groupTwo.playerTwo.standardPose = null;
       tGrp.groupTwo.playerTwo.winningPose = null;
       tGrp.groupTwo.playerTwo.selecting = false;
+      tGrp.groupTwo.playerTwo.contracted = true;
 
+
+      tGrp.isSelecting = false;
+      tGrp.selectingGroup = null;
+      tGrp.selectingPlayer = null;
+      tGrp.selectedIds =[];
+      return {
+        ...tGrp
+      }
+    case READY_UP:
+      var tGrp = state;
+      tGrp[action.side].ready = true;
       return {
         ...tGrp
       }

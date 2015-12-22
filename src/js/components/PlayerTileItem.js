@@ -13,11 +13,16 @@ export default class PlayerTileItem extends Component {
     }
   }
   _makeSelection() {
-    var { player, joinGroup, playerGroup, selectingGroup, selectingPlayer, joinGroup } = this.props;
+    var { player, joinGroup, playerGroup, selectingGroup,
+          selectingPlayer, joinGroup, showSelectionWarning } = this.props;
     var { id, name, standardPose, winningPose } = player;
 
     if (playerGroup.isSelecting) {
-      joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
+      if (playerGroup.selectedIds.indexOf(id) == -1) {
+        joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
+      } else {
+        showSelectionWarning();
+      }
     }
   }
   render() {

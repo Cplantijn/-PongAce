@@ -102,9 +102,9 @@ board.on('ready', function() {
     btnOneTimeout = setTimeout(function() {
       btnOneDowned = false;
     }, 333);
-    io.emit('btnPress', 'Button One has been pressed!');
+    console.log('Button One pressed!');
     if (btnOneDowned) {
-      console.log('Button double clicked!');
+      io.emit('btnHold', 'btnOne');
     }
     btnOneDowned = true;
   });
@@ -113,18 +113,22 @@ board.on('ready', function() {
     btnTwoTimeout = setTimeout(function() {
       btnTwoDowned = false;
     }, 333);
-    console.log('Button pressed!');
-    io.emit('btnPress', 'Button Two has been pressed!');
+    console.log('Button Two pressed!');
     if (btnTwoDowned) {
-      console.log('Those buttons were pressed together!');
     }
     btnTwoDowned = true;
   });
 
-  btnTwo.on('hold', function() {
-    io.emit('btnPress', 'Button Two has been pressed!');
-    console.log('btn held')
+  btnOne.on('hold', function() {
+    console.log('btn 1 hold')
+    io.emit('btnHold', 'groupOne');
   });
+
+  btnTwo.on('hold', function() {
+    console.log('btn 2 hold')
+    io.emit('btnHold', 'groupTwo');
+  });
+
 });
 
 http.listen(port, function() {

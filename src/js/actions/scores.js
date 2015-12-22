@@ -13,6 +13,7 @@ export const END_SELECTION = 'END_SELECTION'
 export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION'
 export const JOIN_GROUP = 'JOIN_GROUP'
 export const RESET_GROUPS = 'RESET_GROUPS'
+export const READY_UP = 'READY_UP'
 
 const contentType = {
   'accept': 'application/json',
@@ -29,6 +30,14 @@ export function endSelection() {
     type: actions.END_SELECTION
   }
 }
+
+export function readyUp(side) {
+ return {
+   type: actions.READY_UP,
+   side: side
+ }
+}
+
 export function startSelection(group, player) {
   var msgType = group == 'groupOne' ? 'group-one': 'group-two';
   return dispatch => {
@@ -39,11 +48,21 @@ export function startSelection(group, player) {
     }
 }
 
-export function resetGroups() {
-  return {
-    type: actions.RESET_GROUPS
+export function showSelectionWarning() {
+  return dispatch => {
+    clearTimeout(msgTimeout);
+    dispatch(showMessage('warning', 'PLAYER ALREADY CHOSEN. PLEASE CHOOSE ANOTHER'));
   }
 }
+
+export function resetGroups() {
+  return dispatch => {
+    clearTimeout(msgTimeout);
+    dispatch(hideMessage());
+    dispatch(groupReset());
+  }
+}
+
 export function hideMessage(type, message) {
   return {
     type: actions.HIDE_MESSAGE
@@ -298,6 +317,12 @@ function selectionStart(group, player){
     type: actions.START_SELECTION,
     group: group,
     player: player,
+  }
+}
+
+function groupReset() {
+  return {
+    type: actions.RESET_GROUPS
   }
 }
 

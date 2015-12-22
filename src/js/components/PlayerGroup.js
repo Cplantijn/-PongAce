@@ -12,7 +12,7 @@ export default class PlayerGroup extends Component {
     startSelection(group, player);
   }
   render() {
-    var { group, groupNumber} = this.props;
+    var { group, groupNumber } = this.props;
     var  playerOne = group.playerOne,
          playerTwo = group.playerTwo;
     var groupName = groupNumber == 1 ? 'groupOne': 'groupTwo';
@@ -37,6 +37,12 @@ export default class PlayerGroup extends Component {
       'group-two': groupCls == 'group-two'
     });
 
+    console.log(group);
+    var grpCls = classNames({
+      'player-group': true,
+      'ready': group.ready
+    });
+
     if (playerOne.active) {
       playerOneName = <div className={playerCls}><span>{playerOne.name}</span></div>
     }
@@ -45,7 +51,7 @@ export default class PlayerGroup extends Component {
     }
 
     return (
-      <div className='player-group'>
+      <div className={grpCls}>
         <div className={ctnPlayerOneCls}>
           <PlayerSelection
             startSelection={this._startSelection.bind(this)}

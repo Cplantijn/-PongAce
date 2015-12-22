@@ -15,7 +15,8 @@ export default class PlayerSelection extends Component {
       'player': true,
       'player-two': playerType == 'playerTwo',
       'group-two': group == 'groupTwo',
-      'contracted': contracted
+      'contracted': contracted,
+      'selecting': selecting
       });
 
     var containerStyle = {

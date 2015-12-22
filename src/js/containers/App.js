@@ -10,8 +10,17 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    var self = this;
+    var {game, playerGroup, readyUp } = this.props;
     this.socket = io();
+    this.socket.on('btnHold', function(side) {
+      if (game.active) {
+        //Dock Point from side
+      } else {
+        if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
+          readyUp(side);
+        }
+      }
+    });
   }
   render() {
     return (

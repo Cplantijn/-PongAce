@@ -29,7 +29,7 @@ export default class PlayerSelectOverlay extends Component {
     resetGroups();
   }
   _handleKeyDown(e) {
-    var { playerGroup, playerList, highlightSelection, joinGroup } = this.props;
+    var { playerGroup, playerList, highlightSelection, joinGroup, showSelectionWarning } = this.props;
     var { highlightId, selectingPlayer, selectingGroup, isSelecting } = playerGroup;
 
     var key = e.which;
@@ -44,8 +44,11 @@ export default class PlayerSelectOverlay extends Component {
             }
           }
           var {id, name, standardPose, winningPose } = player;
-
-          joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
+          if (playerGroup.selectedIds.indexOf(id) == -1) {
+            joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
+          } else {
+            showSelectionWarning();
+          }
         } else {
           var currentSelectionId = playerGroup.highlightId,
               currentSelectIndex, selectionFound = false;
@@ -80,11 +83,13 @@ export default class PlayerSelectOverlay extends Component {
       }
     }
   }
+
   render() {
     var { startSelection, playerList, playerGroup, highlightSelection,
-          playerGroup, selectingGroup, selectingPlayer, joinGroup } = this.props;
+          playerGroup, selectingGroup, selectingPlayer, joinGroup, showSelectionWarning } = this.props;
     var playerRows = null, playerContainer = null, row = 0;
-
+    var message = 'Choose your players';
+    var messageCls = '';
 
     if (_.size(playerList) > 0) {
       playerContainer = _.groupBy(playerList, function(player, i) {
@@ -103,14 +108,25 @@ export default class PlayerSelectOverlay extends Component {
             isSelecting={playerGroup.isSelecting}
             selectingGroup={playerGroup.selectingGroup}
             selectingPlayer={playerGroup.selectingPlayer}
-            highlightSelection={highlightSelection} />
+            highlightSelection={highlightSelection}
+            showSelectionWarning={showSelectionWarning} />
         )
       });
+    }
+
+    if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
+      messageCls = classNames({
+        'pulsing': true
+      });
+
+      message = 'Double tap your side\'s button to ready up';
     }
     return (
       <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>
         <div className="header-container">
-          <h1>Choose your player</h1>
+          <div className={messageCls}>
+            <h1>{message}</h1>
+          </div>
           <FontAwesome
             size='2x'
             className='refresh-icon'
@@ -124,7 +140,11 @@ export default class PlayerSelectOverlay extends Component {
           </div>
         </div>
         <div className="selection-container">
-          <PlayerGroup startSelection={startSelection} group={playerGroup.groupOne} groupNumber={1} />
+          <PlayerGroup
+            showSelectionWarning={showSelectionWarning}
+            startSelection={startSelection}
+            group={playerGroup.groupOne}
+            groupNumber={1} />
           <div className="player-group-seperator">
             <div className="line-container">
               <div className="line" style={{marginTop: '1em'}}></div>
@@ -136,7 +156,11 @@ export default class PlayerSelectOverlay extends Component {
               <div className="line" style={{marginBottom: '1em'}}></div>
             </div>
           </div>
-          <PlayerGroup startSelection={startSelection} group={playerGroup.groupTwo} groupNumber={2} />
+          <PlayerGroup
+            showSelectionWarning={showSelectionWarning}
+            startSelection={startSelection}
+            group={playerGroup.groupTwo}
+            groupNumber={2} />
         </div>
       </div>
     )

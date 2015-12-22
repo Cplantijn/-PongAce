@@ -126,6 +126,9 @@ html, body {
             display: flex;
             justify-content: center;
             align-items: center;
+            .pulsing {
+              @include smallPulseSlow;
+            }
             h1 {
               font-family: $pier_bold;
               text-transform: uppercase;
@@ -191,6 +194,7 @@ html, body {
             .player-group{
               flex: 6;
               display: flex;
+              position:relative;
               flex-direction: row;
               align-items: center;
               justify-content: center;
@@ -201,7 +205,6 @@ html, body {
                 justify-content: center;
                 align-items: center;
                 color: #B5B5B5;
-                overflow:hidden;
                 .player {
                   display: flex;
                   overflow: hidden;
@@ -226,8 +229,8 @@ html, body {
                     margin-left: 8em;
                     &.contracted {
                       border: 2px dashed $dark;
-                      min-width: 4em;
-                      min-height: 4em;
+                      min-width: 5em;
+                      min-height: 5em;
                       margin-left: 6.5em;
                       height: 0em;
                     }
@@ -254,6 +257,7 @@ html, body {
                     background-position: center center;
                     display: flex;
                     position: relative;
+                    border-radius: 50%;
                     align-items: center;
                     justify-content: center;
                   }
@@ -321,6 +325,14 @@ html, body {
                   flex: 1;
                   display: block;
                   text-align: center;
+                }
+              }
+              &.ready {
+                &::after{
+                  content:'';
+                  position: absolute;
+                  top:0; right:0; bottom:0; left: 0;
+                  background: yellow;
                 }
               }
             }
@@ -699,6 +711,9 @@ html, body {
           }
           &.info{
             background: $info;
+          }
+          &.warning{
+            background: $warning;
           }
           &.group-one{
             background: $main_color;

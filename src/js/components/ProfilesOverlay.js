@@ -70,6 +70,7 @@ export default class ProfilesOverlay extends Component {
       'empty': empty,
       'player-shown': !empty
     });
+    
     return (
       <div className="profiles-container">
         <div className="player-add-container">
