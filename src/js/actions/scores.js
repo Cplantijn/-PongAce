@@ -18,7 +18,7 @@ export const READY_UP = 'READY_UP'
 export const START_GAME = 'START_GAME'
 export const END_GAME = 'END_GAME'
 export const MODIFY_POINT = 'MODIFY_POINT'
-
+export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT'
 
 const contentType = {
   'accept': 'application/json',
@@ -28,11 +28,25 @@ const contentType = {
 const imageContentType = {
   'content-type': 'text/plain'
 }
-var msgTimeout, msgShakeTimeout;
+var msgTimeout, msgShakeTimeout, gamePtSaveTimeout;
 
 export function startGame() {
   return {
     type: actions.START_GAME
+  }
+}
+
+export function changeGamePoint(point) {
+  return dispatch => {
+    clearTimeout(gamePtSaveTimeout);
+    dispatch(gamePointChange(point));
+    gamePtSaveTimeout = setTimeout(function() {
+      saveSetting('game_point', point);
+    }, 400);
+  }
+  return {
+    type: actions.CHANGE_GAME_POINT,
+    point: point
   }
 }
 export function endSelection() {
@@ -311,6 +325,22 @@ export function fetchPlayers(filter, sort) {
   }
 }
 
+
+function saveSetting(column, value) {
+  return dispatch => {
+    return fetch('/save/setting', {
+            method: 'POST',
+            headers: contentType,
+            body: JSON.stringify({
+              'column': column,
+              'value': value,
+            })
+          })
+          .then(response => response.json())
+          .then(function(json) {console.log(json)})
+  }
+}
+
 function saveStats(playerGroup){
   var { groupOne, groupTwo, winner } = playerGroup;
   var loser = winner == 'groupOne' ? 'groupTwo': 'groupOne';
@@ -422,6 +452,12 @@ function pointModify(group, event) {
   }
 }
 
+function gamePointChange(point) {
+  return {
+    type: actions.CHANGE_GAME_POINT,
+    point: point
+  }
+}
 
 function playerJoinGroup(group, player, id, name, standardPose, winningPose) {
   return {

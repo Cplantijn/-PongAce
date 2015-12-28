@@ -5,7 +5,7 @@ import config from '../../../config'
 import ProfilesOverlay from './ProfilesOverlay'
 import PlayerSelectOverlay from './PlayerSelectOverlay'
 import HideOverlay from './HideOverlay'
-
+import SettingsOverlay from './SettingsOverlay'
 
 
 export default class Overlay extends Component {
@@ -36,6 +36,9 @@ export default class Overlay extends Component {
       case 'characterSelect':
         show = false;
         overlayBody = <PlayerSelectOverlay {...this.props}/>;
+        break;
+      case 'settings':
+        overlayBody = <SettingsOverlay {...this.props} />;
         break;
       default:
       overlayBody = <div></div>;

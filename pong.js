@@ -24,6 +24,7 @@ var port = process.env.PORT || 3000;
 //db.tester('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE name="profile"');
 //db.createGameHistoryTable();
 //db.createProfileTable();
+db.createSettingsTable();
 // io.on('connection', function() {
 //   console.log('client connected');
 // });
@@ -45,9 +46,16 @@ app.post('/update/player/quote', function(req, res) {
   db.updatePlayerQuote(req.body.id, req.body.quote, res);
 });
 
+app.get('/load/settings', function(req, res) {
+  db.loadSettings(res);
+})
 app.post('/save/winloss', function (req, res) {
   db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
-})
+});
+
+app.post('/save/setting', function(req, res)) {
+  db.saveSetting(req.body.column, req.body.value, res);
+}
 
 app.post('/update/player/picture', function(req, res) {
   var form = new formidable.IncomingForm();

@@ -6,6 +6,19 @@ function openConnection() {
   return new sqlite3.Database(config.dbFile)
 }
 
+exports.createSettingsTable = function() {
+  var db = openConnection();
+  db.serialize(function() {
+    // db.run("DROP TABLE settings");
+    db.run("CREATE TABLE settings ( \
+            id INTEGER PRIMARY KEY, \
+            game_point INTEGER, \
+            serve_interval INTEGER)");
+    db.run("INSERT INTO settings(game_point, serve_interval) VALUES(21, 5)");
+  });
+  console.log('created settings table');
+  db.close();
+}
 exports.createProfileTable = function() {
   var db = openConnection();
   db.serialize(function() {
@@ -91,10 +104,32 @@ exports.createGameHistoryTable = function() {
   db.close();
 }
 
-exports.updatePlayerQuote = function(id, quote, res) {
+exports.saveSetting = function(column, value, res) {
+  var db = openConnection();
+  var sql = "UPDATE settings SET "+ column +" ='"+value+"' WHERE id = 1";
+  db.run(sql, function(err) {
+    var result = err || true;
+      dbCallback(result, res)
+  });
+  db.close();
+}
+
+exports.loadSettings = function(res) {
   var db = openConnection();
   db.serialize(function() {
-    var sql = "UPDATE profile SET quote ='"+quote+"' WHERE id ="+id;
+    var sql = "SELECT game_point, serve_interval WHERE id=1";
+    db.get(sql, function(err, result) {
+      var response = err || result;
+      dbCallback(response, res);
+    })
+  })
+  db.close();
+}
+
+exports.updatePlayerQuote = function(id, quote, res) {
+  var db = openConnection();
+  var sql = "UPDATE profile SET quote ='"+quote+"' WHERE id ="+id;
+  db.serialize(function() {
     db.run(sql, function(err) {
       var result = err || true;
         dbCallback(result, res)

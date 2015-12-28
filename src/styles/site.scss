@@ -1,0 +1,1074 @@
+::-webkit-input-placeholder {
+   color: $white;
+   opacity: 0.5;
+}
+::-moz-placeholder {  /* Firefox 19+ */
+   color: $white;
+   opacity: 0.5;
+}
+
+body{
+  overflow: hidden;
+  color: #333;
+  font-family: $pier_regular;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+.modal {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+.main-component {
+  background: $main_bg_color;
+  height: 100vh;
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  justify-content: stretch;
+  .game-component-container{
+    position: relative;
+    flex:16;
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+    &.no-game{
+      align-items: center;
+    }
+    .main-game-content{
+      flex:1;
+      display: flex;
+      flex-direction: row;
+      justify-content: stretch;
+      .master-game-container {
+        flex: 1;
+        display: flex;
+        position: relative;
+        .winner-pop{
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          z-index: 10;
+          left: 0;
+          top: 0;
+          display: none;
+          opacity: 0;
+          &.open {
+            display: flex;
+          }
+          &.group-one {
+            background: $main-color
+          }
+          &.group-two {
+            background: $secondary_color;
+          }
+          .message-container {
+            flex: 1;
+            display: flex;
+            color: $white;
+            align-items: center;
+            justify-content: center;
+            font-family: $pier_bold;
+            h2 {
+              font-size: 4em;
+            }
+          }
+          .winner-container {
+            flex: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .winning-player{
+              margin: 0 3em;
+              min-width: 24em;
+              min-height: 24em;
+              height: 24em;
+              background-size: cover;
+              background-repeat: no-repeat;
+              background-position: center center;
+              border-radius: 50%;
+              border: 0.5em solid $white;
+            }
+          }
+          .score-container{
+            flex: 1;
+            display: flex;
+            color: $white;
+            .winning-score, .losing-score {
+              flex: 4;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              h2 {
+                font-size: 7em;
+                .raw-score {
+                  opacity: 0.8;
+                  opacity: 0.8;
+                  font-size: 0.5em;
+                  position: relative;
+                  bottom: 0.8em;
+                }
+              }
+            }
+            .winning-score{
+              justify-content: flex-end;
+            }
+            .losing-score{
+              justify-content: flex-start;
+            }
+            .score-padding{
+              flex: 1;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+          .loser-container{
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .losing-player{
+              margin: 0 1em;
+              min-width: 8em;
+              min-height: 8em;
+              height: 8em;
+              background-size: cover;
+              background-repeat: no-repeat;
+              filter: grayscale(100%) contrast(110%);
+              -webkit-filter: grayscale(100%) contrast(110%);
+              opacity: 0.9;
+              background-position: center center;
+              border-radius: 50%;
+              border: 0.5em solid #fff;
+            }
+          }
+          &.open{
+            display: flex;
+            flex-direction:column;
+            opacity: 1;
+          }
+        }
+        .quit-container {
+          position: absolute;
+          background: $white;
+          height: 6em;
+          width: 6em;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%,-50%);
+          border-radius: 50%;
+          display:flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          &:hover {
+            color: $white;
+            background-color: $grey
+          }
+        }
+        .banner {
+          position: absolute;
+          top: 0;
+          color: $white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: $group_one_banner;
+          left: 0;
+          right: 50%;
+          height: 5em;
+          transition: 0.5s linear all;
+          &.group-two{
+            background: $group_two_banner;
+            right: 0;
+            left: 50%;
+          }
+          h2 {
+            font-family: $pier_bold;
+            font-size: 2.5rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+          }
+        }
+        .group-container{
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          .score-container{
+            flex: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .score {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: $white;
+              h1{
+                font-size: 20em;
+              }
+              .arrow-up {
+                color: $white;
+                padding-bottom: 0.5em;
+                font-size: 8em;
+              }
+            }
+          }
+          .player-container{
+            flex: 2;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            .player-pic-container {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              .player {
+                flex: 1;
+                margin: 0 2em;
+                background-size: cover;
+                border: 0.5em solid $white;
+                border-radius: 50%;
+                min-height: 14em;
+                min-width: 14em;
+                max-width: 14em;
+                height: 14em;
+              }
+              .label {
+                font-size: 1.2em;
+                background: $white;
+                margin-top: 0.5em;
+                border-radius: 0.5em;
+                &.group-one{
+                  color: $main_color;
+                }
+                &.group-two{
+                  color: $secondary_color;
+                }
+              }
+            }
+          }
+          &.group-one {
+            background: $main_color;
+          }
+          &.group-two {
+            background: $secondary_color;
+          }
+        }
+      }
+      .no-game-banner-container{
+        flex: 1;
+        background: $secondary_color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 6em 0;
+        font-family: $pier_bold;
+        transition: 0.1s linear all;
+        h1{
+          color: $white;
+          font-size: 8em;
+        }
+        .logo{
+          width: 12rem;
+          height: 8rem;
+          margin-left: 3em;
+          margin-right: 3em;
+          display: inline-block;
+          background: url('../img/pong_logo_wht.svg');
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: cover;
+        }
+        &:hover{
+          background: $secondary_highlight;
+        }
+      }
+    }
+    .main-overlay {
+      display: flex;
+      flex-direction: column;
+      position:absolute;
+      background: $main_color;
+      top: 0;right: 0;bottom: 0;left: 0;
+      transition: 0.5s linear all;
+      &.opened {
+        @include overlayAnimationIn;
+        visibility: visible;
+        transform: translateY(0%);
+        -moz-transform: translateY(0%);
+
+      }
+      &.closed {
+        @include overlayAnimationOut;
+        visibility:hidden;
+        transform: translateY(100%);
+        -moz-transform: translateY(100%);
+      }
+      .overlay-top {
+        display: flex;
+        justify-content: center;
+        flex: 1;
+        &.hidden{
+          display: none;
+        }
+        .hide-overlay-container {
+          padding: 0 3em;
+          cursor: pointer;
+        }
+      }
+      .overlay-content-container {
+        display: flex;
+        flex: 18;
+        input{
+          width:100%;
+          padding: 0.5em;
+          font-size: 1.8em;
+          color: $white;
+          background: transparent;
+          text-align: center;
+          border: 0;
+          border-bottom: 2px solid $white;
+          &:focus {
+            outline: 0;
+          }
+          &:placeholder{
+            color:blue;
+          }
+        }
+        button{
+          background-color: transparent;
+          color: $white;
+          border: 2px solid $white;
+          transition: 0.1s linear all;
+          &:hover{
+            background-color: $white;
+            color: $main_color;
+          }
+          &:focus {
+            outline: 0;
+          }
+        }
+        .player-select-container{
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          .header-container {
+            position: relative;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            h1 {
+              font-family: $pier_bold;
+              text-transform: uppercase;
+              color: $white;
+              letter-spacing: 0.08em;
+            }
+            .refresh-icon {
+              color: $white;
+              cursor: pointer;
+              position: absolute;
+              top: 0.6em;
+              right: 1em;
+              &:hover{
+                color: $main_color;
+              }
+            }
+          }
+          .roster-container{
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .player-tile-row{
+              display: flex;
+              .player-tile{
+                position: relative;
+                height: 7em;
+                width: 7em;
+                margin: 0.5em;
+                border-radius: 0.33em;
+                overflow: hidden;
+                background: $dark;
+                background-size: cover;
+                background-position: center center;
+                display: flex;
+                flex-direction: column-reverse;
+                cursor: pointer;
+                .player-header{
+                  text-align: center;
+                  background: $dark;
+                  color: $white;
+                  padding: 0.2em;
+                  opacity: 0.9;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+                &.highlight {
+                  border: 0.5em solid $main_color;
+                  box-shadow: 0px 0px 1em $main_color;
+                  &.group-two{
+                    border: 0.5em solid $secondary_color;
+                    box-shadow: 0px 0px 1em $secondary_color;
+                  }
+                }
+              }
+            }
+          }
+          .selection-container{
+            flex: 3;
+            display:flex;
+            .player-group{
+              flex: 6;
+              display: flex;
+              position:relative;
+              flex-direction: row;
+              align-items: center;
+              justify-content: center;
+              .player-container {
+                flex-direction: column;
+                display: flex;
+                flex: 1;
+                justify-content: center;
+                align-items: center;
+                color: #B5B5B5;
+                .player {
+                  display: flex;
+                  overflow: hidden;
+                  align-items: center;
+                  justify-content: center;
+                  position: relative;
+                  min-width: 12em;
+                  height: 12em;
+                  min-height: 12em;
+                  border: 5px dashed $element_shadow;
+                  border-radius: 50%;
+                  flex: 1;
+                  transition: 0.2s linear all;
+                  &.group-two {
+                    .empty {
+                      background: url('../img/pong_add_two.svg');
+                      background-repeat: no-repeat;
+                      background-position: center center;
+                    }
+                  }
+                  &.player-two {
+                    margin-left: 8em;
+                    &.contracted {
+                      border: 2px dashed $dark;
+                      min-width: 5em;
+                      min-height: 5em;
+                      margin-left: 6.5em;
+                      height: 0em;
+                    }
+                    &.group-two{
+                      margin-left: 0em;
+                      &.contracted{
+                        margin-left: 0;
+                      }
+                    }
+                  }
+                  .empty{
+                    background: url('../img/pong_add_one.svg');
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    flex: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 60%;
+                  }
+                  .placed{
+                    flex: 1;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    display: flex;
+                    position: relative;
+                    border-radius: 50%;
+                    align-items: center;
+                    justify-content: center;
+                  }
+                  &:hover{
+                    cursor: pointer;
+                    &::after{
+                      background: url('../img/pong_add_hover.svg');
+                      background-repeat: no-repeat;
+                      background-position: center center;
+                      background-size: 60% auto;
+                      display: flex;
+                      align-items:center;
+                      justify-content: center;
+                      content: "";
+                      position:absolute;
+                      top: 0; right: 0; bottom: 0; left: 0;
+                      background-color:$light_grey;
+                      opacity: 0.4;
+                      border-radius: 50%;
+                    }
+                  }
+                  &.selecting {
+                    @include smallPulse;
+                    border-color:$main_color;
+                    &.group-two {
+                      border-color:$secondary_color;
+                    }
+                  }
+                }
+                &.hidden{
+                  display: none;
+                }
+                &.moved-right {
+                  align-items: flex-end;
+                  justify-content: center;
+                }
+                &.moved-left {
+                  align-items: flex-start;
+                  justify-content: center;
+                }
+              }
+              .player-title{
+                flex: 1;
+                font-family: $pier_bold;
+                min-width: 12em;
+                display: flex;
+                border-radius: 0.5em;
+                background: black;
+                min-height: 2em;
+                margin-left: 8em;
+                color: $white;
+                justify-content: center;
+                align-items: center;
+                margin-top: 0.5em;
+                &.group-one{
+                  background: $main_color;
+                }
+                &.group-two{
+                  margin-left: 0;
+                  background: $secondary_color;
+                }
+                span {
+                  font-size: 1.1em;
+                  letter-spacing: 0.05em;
+                  flex: 1;
+                  display: block;
+                  text-align: center;
+                }
+              }
+              &.ready {
+                &::after{
+                  @include smallPulse;
+                  content:'';
+                  position: absolute;
+                  top:0; right:0; bottom:0; left: 0;
+                  background: url('../img/ready.svg');
+                  background-position: center center;
+                  background-repeat: no-repeat;
+                  background-size: 80% 80%;
+                }
+              }
+            }
+            .player-group-seperator{
+              opacity: 0.8;
+              flex: 1;
+              display: flex;
+              flex-direction:column;
+              .line-container{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                .line{
+                  flex: 1;
+                  border: 1px solid $light_grey;
+                }
+              }
+              .logo-container{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .logo{
+                  background: url('../img/pong-vs.svg');
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                  height: 6em;
+                  width: 6em;
+                  position: relative;
+                }
+              }
+            }
+          }
+        }
+        .profiles-container{
+          display: flex;
+          flex: 1;
+          .spacer{
+            flex:1;
+            &.mid-spacer{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              .line{
+                height:80%;
+                border-left: 2px solid rgba(255,255,255,0.2);
+              }
+            }
+          }
+          .player-add-container {
+            flex: 6;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid $profile_overlay_border;
+            .header {
+            padding-left: 0.5em;
+            text-transform: uppercase;
+            font-family: $pier_bold;
+            letter-spacing: 0.1em;
+            flex: 1
+            }
+            .player-add-form-container{
+              flex: 10;
+              display: flex;
+              padding-left: 1em;
+              flex-direction: column;
+              align-items: flex-start;
+              .input-group {
+                padding-bottom: 1em;
+                width: 100%;
+              }
+            }
+          }
+          .player-manage-container {
+            flex: 24;
+            display: flex;
+            flex-direction: row;
+            .player-list-master-container {
+              flex: 1;
+            }
+            .player-view-master-container{
+              display: flex;
+              flex: 2;
+              transition: 0.1s linear all;
+              flex-direction: column;
+              &.player-shown{
+                //background: rgba(0,0,0,0.2);
+              }
+              .player-view{
+                flex: 1;
+                display: flex;
+                justify-content: center;
+                align-items: stretch;
+                .empty-player-msg{
+                  align-items: center;
+                  justify-content: center;
+                  display: flex;
+                  opacity: 0.5;
+                  font-family: $pier_bold;
+                }
+                .player-content{
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  .header{
+                    align-items: center;
+                    text-align: center;
+                    flex: 1;
+                    h2 {
+                      font-size: 4em;
+                      text-transform: none;
+                    }
+                  }
+                  .image-set-container{
+                    flex: 3;
+                    display: flex;
+                    justify-content: center;
+                    .image-center-container{
+                      width: 75%;
+                      align-items: center;
+                      display: flex;
+                      justify-content: space-around;
+                      flex-direction: row;
+                      .image-container{
+                        display: flex;
+                        flex: 1;
+                        flex-direction: column;
+                        justify-content: flex-start;
+                        align-items: center;
+                        .single-image{
+                          display: flex;
+                          justify-content: center;
+                          height: 16em;
+                          width: 16em;
+                          border-radius: 50%;
+                          background-position: center center;
+                          background-size: cover;
+                          position: relative;
+                          cursor: pointer;
+                          input{
+                            position: absolute;
+                            opacity: 0;
+                            top: 0;right: 0; bottom: 0;right: 0;
+                            cursor: pointer;
+                            z-index: 5;
+                            height: 100%;
+                            width: 100%;
+                          }
+                          .overlay{
+                            position: absolute;
+                            display: flex;
+                            align-items: center;
+                            flex-direction: column;
+                            justify-content: center;
+                            top: 0;left: 0;right: 0;bottom: 0;
+                            border-radius: 50%;
+                            opacity: 0;
+                            background: rgba(0, 0, 0, .6);
+                            color: #FFF;
+                          }
+                          &:hover .overlay{
+                            opacity:1;
+                          }
+                        }
+                        .label-container {
+                          margin-top: 1em;
+                          display: flex;
+                          justify-content: center;
+                          .image-label{
+                            font-size: 1.5em;
+                            border: 1px solid $white;
+                            background:transparent;
+                            color: $white;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  .player-history{
+                    flex: 4;
+                    display: flex;
+                    align-items: center;
+                    .score {
+                      flex:1;
+                      display: flex;
+                      justify-content: center;
+                      flex-direction:column;
+                      border-right: 1px solid $white;
+                      &:last-of-type{
+                        border-right:0;
+                      }
+                      .score-title{
+                        opacity: 0.5;
+                        text-align:center;
+                      }
+                      .score-value{
+                        text-align:center;
+                        font-family: $pier_bold;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            .header {
+              text-transform: uppercase;
+              font-family: $pier_bold;
+              letter-spacing: 0.1em;
+              flex:1;
+            }
+            .player-list-view{
+              flex:10;
+              height: 710px;
+              display: flex;
+              .player-list-container {
+                flex: 1;
+                .player-list {
+                  min-width: 100%;
+                  li {
+                    display:flex;
+                    padding: 1em 0;
+                    position: relative;
+                    transition: 0.2s linear all;
+                    &.active {
+                      background: rgba(0,0,0,0.2);
+                    }
+                    &:hover{
+                      background: rgba(255,255,255,0.1);
+                      cursor: pointer;
+                    }
+                    .image-container{
+                      flex: 1;
+                      align-items: center;
+                      display: flex;
+                      img {
+                        width: 4.6em;
+                        height:4.6em;
+                        border-radius: 50%;
+                        margin-right: 0.5em;
+                      }
+                    }
+                    .detail {
+                      position: relative;
+                      flex: 4;
+                      display: flex;
+                      align-items: stretch;
+                      flex-direction: column;
+                      .player-name {
+                        font-size: 1.5em;
+                        letter-spacing: 0.08em;
+                        text-align: center;
+                        font-family: $pier_bold;
+                      }
+                      .quick-stats{
+                        font-size: 1.2em;
+                        display: flex;
+                        justify-content: space-around;
+                        flex-direction: row;
+                        .score-container{
+                          flex: 1;
+                          display:flex;
+                          justify-content: center;
+                          flex-direction: column;
+                          .score-component{
+                            font-size: 0.7em;
+                            .score-title{
+                              letter-spacing: 0.4em;
+                              text-transform: uppercase;
+                              opacity: 0.5;
+                            }
+                            display: flex;
+                            justify-content: center;
+                          }
+                        }
+                      }
+                      &::after{
+                        content: "";
+                        bottom: -1em;
+                        right: 0;
+                        left: 0;
+                        border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+                        position: absolute;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        .settings-container {
+          display: flex;
+          flex: 1;
+          .setting-content{
+            flex: 1;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            .header {
+              color: $white;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex: 1;
+              h2 {
+                font-family: $pier_bold;
+              }
+            }
+            .input-content{
+              flex: 10;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              input {
+                width:50%;
+                font-size: 14em;
+                font-family: $pier_bold;
+                padding: 0;
+                border-bottom: none;
+                transition: 0.2s linear all;
+                &:focus{
+                  border-bottom: 2px solid $white;
+                }
+              }
+              .increment-decrement{
+                display: flex;
+                flex-direction: column;
+                .point-indicator {
+                  color: $white;
+                  padding: 0.25em;
+                  cursor: pointer;
+                  transition: 0.1s linear all;
+                  &:hover {
+                    background: rgba(0,0,0,0.2);
+                    border-radius: 0.25em;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .pong-section{
+    flex: 2;
+    display: flex;
+    &.top-bar{
+      position: relative;
+      background-color: $dark;
+      box-shadow: 0px 0px 10px $element_shadow;
+      flex-direction: column;
+      overflow: hidden;
+      .logo-container{
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .icon-logo{
+          display: inline-block;
+          width:  2.7em;
+          height: 1.875em;
+          background: url('../img/pong_logo.svg') center center no-repeat;
+          background-size: cover;
+        }
+      }
+      .top-content-container{
+        background: $white;
+        position: absolute;
+        top:0;right:0;bottom:0;left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &.logo-container{
+          &.msg-shown{
+            -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+            @include rotateFoldBottom;
+          }
+          &.msg-hidden{
+            opacity: 1;
+            -webkit-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+            @include moveFromBottomFade;
+          }
+        }
+        &.message-container{
+          letter-spacing: 0.03em;
+          background: transparent;
+          color: $white;
+          font-family: $pier_bold;
+          transition: 0.1s linear all;
+          &.danger{
+            background: $danger;
+          }
+          &.success{
+            background: $success;
+          }
+          &.info{
+            background: $info;
+          }
+          &.warning{
+            background: $warning;
+          }
+          &.group-one{
+            background: $main_color;
+          }
+          &.group-two{
+            background: $secondary_color;
+          }
+          &.msg-shown {
+            z-index:1;
+            @include moveFromTopFade;
+            h1{
+              &.shake{
+                @include shakeMessage;
+              }
+            }
+          }
+          &.msg-hidden{
+            opacity: 0;
+            z-index: 1;
+            -webkit-transform-origin: 50% 100%;
+            transform-origin: 50% 100%;
+            @include rotateFoldTop;
+          }
+        }
+      }
+    }
+    &.footer-bar{
+      box-shadow: 0px 0px 10px $element_shadow;
+      background-color: $white;
+      z-index: 5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      &.hide-shadow {
+        box-shadow: none;
+      }
+      .footer-container {
+        flex: .5;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .footer-icon-pair{
+          display: flex;
+          flex: 1;
+          flex-wrap: nowrap;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: $grey;
+          cursor:pointer;
+          &.profile {
+            &:hover {
+              color: $main_color;
+            }
+            &.active {
+              color: $main_color;
+            }
+          }
+          &.leaderboard {
+            &:hover {
+              color: $gold_color;
+            }
+            &.active {
+              color: $gold_color;
+            }
+          }
+          &.history {
+            &:hover {
+              color: $secondary_color;
+            }
+            &.active {
+              color: $secondary_color;
+            }
+          }
+          &.settings {
+            &:hover {
+              color: $green_color;
+            }
+            &.active {
+              color: $green_color;
+            }
+          }
+          .footer-icon-icon{
+            //Overriding 2x scaling;
+            font-size: 1.75em;
+            &:hover {
+              @include pulsateGrow;
+            }
+          }
+        }
+      }
+    }
+  }
+}

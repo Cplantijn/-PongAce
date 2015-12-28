@@ -56,9 +56,7 @@ class App extends Component {
       }
     });
     this.socket.on('btnDblDown', function(side) {
-      console.log('registered');
       if (!playerGroup.game.active && playerGroup.game.ended) {
-        console.log('reset');
         resetGroups();
       }
     });
@@ -68,31 +66,41 @@ class App extends Component {
       }
     });
 
-    // window.addEventListener('keydown', function(e) {
-    //   if (e.which == 49) {
-    //     modifyPoint('groupOne', 'ADD');
-    //   }else if (e.which == 50) {
-    //     modifyPoint('groupTwo', 'ADD');
-    //   }else if (e.which == 189) {
-    //     if (playerGroup.game.active) {
-    //       modifyPoint('groupOne', 'REMOVE');
-    //     }
-    //     if (playerGroup.groupTwo.ready) {
-    //       toggleReady('groupOne', true);
-    //     } else{
-    //       toggleReady('groupOne', false);
-    //     }
-    //   }else if (e.which == 187) {
-    //     if (playerGroup.game.active) {
-    //       modifyPoint('groupTwo', 'REMOVE');
-    //     }
-    //     if (playerGroup.groupOne.ready) {
-    //       toggleReady('groupTwo', true);
-    //     } else{
-    //       toggleReady('groupTwo', false);
-    //     }
-    //   }
-    // });
+    window.addEventListener('keydown', function(e) {
+      if (e.which == 49) {
+        if (playerGroup.game.active) { //Group 1 press, 1
+          modifyPoint('groupOne', 'ADD');
+        }
+      }else if (e.which == 50) { //Group 2 press, 2
+        if (playerGroup.game.active) {
+          modifyPoint('groupTwo', 'ADD');
+        }
+      } else if (e.which == 51) { //Double Tap, 3
+        console.log('butn 3 tapped')
+        if (!playerGroup.game.active && playerGroup.game.ended) {
+          console.log('reset');
+          resetGroups();
+        }
+    } else if (e.which == 189) { //Group 1 hold, -
+        if (playerGroup.game.active) {
+          modifyPoint('groupOne', 'REMOVE');
+        }
+        if (playerGroup.groupTwo.ready) {
+          toggleReady('groupOne', true);
+        } else{
+          toggleReady('groupOne', false);
+        }
+      }else if (e.which == 187) { // Group 2 hold, =
+        if (playerGroup.game.active) {
+          modifyPoint('groupTwo', 'REMOVE');
+        }
+        if (playerGroup.groupOne.ready) {
+          toggleReady('groupTwo', true);
+        } else{
+          toggleReady('groupTwo', false);
+        }
+      }
+    });
     //Testing override
     // document.addEventListener('keydown', function(e) {
     //   console.log(e)

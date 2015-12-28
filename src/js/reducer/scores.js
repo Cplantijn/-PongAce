@@ -16,7 +16,8 @@ import  {
   READY_UP,
   START_GAME,
   END_GAME,
-  MODIFY_POINT
+  MODIFY_POINT,
+  CHANGE_GAME_POINT
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -298,7 +299,7 @@ function playerGroup( state = initialGroupState, action) {
       var tGrp = state;
       tGrp.game.active = true;
       tGrp.game.ended = false;
-      tGrp.lastSwitchPoint = 0;
+      tGrp.game.lastSwitchPoint = 0;
       tGrp.winner = null;
       tGrp.groupOne.score = 0;
       tGrp.groupTwo.score = 0;
@@ -312,7 +313,9 @@ function playerGroup( state = initialGroupState, action) {
       var tGrp = state;
       tGrp.game.active = false;
       tGrp.game.ended = true;
-      tGrp.lastSwitchPoint = 0;
+      tGrp.groupOne.ready = false;
+      tGrp.groupTwo.ready = false;
+      tGrp.game.lastSwitchPoint = 0;
       return {
         ...tGrp
       }
@@ -389,6 +392,13 @@ function playerGroup( state = initialGroupState, action) {
         tGrp.winner = 'groupTwo';
         tGrp.game.active = false;
       }
+
+      return {
+        ...tGrp
+      }
+    case CHANGE_GAME_POINT:
+      var tGrp = state;
+      tGrp.game.gamePoint = action.point;
 
       return {
         ...tGrp
