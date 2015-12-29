@@ -327,6 +327,18 @@ html, body {
       .overlay-content-container {
         display: flex;
         flex: 18;
+        .game-active{
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          h1 {
+            color: rgba(255,255,255,0.6);
+            font-family: $pier_bold;
+            font-size: 5em;
+            text-align: center;
+          }
+        }
         input{
           width:100%;
           padding: 0.5em;
@@ -904,12 +916,13 @@ html, body {
                 flex-direction: column;
                 .point-indicator {
                   color: $white;
+                  border-radius: 0.25em;
                   padding: 0.25em;
                   cursor: pointer;
                   transition: 0.1s linear all;
                   &:hover {
-                    background: rgba(0,0,0,0.2);
-                    border-radius: 0.25em;
+                    color: $green_color;
+                    background: $white;
                   }
                 }
               }

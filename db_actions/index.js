@@ -117,7 +117,10 @@ exports.saveSetting = function(column, value, res) {
 exports.loadSettings = function(res) {
   var db = openConnection();
   db.serialize(function() {
-    var sql = "SELECT game_point, serve_interval WHERE id=1";
+    var sql = "SELECT game_point AS gamePoint, \
+              serve_interval AS serveInterval \
+              FROM settings \
+              WHERE id=1";
     db.get(sql, function(err, result) {
       var response = err || result;
       dbCallback(response, res);

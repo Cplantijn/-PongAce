@@ -19,6 +19,8 @@ export const START_GAME = 'START_GAME'
 export const END_GAME = 'END_GAME'
 export const MODIFY_POINT = 'MODIFY_POINT'
 export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT'
+export const CHANGE_SERVE_INTERVAL = 'CHANGE_SERVE_INTERVAL'
+export const FETCH_SETTINGS = 'FETCH_SETTINGS'
 
 const contentType = {
   'accept': 'application/json',
@@ -28,11 +30,31 @@ const contentType = {
 const imageContentType = {
   'content-type': 'text/plain'
 }
-var msgTimeout, msgShakeTimeout, gamePtSaveTimeout;
+var msgTimeout,
+    msgShakeTimeout,
+    gamePtSaveTimeout,
+    serveIntervalTimeout;
 
 export function startGame() {
   return {
     type: actions.START_GAME
+  }
+}
+
+export function fetchSettings() {
+  return dispatch => {
+    return fetch('/fetch/settings/')
+            .then(response => response.json())
+            .then(function(json) {
+              if (json.errno) {
+                dispatch(showMessage('danger', 'Something went wrong.'));
+                msgTimeout = setTimeout(function() {
+                  dispatch(hideMessage())
+                }, 3000);
+              } else {
+                dispatch(loadSettings(json));
+              }
+        });
   }
 }
 
@@ -41,7 +63,7 @@ export function changeGamePoint(point) {
     clearTimeout(gamePtSaveTimeout);
     dispatch(gamePointChange(point));
     gamePtSaveTimeout = setTimeout(function() {
-      saveSetting('game_point', point);
+      dispatch(saveSetting('game_point', point));
     }, 400);
   }
   return {
@@ -49,6 +71,21 @@ export function changeGamePoint(point) {
     point: point
   }
 }
+
+export function changeServeInterval(point) {
+  return dispatch => {
+    clearTimeout(serveIntervalTimeout);
+    dispatch(serveIntervalChange(point));
+    serveIntervalTimeout = setTimeout(function() {
+      dispatch(saveSetting('serve_interval', point));
+    }, 400);
+  }
+  return {
+    type: actions.CHANGE_GAME_POINT,
+    point: point
+  }
+}
+
 export function endSelection() {
   return {
     type: actions.END_SELECTION
@@ -85,6 +122,7 @@ export function toggleReady(side, gameStart) {
     if (gameStart) {
       clearTimeout(msgTimeout);
       dispatch(hideMessage());
+      dispatch(fetchSettings());
       dispatch(startGame());
       dispatch(hideOverlay());
     }
@@ -143,9 +181,9 @@ export function joinGroup(group, player, id, name, standardPose, winningPose) {
 }
 
 export function showOverlay(overlayIndex) {
-  return {
-    type: actions.SHOW_OVERLAY,
-    overlayIndex:overlayIndex
+  return dispatch =>{
+    dispatch(hideMessage());
+    dispatch(overlayShow(overlayIndex))
   }
 }
 
@@ -337,7 +375,12 @@ function saveSetting(column, value) {
             })
           })
           .then(response => response.json())
-          .then(function(json) {console.log(json)})
+          .then(function(json) {
+            if (json.errno) {
+              console.log('something went wrong', json);
+            }
+        }
+      )
   }
 }
 
@@ -378,7 +421,12 @@ function saveStats(playerGroup){
             })
           })
           .then(response => response.json())
-          .then(function(json) {console.log(json)})
+          .then(function(json) {
+            if (json.errno){
+              console.log('an error has occured', json)
+            }
+          }
+        )
   }
 }
 
@@ -389,6 +437,12 @@ function loadPlayerInfo(playerInfo) {
   }
 }
 
+function overlayShow(overlayIndex) {
+  return {
+    type: actions.SHOW_OVERLAY,
+    overlayIndex:overlayIndex
+  }
+}
 function removeMsgShake() {
   return {
     type: actions.REMOVE_SHAKE
@@ -437,6 +491,12 @@ function readyToggle(side) {
   }
 }
 
+function loadSettings(settings) {
+  return {
+    type: actions.FETCH_SETTINGS,
+    settings: settings
+  }
+}
 function gameEnd() {
   return {
     type: actions.END_GAME
@@ -455,6 +515,13 @@ function pointModify(group, event) {
 function gamePointChange(point) {
   return {
     type: actions.CHANGE_GAME_POINT,
+    point: point
+  }
+}
+
+function serveIntervalChange(point) {
+  return {
+    type: actions.CHANGE_SERVE_INTERVAL,
     point: point
   }
 }

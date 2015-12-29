@@ -24,12 +24,20 @@ var port = process.env.PORT || 3000;
 //db.tester('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE name="profile"');
 //db.createGameHistoryTable();
 //db.createProfileTable();
-db.createSettingsTable();
+//db.createSettingsTable();
 // io.on('connection', function() {
 //   console.log('client connected');
 // });
 
 //API Routes
+app.get('/fetch/player/:id', function(req, res) {
+  db.fetchPlayerInfo(req.params.id, res);
+});
+
+app.get('/fetch/settings', function(req, res) {
+  db.loadSettings(res);
+});
+
 app.post('/create/player', function(req, res) {
   db.createNewProfile(req.body.name, res);
 });
@@ -38,24 +46,17 @@ app.post('/fetch/players', function(req, res) {
   db.fetchPlayers(req.body.filter, req.body.sort, res);
 });
 
-app.get('/fetch/player/:id', function(req, res) {
-  db.fetchPlayerInfo(req.params.id, res);
-});
-
 app.post('/update/player/quote', function(req, res) {
   db.updatePlayerQuote(req.body.id, req.body.quote, res);
 });
 
-app.get('/load/settings', function(req, res) {
-  db.loadSettings(res);
-})
 app.post('/save/winloss', function (req, res) {
   db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
 });
 
-app.post('/save/setting', function(req, res)) {
+app.post('/save/setting', function(req, res) {
   db.saveSetting(req.body.column, req.body.value, res);
-}
+});
 
 app.post('/update/player/picture', function(req, res) {
   var form = new formidable.IncomingForm();

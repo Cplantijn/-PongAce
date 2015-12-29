@@ -14,14 +14,14 @@ export default class PlayerSelectOverlay extends Component {
     });
   }
   componentDidMount() {
-    //this.howler.play();
+    this.howler.play();
     document.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
   componentWillUnmount() {
     var { hideMessage, endSelection } = this.props;
     hideMessage();
     endSelection();
-    //this.howler.stop();
+    this.howler.stop();
     document.removeEventListener('keydown', this._handleKeyDown.bind(this));
   }
   _resetGroups() {

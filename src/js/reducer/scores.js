@@ -17,7 +17,9 @@ import  {
   START_GAME,
   END_GAME,
   MODIFY_POINT,
-  CHANGE_GAME_POINT
+  CHANGE_GAME_POINT,
+  CHANGE_SERVE_INTERVAL,
+  FETCH_SETTINGS
 } from '../actions/scores'
 import _ from 'underscore'
 
@@ -403,6 +405,22 @@ function playerGroup( state = initialGroupState, action) {
       return {
         ...tGrp
       }
+    case CHANGE_SERVE_INTERVAL:
+      var tGrp = state;
+      tGrp.game.serveInterval = action.point;
+
+      return {
+        ...tGrp
+      }
+    case FETCH_SETTINGS:
+      var tGrp = state;
+      tGrp.game.gamePoint = action.settings.gamePoint;
+      tGrp.game.serveInterval = action.settings.serveInterval;
+
+      return {
+        ...tGrp
+      }
+
     default:
       return state
   }
@@ -412,6 +430,7 @@ function activePlayerDetail(state = {}, action) {
   switch (action.type) {
     case SHOW_PLAYER_DETAIL:
       var tPlayer = action.playerInfo;
+
       return {
         ...tPlayer
       }
