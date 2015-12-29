@@ -2,26 +2,20 @@ import React, { Component } from 'react'
 import PlayerTileRow from './PlayerTileRow'
 import classNames from 'classNames'
 import _ from 'underscore'
-import { Howl, Howler } from 'howler'
 import FontAwesome from 'react-fontawesome'
 import PlayerGroup from './PlayerGroup'
 
 export default class PlayerSelectOverlay extends Component {
   constructor(props) {
     super(props);
-    this.howler = new Howl({
-      urls: ['../sound/smash_theme.mp3', '../sound/smash_theme.ogg']
-    });
   }
   componentDidMount() {
-    this.howler.play();
     document.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
   componentWillUnmount() {
     var { hideMessage, endSelection } = this.props;
     hideMessage();
     endSelection();
-    this.howler.stop();
     document.removeEventListener('keydown', this._handleKeyDown.bind(this));
   }
   _resetGroups() {

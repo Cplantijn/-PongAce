@@ -1,4 +1,6 @@
 var actions = exports = module.exports
+import { Howl } from 'howler'
+import musicOpts from '../../sound/game_music'
 import { polyfill } from 'es6-promise'
 import _ from 'underscore'
 export const SHOW_OVERLAY = 'SHOW_OVERLAY'
@@ -22,6 +24,8 @@ export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT'
 export const CHANGE_SERVE_INTERVAL = 'CHANGE_SERVE_INTERVAL'
 export const FETCH_SETTINGS = 'FETCH_SETTINGS'
 
+var howl = new Howl(musicOpts);
+
 const contentType = {
   'accept': 'application/json',
   'content-type': 'application/json'
@@ -36,6 +40,7 @@ var msgTimeout,
     serveIntervalTimeout;
 
 export function startGame() {
+  howl.play('applause');
   return {
     type: actions.START_GAME
   }
@@ -105,6 +110,11 @@ export function modifyPoint(group, event) {
 }
 
 export function endGame() {
+  howl.play('no_contest', function() {
+    setTimeout(function() {
+      howl.play('crowd_upset');
+    }, 1000)
+  })
   return dispatch => {
     clearTimeout(msgTimeout);
     dispatch(showMessage('warning', 'THE GAME HAS ENDED'));
@@ -117,14 +127,18 @@ export function endGame() {
 }
 
 export function toggleReady(side, gameStart) {
-  return dispatch => {
+  return (dispatch, getState) => {
+    var { playerGroup } = getState();
+    if (!playerGroup[side].ready) {
+      howl.play('ready');
+    }
     dispatch(readyToggle(side));
     if (gameStart) {
       clearTimeout(msgTimeout);
       dispatch(hideMessage());
       dispatch(fetchSettings());
-      dispatch(startGame());
       dispatch(hideOverlay());
+      dispatch(startGame());
     }
   }
 }
@@ -161,6 +175,7 @@ export function hideMessage(type, message) {
 }
 
 export function highlightSelection(id) {
+  howl.play('player_cursor');
   return {
     type: actions.HIGHLIGHT_SELECTION,
     id: id
@@ -168,6 +183,7 @@ export function highlightSelection(id) {
 }
 
 export function joinGroup(group, player, id, name, standardPose, winningPose) {
+  howl.play('chosen');
   var msgType = group == 'groupOne' ? 'group-one': 'group-two';
   return dispatch => {
       clearTimeout(msgTimeout);
@@ -181,6 +197,13 @@ export function joinGroup(group, player, id, name, standardPose, winningPose) {
 }
 
 export function showOverlay(overlayIndex) {
+  if (overlayIndex == 4) {
+    howl.play('smash_theme', function() {
+      setTimeout(function() {
+        howl.play('choose_character');
+      }, 500);
+    });
+  }
   return dispatch =>{
     dispatch(hideMessage());
     dispatch(overlayShow(overlayIndex))
@@ -189,11 +212,20 @@ export function showOverlay(overlayIndex) {
 
 
 export function hideOverlay() {
-  return {
-    type: actions.HIDE_OVERLAY
+  return (dispatch, getState) => {
+    var { overlay } = getState();
+    if (overlay.activeIndex == 4) {
+      howl.stop();
+    }
+    dispatch(overlayHide());
   }
 }
 
+function overlayHide() {
+  return {
+    type:actions.HIDE_OVERLAY
+  }
+}
 
 export function fetchPlayerDetails(playerId) {
   return dispatch => {
@@ -387,6 +419,25 @@ function saveSetting(column, value) {
 function saveStats(playerGroup){
   var { groupOne, groupTwo, winner } = playerGroup;
   var loser = winner == 'groupOne' ? 'groupTwo': 'groupOne';
+  var winnerClip = winner == 'groupOne' ? 'blue_team' : 'red_team';
+
+  howl.play('game_end', function() {
+    setTimeout(function() {
+      howl.play('winner_screen', function() {
+        setTimeout(function() {
+          howl.play('winner', function() {
+            setTimeout(function() {
+              howl.play(winnerClip, function() {
+                howl.play('cheer');
+              }, 500);
+            }, 1600);
+          });
+        },1000);
+      });
+    }, 1000);
+  });
+
+
   var gameType = 'singles';
   var winnerIds = [];
   var loserIds = [];

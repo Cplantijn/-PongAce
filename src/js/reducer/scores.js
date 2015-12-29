@@ -1,4 +1,8 @@
 import { combineReducers } from 'redux'
+import { Howl } from 'howler'
+import musicOpts from '../../sound/game_music'
+import _ from 'underscore'
+
 import  {
   SHOW_OVERLAY,
   HIDE_OVERLAY,
@@ -21,7 +25,8 @@ import  {
   CHANGE_SERVE_INTERVAL,
   FETCH_SETTINGS
 } from '../actions/scores'
-import _ from 'underscore'
+
+var howl = new Howl(musicOpts);
 
 
 const initialGroupState = {
@@ -334,12 +339,15 @@ function playerGroup( state = initialGroupState, action) {
 
       if (action.event == 'ADD') {
         if ((totalScore % tGrp.game.serveInterval == 0) && (totalScore == tGrp.game.lastSwitchPoint + tGrp.game.serveInterval)) {
+          howl.play('switch_serve');
           tGrp.groupOne.serving = !tGrp.groupOne.serving;
           tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
           tGrp.game.lastSwitchPoint = totalScore;
         }
       } else {
         if (totalScore == tGrp.game.lastSwitchPoint - 1) {
+          //TODO Remove this logic from reducer
+          howl.play('switch_serve');
           tGrp.groupOne.serving = !tGrp.groupOne.serving;
           tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
           tGrp.game.lastSwitchPoint = tGrp.game.lastSwitchPoint - tGrp.game.serveInterval;

@@ -84,20 +84,22 @@ class App extends Component {
     } else if (e.which == 189) { //Group 1 hold, -
         if (playerGroup.game.active) {
           modifyPoint('groupOne', 'REMOVE');
-        }
-        if (playerGroup.groupTwo.ready) {
-          toggleReady('groupOne', true);
-        } else{
-          toggleReady('groupOne', false);
+        } else {
+          if (playerGroup.groupTwo.ready) {
+            toggleReady('groupOne', true);
+          } else{
+            toggleReady('groupOne', false);
+          }
         }
       }else if (e.which == 187) { // Group 2 hold, =
         if (playerGroup.game.active) {
           modifyPoint('groupTwo', 'REMOVE');
-        }
-        if (playerGroup.groupOne.ready) {
-          toggleReady('groupTwo', true);
-        } else{
-          toggleReady('groupTwo', false);
+        } else {
+          if (playerGroup.groupOne.ready) {
+            toggleReady('groupTwo', true);
+          } else{
+            toggleReady('groupTwo', false);
+          }
         }
       }
     });
