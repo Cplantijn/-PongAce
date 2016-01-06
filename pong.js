@@ -21,14 +21,6 @@ app.use(bodyParser.json({uploadDir: './uploads'}));
 
 var port = process.env.PORT || 3000;
 
-//db.tester('UPDATE SQLITE_SEQUENCE SET SEQ=0 WHERE name="profile"');
-//db.createGameHistoryTable();
-//db.createProfileTable();
-//db.createSettingsTable();
-// io.on('connection', function() {
-//   console.log('client connected');
-// });
-
 //API Routes
 app.get('/fetch/player/:id', function(req, res) {
   db.fetchPlayerInfo(req.params.id, res);
@@ -144,5 +136,6 @@ board.on('ready', function() {
 });
 
 http.listen(port, function() {
-  console.log('ready to play on port ' + port);
+  db.initTable();
+  console.log('Playing pong on http://localhost:' + port);
 });
