@@ -1,57 +1,84 @@
 var config       = require('../config');
 var sqlite3      = require('sqlite3').verbose();
 var db           = new sqlite3.Database(config.dbFile);
+var colors       = require('colors');
 
 function openConnection() {
   return new sqlite3.Database(config.dbFile)
 }
 
-exports.createSettingsTable = function() {
+exports.initTable = function() {
   var db = openConnection();
   db.serialize(function() {
-    // db.run("DROP TABLE settings");
-    db.run("CREATE TABLE settings ( \
-            id INTEGER PRIMARY KEY, \
-            game_point INTEGER, \
-            serve_interval INTEGER)");
-    db.run("INSERT INTO settings(game_point, serve_interval) VALUES(21, 5)");
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='profile'", function(err, result){
+      if (err) console.log('An error has occured.');
+      if (!result) {
+        db.serialize(function() {
+          console.log('profiles table not found. Creating new profiles table.'.underline.white.bgMagenta.bold);
+          db.run("CREATE TABLE profile ( \
+                   id INTEGER PRIMARY KEY, \
+                   name TEXT, \
+                   color TEXT, \
+                   quote TEXT, \
+                   standard_pose_img_name TEXT DEFAULT 'default_standard.jpg', \
+                   winning_pose_img_name TEXT DEFAULT 'default_winning.jpg', \
+                   singles_wins INTEGER DEFAULT 0, \
+                   singles_losses INTEGER DEFAULT 0, \
+                   doubles_wins INTEGER DEFAULT 0, \
+                   doubles_losses INTEGER DEFAULT 0, \
+                   updated_on DATETIME, \
+                   unique(name))");
+
+         db.run("CREATE TRIGGER update_player \
+                 AFTER UPDATE ON profile \
+                   BEGIN \
+                     UPDATE profile SET updated_on = datetime('now','localtime') \
+                     WHERE id = NEW.id; \
+                   END;");
+         db.run("CREATE TRIGGER insert_player \
+                 AFTER INSERT ON profile \
+                   BEGIN \
+                     UPDATE profile SET updated_on = datetime('now','localtime') \
+                     WHERE id = NEW.id; \
+                   END;");
+          });
+          console.log('Finished creating profiles table'.bgGreen.red.bold);
+      }
+    });
+
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='settings'", function(err, result){
+      if (err) console.log('An error has occured.');
+      if (!result) {
+        console.log('settings table  not found. Creating new settings table.'.underline.white.bgMagenta.bold);
+        db.serialize(function() {
+          db.run("CREATE TABLE settings ( \
+                  id INTEGER PRIMARY KEY, \
+                  game_point INTEGER, \
+                  serve_interval INTEGER)");
+         db.run("INSERT INTO settings(game_point, serve_interval) VALUES(21, 5)");
+            console.log('Finished creating settings table'.bgGreen.red.bold);
+        });
+      }
+    });
+
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='history'", function(err, result){
+      if (err) console.log('An error has occured.');
+      if (!result) {
+        console.log('history table  not found. Creating new history table.'.underline.white.bgMagenta.bold);
+        db.serialize(function(){
+          db.run("CREATE TABLE history (\
+                    id INTEGER PRIMARY KEY, \
+                    team_one_player_id TEXT, \
+                    team_two_player_id TEXT, \
+                    team_one_point INTEGER, \
+                    team_two_point INTEGER, \
+                    game_time DATETIME DEFAULT (datetime('now','localtime')),\
+                    game_type TEXT)");
+        });
+        console.log('Finished creating history table'.bgGreen.red.bold);
+      }
+    });
   });
-  console.log('created settings table');
-  db.close();
-}
-exports.createProfileTable = function() {
-  var db = openConnection();
-  db.serialize(function() {
-    db.run("CREATE TABLE profile ( \
-             id INTEGER PRIMARY KEY, \
-             name TEXT, \
-             color TEXT, \
-             quote TEXT, \
-             standard_pose_img_name TEXT DEFAULT 'default_standard.jpg', \
-             winning_pose_img_name TEXT DEFAULT 'default_winning.jpg', \
-             singles_wins INTEGER DEFAULT 0, \
-             singles_losses INTEGER DEFAULT 0, \
-             doubles_wins INTEGER DEFAULT 0, \
-             doubles_losses INTEGER DEFAULT 0, \
-             updated_on DATETIME, \
-             unique(name))");
-   //Update and Create trigger
-   //TODO: Figure out how to do both update and insert in one command is poss.
-   db.run("CREATE TRIGGER update_player \
-           AFTER UPDATE ON profile \
-             BEGIN \
-               UPDATE profile SET updated_on = datetime('now','localtime') \
-               WHERE id = NEW.id; \
-             END;");
-   db.run("CREATE TRIGGER insert_player \
-           AFTER INSERT ON profile \
-             BEGIN \
-               UPDATE profile SET updated_on = datetime('now','localtime') \
-               WHERE id = NEW.id; \
-             END;");
-  });
-  console.log('profile table and trigger created!')
-  db.close();
 }
 
 exports.updatePlayerPicture = function(id, picType, fullName, res) {
@@ -86,22 +113,6 @@ exports.savePlayerWinLoss = function(gameType, winners, losers, res) {
       }
     })
   })
-}
-
-exports.createGameHistoryTable = function() {
-  var db = openConnection();
-  db.serialize(function() {
-    db.run("CREATE TABLE history (\
-              id INTEGER PRIMARY KEY, \
-              team_one_player_id TEXT, \
-              team_two_player_id TEXT, \
-              team_one_point INTEGER, \
-              team_two_point INTEGER, \
-              game_time DATETIME DEFAULT (datetime('now','localtime')),\
-              game_type TEXT)");
-  });
-  console.log('history table created!')
-  db.close();
 }
 
 exports.saveSetting = function(column, value, res) {
@@ -198,16 +209,6 @@ exports.fetchPlayers = function(filter, sort, res) {
   db.close();
 }
 
-exports.tester = function(query) {
-  var db = openConnection();
-  db.serialize(function() {
-    db.exec(query, function(err, result) {
-      var response = err || result;
-      console.log(response);
-    })
-  });
-  db.close();
-}
 function dbCallback(e, res) {
   res.send(e)
 }
