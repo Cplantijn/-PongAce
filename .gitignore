@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 pong.db
+/public
 player_img/*
 !player_img/default_standard.jpg
 !player_img/default_winning.jpg
