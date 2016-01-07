@@ -1,14 +1,13 @@
-import { combineReducers } from 'redux'
-import { Howl } from 'howler'
-import musicOpts from '../../sound/game_music'
-import _ from 'underscore'
+import { combineReducers } from 'redux';
+import { Howl } from 'howler';
+import musicOpts from '../../sound/game_music';
+import _ from 'underscore';
+
+// "Sub" reducers...
+import overlay from './overlay';
+import userMessage from './userMessage';
 
 import  {
-  SHOW_OVERLAY,
-  HIDE_OVERLAY,
-  SHOW_MESSAGE,
-  HIDE_MESSAGE,
-  REMOVE_SHAKE,
   LIST_PLAYERS,
   CLEAR_PLAYER_LIST,
   SHOW_PLAYER_DETAIL,
@@ -89,34 +88,6 @@ const initialGroupState = {
     lastSwitchPoint: 0
   },
   winner: null
-}
-
-function overlay(state = {
-  isOpen: false,
-  activeIndex: null,
-  profilesData: {
-    playerList: {}
-  }
-}, action) {
-  switch(action.type) {
-    case SHOW_OVERLAY:
-      var tOverlay = state;
-      tOverlay.activeIndex = action.overlayIndex;
-      tOverlay.isOpen = true;
-      return {
-        ...state,
-        ...tOverlay
-      }
-    case HIDE_OVERLAY:
-      var tOverlay = state;
-      tOverlay.isOpen = false;
-      return {
-        ...state,
-        ...tOverlay
-      }
-    default:
-      return state;
-  }
 }
 
 function playerList(state = {}, action) {

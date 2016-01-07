@@ -1,66 +1,66 @@
-var actions = exports = module.exports
-import { Howl } from 'howler'
-import musicOpts from '../../sound/game_music'
-import { polyfill } from 'es6-promise'
-import _ from 'underscore'
-export const SHOW_OVERLAY = 'SHOW_OVERLAY'
-export const HIDE_OVERLAY = 'HIDE_OVERLAY'
-export const SHOW_MESSAGE = 'SHOW_MESSAGE'
-export const HIDE_MESSAGE = 'HIDE_MESSAGE'
-export const REMOVE_SHAKE = 'REMOVE_SHAKE'
-export const LIST_PLAYERS = 'LIST_PLAYERS'
-export const CLEAR_PLAYER_LIST = 'CLEAR_PLAYER_LIST'
-export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL'
-export const START_SELECTION = 'START_SELECTION'
-export const END_SELECTION = 'END_SELECTION'
-export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION'
-export const JOIN_GROUP = 'JOIN_GROUP'
-export const RESET_GROUPS = 'RESET_GROUPS'
-export const READY_UP = 'READY_UP'
-export const START_GAME = 'START_GAME'
-export const END_GAME = 'END_GAME'
-export const MODIFY_POINT = 'MODIFY_POINT'
-export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT'
-export const CHANGE_SERVE_INTERVAL = 'CHANGE_SERVE_INTERVAL'
-export const FETCH_SETTINGS = 'FETCH_SETTINGS'
+const actions = exports = module.exports
+import {
+  Howl
+}
+from 'howler';
+import musicOpts from '../../sound/game_music';
+// import { polyfill } from 'es6-promise';
+import _ from 'underscore';
+export const SHOW_OVERLAY = 'SHOW_OVERLAY';
+export const HIDE_OVERLAY = 'HIDE_OVERLAY';
+export const SHOW_MESSAGE = 'SHOW_MESSAGE';
+export const HIDE_MESSAGE = 'HIDE_MESSAGE';
+export const REMOVE_SHAKE = 'REMOVE_SHAKE';
+export const LIST_PLAYERS = 'LIST_PLAYERS';
+export const CLEAR_PLAYER_LIST = 'CLEAR_PLAYER_LIST';
+export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL';
+export const START_SELECTION = 'START_SELECTION';
+export const END_SELECTION = 'END_SELECTION';
+export const HIGHLIGHT_SELECTION = 'HIGHLIGHT_SELECTION';
+export const JOIN_GROUP = 'JOIN_GROUP';
+export const RESET_GROUPS = 'RESET_GROUPS';
+export const READY_UP = 'READY_UP';
+export const START_GAME = 'START_GAME';
+export const END_GAME = 'END_GAME';
+export const MODIFY_POINT = 'MODIFY_POINT';
+export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT';
+export const CHANGE_SERVE_INTERVAL = 'CHANGE_SERVE_INTERVAL';
+export const FETCH_SETTINGS = 'FETCH_SETTINGS';
 
-var howl = new Howl(musicOpts);
+const howl = new Howl(musicOpts);
 
 const contentType = {
   'accept': 'application/json',
   'content-type': 'application/json'
-}
+};
 
-const imageContentType = {
-  'content-type': 'text/plain'
-}
-var msgTimeout,
-    msgShakeTimeout,
-    gamePtSaveTimeout,
-    serveIntervalTimeout;
+let msgTimeout;
+let msgShakeTimeout;
+let gamePtSaveTimeout;
+let serveIntervalTimeout;
 
 export function startGame() {
   howl.play('applause');
   return {
     type: actions.START_GAME
-  }
+  };
 }
 
 export function fetchSettings() {
   return dispatch => {
     return fetch('/fetch/settings/')
-            .then(response => response.json())
-            .then(function(json) {
-              if (json.errno) {
-                dispatch(showMessage('danger', 'Something went wrong.'));
-                msgTimeout = setTimeout(function() {
-                  dispatch(hideMessage())
-                }, 3000);
-              } else {
-                dispatch(loadSettings(json));
-              }
-        });
-  }
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno) {
+          dispatch(showMessage('danger', 'Something went wrong.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage());
+          }, 3000);
+        } else {
+          dispatch(loadSettings(json));
+        }
+      });
+  };
 }
 
 export function changeGamePoint(point) {
@@ -100,11 +100,13 @@ export function endSelection() {
 export function modifyPoint(group, event) {
   return (dispatch, getState) => {
     dispatch(pointModify(group, event));
-    const { playerGroup } = getState();
+    const {
+      playerGroup
+    } = getState();
     if (!playerGroup.game.active) {
       dispatch(gameEnd());
       dispatch(saveStats(playerGroup));
-      dispatch(showMessage('info','HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
+      dispatch(showMessage('info', 'HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
     }
   }
 }
@@ -128,7 +130,9 @@ export function endGame() {
 
 export function toggleReady(side, gameStart) {
   return (dispatch, getState) => {
-    var { playerGroup } = getState();
+    var {
+      playerGroup
+    } = getState();
     if (!playerGroup[side].ready) {
       howl.play('ready');
     }
@@ -144,13 +148,13 @@ export function toggleReady(side, gameStart) {
 }
 
 export function startSelection(group, player) {
-  var msgType = group == 'groupOne' ? 'group-one': 'group-two';
+  var msgType = group == 'groupOne' ? 'group-one' : 'group-two';
   return dispatch => {
-      clearTimeout(msgTimeout);
-      dispatch(hideMessage());
-      dispatch(showMessage(msgType, 'SELECT A PLAYER'));
-      dispatch(selectionStart(group, player));
-    }
+    clearTimeout(msgTimeout);
+    dispatch(hideMessage());
+    dispatch(showMessage(msgType, 'SELECT A PLAYER'));
+    dispatch(selectionStart(group, player));
+  }
 }
 
 export function showSelectionWarning() {
@@ -184,16 +188,16 @@ export function highlightSelection(id) {
 
 export function joinGroup(group, player, id, name, standardPose, winningPose) {
   howl.play('chosen');
-  var msgType = group == 'groupOne' ? 'group-one': 'group-two';
+  var msgType = group == 'groupOne' ? 'group-one' : 'group-two';
   return dispatch => {
-      clearTimeout(msgTimeout);
-      dispatch(playerJoinGroup(group, player, id, name, standardPose, winningPose));
-      dispatch(showMessage(msgType, 'Picked ' + name + '!'));
-      dispatch(endSelection());
-      msgTimeout = setTimeout(function(){
-        dispatch(hideMessage());
-      }, 3000)
-    }
+    clearTimeout(msgTimeout);
+    dispatch(playerJoinGroup(group, player, id, name, standardPose, winningPose));
+    dispatch(showMessage(msgType, 'Picked ' + name + '!'));
+    dispatch(endSelection());
+    msgTimeout = setTimeout(function() {
+      dispatch(hideMessage());
+    }, 3000)
+  }
 }
 
 export function showOverlay(overlayIndex) {
@@ -204,7 +208,7 @@ export function showOverlay(overlayIndex) {
       }, 500);
     });
   }
-  return dispatch =>{
+  return dispatch => {
     dispatch(hideMessage());
     dispatch(overlayShow(overlayIndex))
   }
@@ -213,7 +217,9 @@ export function showOverlay(overlayIndex) {
 
 export function hideOverlay() {
   return (dispatch, getState) => {
-    var { overlay } = getState();
+    var {
+      overlay
+    } = getState();
     if (overlay.activeIndex == 4) {
       howl.stop();
     }
@@ -223,25 +229,25 @@ export function hideOverlay() {
 
 function overlayHide() {
   return {
-    type:actions.HIDE_OVERLAY
+    type: actions.HIDE_OVERLAY
   }
 }
 
 export function fetchPlayerDetails(playerId) {
   return dispatch => {
-    return fetch('/fetch/player/'+playerId)
-            .then(response => response.json())
-            .then(function(json) {
-              if (json.errno === 19) {
-                dispatch(showMessage('danger', 'Something went wrong.'));
-                msgTimeout = setTimeout(function() {
-                  dispatch(hideMessage())
-                }, 3000);
-              } else {
-                dispatch(loadPlayerInfo(json));
-              }
-            });
-    }
+    return fetch('/fetch/player/' + playerId)
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno === 19) {
+          dispatch(showMessage('danger', 'Something went wrong.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage())
+          }, 3000);
+        } else {
+          dispatch(loadPlayerInfo(json));
+        }
+      });
+  }
 }
 
 export function changePlayerPic(playerId, picType, file, res) {
@@ -250,26 +256,26 @@ export function changePlayerPic(playerId, picType, file, res) {
     clearTimeout(msgTimeout);
     clearTimeout(msgShakeTimeout);
     if (ext == null) {
-      dispatch(showMessage('danger','Must be .jpg or .png file'));
+      dispatch(showMessage('danger', 'Must be .jpg or .png file'));
     } else {
       var data = new FormData;
       data.append('file', file);
       data.append('picType', picType);
       data.append('id', playerId);
-      return fetch('/update/player/picture',{
-        method:'POST',
-        body: data
-      })
-      .then(response => response.json())
-      .then(function(json) {
-        if(json.errno || json.error) {
-          dispatch(showMessage('danger','An error has occurred'));
-        }
-        dispatch(fetchPlayerDetails(playerId));
-        //TODO: Do not get value by raw javascript. Maybe use state?
-        var currentFilter = document.getElementById('player-profile-filter-input').value;
-        dispatch(fetchPlayers(currentFilter, 'updated_on DESC'));
-      })
+      return fetch('/update/player/picture', {
+          method: 'POST',
+          body: data
+        })
+        .then(response => response.json())
+        .then(function(json) {
+          if (json.errno || json.error) {
+            dispatch(showMessage('danger', 'An error has occurred'));
+          }
+          dispatch(fetchPlayerDetails(playerId));
+          //TODO: Do not get value by raw javascript. Maybe use state?
+          var currentFilter = document.getElementById('player-profile-filter-input').value;
+          dispatch(fetchPlayers(currentFilter, 'updated_on DESC'));
+        })
     }
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage())
@@ -283,35 +289,35 @@ export function changePlayerQuote(playerId, text) {
     clearTimeout(msgTimeout);
     clearTimeout(msgShakeTimeout);
     if (!text.length) {
-      dispatch(showMessage('danger','Quote cannot be empty'));
+      dispatch(showMessage('danger', 'Quote cannot be empty'));
       msgTimeout = setTimeout(function() {
         dispatch(hideMessage())
       }, 3000)
     } else {
       return fetch('/update/player/quote', {
-        method:'POST',
-        headers: contentType,
-        body: JSON.stringify({
-          "quote": text,
-          "id": playerId
+          method: 'POST',
+          headers: contentType,
+          body: JSON.stringify({
+            "quote": text,
+            "id": playerId
+          })
         })
-      })
-      .then(response => response.json())
-      .then(function(json) {
-        if (json.errno) {
-          console.log(json);
-          dispatch(showMessage('danger', 'An error occurred. Try again'))
-          msgShakeTimeout = setTimeout(function() {
-            dispatch(removeMsgShake())
-          }, 1000);
-        } else {
-          dispatch(showMessage('success', 'Quote has been updated'));
-          dispatch(fetchPlayerDetails(playerId));
-        }
-        msgTimeout = setTimeout(function() {
-          dispatch(hideMessage())
-        }, 3000);
-      })
+        .then(response => response.json())
+        .then(function(json) {
+          if (json.errno) {
+            console.log(json);
+            dispatch(showMessage('danger', 'An error occurred. Try again'))
+            msgShakeTimeout = setTimeout(function() {
+              dispatch(removeMsgShake())
+            }, 1000);
+          } else {
+            dispatch(showMessage('success', 'Quote has been updated'));
+            dispatch(fetchPlayerDetails(playerId));
+          }
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage())
+          }, 3000);
+        })
     }
   }
 }
@@ -319,49 +325,49 @@ export function changePlayerQuote(playerId, text) {
 
 export function createNewPlayer(playerName) {
   return dispatch => {
-      clearTimeout(msgTimeout);
-      clearTimeout(msgShakeTimeout);
-      if (playerName.trim().length) {
-        if (playerName.trim().length > 21) {
-          dispatch(showMessage('danger', 'Player Name is too long.'));
-          msgTimeout = setTimeout(function() {
-            dispatch(hideMessage())
-          }, 3000);
-        } else {
-          return fetch('/create/player', {
-                method:'POST',
-                headers: contentType,
-                body: JSON.stringify({
-                  "name": playerName.trim()
-                })
-              })
-              .then(response => response.json())
-              .then(function(json) {
-                if (json.errno === 19) {
-                  dispatch(showMessage('danger', playerName +'  is already a player'));
-                  msgShakeTimeout = setTimeout(function() {
-                    dispatch(removeMsgShake())
-                  }, 1000);
-                } else {
-                  dispatch(showMessage('success', 'Player created: ' + playerName));
-                  dispatch(fetchPlayers('','updated_on DESC'));
-                }
-                msgTimeout = setTimeout(function() {
-                  dispatch(hideMessage())
-                }, 3000);
-              })
-        }
-      } else {
+    clearTimeout(msgTimeout);
+    clearTimeout(msgShakeTimeout);
+    if (playerName.trim().length) {
+      if (playerName.trim().length > 21) {
+        dispatch(showMessage('danger', 'Player Name is too long.'));
         msgTimeout = setTimeout(function() {
           dispatch(hideMessage())
         }, 3000);
-
-        msgShakeTimeout = setTimeout(function() {
-          dispatch(removeMsgShake())
-        }, 1000);
-        dispatch(showMessage('danger', 'Player name is empty. Try again.'))
+      } else {
+        return fetch('/create/player', {
+            method: 'POST',
+            headers: contentType,
+            body: JSON.stringify({
+              "name": playerName.trim()
+            })
+          })
+          .then(response => response.json())
+          .then(function(json) {
+            if (json.errno === 19) {
+              dispatch(showMessage('danger', playerName + '  is already a player'));
+              msgShakeTimeout = setTimeout(function() {
+                dispatch(removeMsgShake())
+              }, 1000);
+            } else {
+              dispatch(showMessage('success', 'Player created: ' + playerName));
+              dispatch(fetchPlayers('', 'updated_on DESC'));
+            }
+            msgTimeout = setTimeout(function() {
+              dispatch(hideMessage())
+            }, 3000);
+          })
       }
+    } else {
+      msgTimeout = setTimeout(function() {
+        dispatch(hideMessage())
+      }, 3000);
+
+      msgShakeTimeout = setTimeout(function() {
+        dispatch(removeMsgShake())
+      }, 1000);
+      dispatch(showMessage('danger', 'Player name is empty. Try again.'))
     }
+  }
 }
 
 export function fetchPlayers(filter, sort) {
@@ -370,22 +376,22 @@ export function fetchPlayers(filter, sort) {
   return dispatch => {
     dispatch(clearPlayerList());
     return fetch('/fetch/players', {
-      method:'POST',
-      headers: contentType,
-      body: JSON.stringify({
-        "filter": filter.trim(),
-        "sort" : sort
+        method: 'POST',
+        headers: contentType,
+        body: JSON.stringify({
+          "filter": filter.trim(),
+          "sort": sort
+        })
       })
-    })
-    .then(response => response.json())
-    .then(function(json) {
-      if (json.errno) {
-        console.log(json);
-        dispatch(showMessage('danger', 'Something\'s up with the database. Check it out bruh.'))
-      } else {
-        dispatch(showPlayerList(json));
-      }
-    })
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno) {
+          console.log(json);
+          dispatch(showMessage('danger', 'Something\'s up with the database. Check it out bruh.'))
+        } else {
+          dispatch(showPlayerList(json));
+        }
+      })
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage())
     }, 3000);
@@ -399,26 +405,27 @@ export function fetchPlayers(filter, sort) {
 function saveSetting(column, value) {
   return dispatch => {
     return fetch('/save/setting', {
-            method: 'POST',
-            headers: contentType,
-            body: JSON.stringify({
-              'column': column,
-              'value': value,
-            })
-          })
-          .then(response => response.json())
-          .then(function(json) {
-            if (json.errno) {
-              console.log('something went wrong', json);
-            }
+        method: 'POST',
+        headers: contentType,
+        body: JSON.stringify({
+          'column': column,
+          'value': value,
+        })
+      })
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno) {
+          console.log('something went wrong', json);
         }
-      )
+      })
   }
 }
 
-function saveStats(playerGroup){
-  var { groupOne, groupTwo, winner } = playerGroup;
-  var loser = winner == 'groupOne' ? 'groupTwo': 'groupOne';
+function saveStats(playerGroup) {
+  var {
+    groupOne, groupTwo, winner
+  } = playerGroup;
+  var loser = winner == 'groupOne' ? 'groupTwo' : 'groupOne';
   var winnerClip = winner == 'groupOne' ? 'blue_team' : 'red_team';
 
   howl.play('game_end', function() {
@@ -432,7 +439,7 @@ function saveStats(playerGroup){
               }, 500);
             }, 1600);
           });
-        },1000);
+        }, 1000);
       });
     }, 1000);
   });
@@ -442,15 +449,15 @@ function saveStats(playerGroup){
   var winnerIds = [];
   var loserIds = [];
   if (groupOne.playerOne.active && groupOne.playerTwo.active ||
-      groupTwo.playerOne.active && groupTwo.playerTwo.active) {
-        gameType = 'doubles';
-      }
+    groupTwo.playerOne.active && groupTwo.playerTwo.active) {
+    gameType = 'doubles';
+  }
   //Get Winner Ids
   _.each(playerGroup[winner], function(player, key) {
     if (key == 'playerOne' || key == 'playerTwo') {
-        if (player.active) {
-          winnerIds.push(player.id);
-        }
+      if (player.active) {
+        winnerIds.push(player.id);
+      }
     }
   });
   //Get Loser Ids
@@ -463,21 +470,20 @@ function saveStats(playerGroup){
   });
   return dispatch => {
     return fetch('/save/winloss', {
-            method: 'POST',
-            headers: contentType,
-            body: JSON.stringify({
-              'winningIds': winnerIds.join(','),
-              'losingIds': loserIds.join(','),
-              'gameType': gameType
-            })
-          })
-          .then(response => response.json())
-          .then(function(json) {
-            if (json.errno){
-              console.log('an error has occured', json)
-            }
-          }
-        )
+        method: 'POST',
+        headers: contentType,
+        body: JSON.stringify({
+          'winningIds': winnerIds.join(','),
+          'losingIds': loserIds.join(','),
+          'gameType': gameType
+        })
+      })
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno) {
+          console.log('an error has occured', json)
+        }
+      })
   }
 }
 
@@ -491,9 +497,10 @@ function loadPlayerInfo(playerInfo) {
 function overlayShow(overlayIndex) {
   return {
     type: actions.SHOW_OVERLAY,
-    overlayIndex:overlayIndex
+    overlayIndex: overlayIndex
   }
 }
+
 function removeMsgShake() {
   return {
     type: actions.REMOVE_SHAKE
@@ -521,7 +528,7 @@ function showMessage(type, message) {
   }
 }
 
-function selectionStart(group, player){
+function selectionStart(group, player) {
   return {
     type: actions.START_SELECTION,
     group: group,
@@ -548,6 +555,7 @@ function loadSettings(settings) {
     settings: settings
   }
 }
+
 function gameEnd() {
   return {
     type: actions.END_GAME
