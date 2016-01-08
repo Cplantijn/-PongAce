@@ -1,23 +1,26 @@
-var path         = require('path');
-var express      = require('express');
-var bodyParser   = require('body-parser');
-var util         = require('util');
-var app          = express();
-var Chance       = require('chance');
-var http         = require('http').Server(app);
-var io           = require('socket.io')(http);
-var formidable   = require('formidable');
-var fs           = require('fs');
-var config       = require('./config');
-var five         = require('johnny-five');
-var db           = require('./db_actions');
-var gm           = require('gm').subClass({ imageMagick: true });
+const path = require('path');
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const Chance = require('chance');
+const http = require('http').server(app);
+const io = require('socket.io')(http);
+const formidable = require('formidable');
+const fs = require('fs');
+const config = require('./config');
+const five = require('johnny-five');
+const db = require('./db_actions');
+const gm = require('gm').subClass({
+  imageMagick: true
+});
 var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
-    btnOneTimeout, btnTwoTimeout;
+  btnOneTimeout, btnTwoTimeout;
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/player_img', express.static(path.join(__dirname, 'player_img')));
-app.use(bodyParser.json({uploadDir: './uploads'}));
+app.use(bodyParser.json({
+  uploadDir: './uploads'
+}));
 
 var port = process.env.PORT || 3000;
 
@@ -42,7 +45,7 @@ app.post('/update/player/quote', function(req, res) {
   db.updatePlayerQuote(req.body.id, req.body.quote, res);
 });
 
-app.post('/save/winloss', function (req, res) {
+app.post('/save/winloss', function(req, res) {
   db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
 });
 
@@ -68,7 +71,10 @@ app.post('/update/player/picture', function(req, res) {
     fs.rename(tmpPath, preResizePath, function(err) {
       if (err) throw err;
       var nameGen = new Chance();
-      var newName = nameGen.string({length: 12, pool: config.imageNameSeed});
+      var newName = nameGen.string({
+        length: 12,
+        pool: config.imageNameSeed
+      });
       var ext = fileName.match(/\.(jpg|jpeg|png)$/i);
       ext = ext[0] || '.jpg';
       var finalPath = config.imageDir + newName + ext;
@@ -81,7 +87,9 @@ app.post('/update/player/picture', function(req, res) {
             fs.unlink(preResizePath);
             db.updatePlayerPicture(playerId, picType, newName + ext, res);
           } else {
-            res.writeHead(200, {'content-type': 'application/json'});
+            res.writeHead(200, {
+              'content-type': 'application/json'
+            });
             var errorBody = {
               error: 'err'
             }

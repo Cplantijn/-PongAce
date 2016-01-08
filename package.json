@@ -1,5 +1,5 @@
 {
-  "name": "pong-ace",
+  "name": "ACE-pong",
   "version": "1.0.0",
   "description": "Ping Pong Arduino app for the ACE Table Tennis Club",
   "main": "pong.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cplantijn/PongAce.git"
+    "url": "git+https://github.com/Cplantijn/ACEPong.git"
   },
   "keywords": [
     "ping-pong",
@@ -20,9 +20,9 @@
   "author": "Christopher S Plantijn <cplantijn90@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Cplantijn/PongAce/issues"
+    "url": "https://github.com/Cplantijn/ACEPong/issues"
   },
-  "homepage": "https://github.com/Cplantijn/PongAce#readme",
+  "homepage": "https://github.com/Cplantijn/ACEPong#readme",
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
