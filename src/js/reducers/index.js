@@ -10,7 +10,6 @@ import playerList from './playerList';
 import activePlayerDetail from './activePlayerDetail';
 
 import  {
-  SHOW_PLAYER_DETAIL,
   JOIN_GROUP,
   RESET_GROUPS,
   READY_UP,
@@ -340,7 +339,6 @@ function playerGroup( state = initialGroupState, action) {
       var tGrp = state;
       tGrp.game.gamePoint = action.settings.gamePoint;
       tGrp.game.serveInterval = action.settings.serveInterval;
-
       return {
         ...tGrp
       }

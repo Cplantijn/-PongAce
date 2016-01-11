@@ -7,19 +7,18 @@ import {
 } from '../actions/scores';
 
 export function playerList(state = {}, action) {
+  let tList = action.playerList;
   switch (action.type) {
     case LIST_PLAYERS:
-      var tList = action.playerList;
       return {
         ...tList
       }
     case CLEAR_PLAYER_LIST:
-      var tList = {};
+      tList = {};
       return {
         ...tList
       }
     case START_SELECTION:
-      var tList = state;
       var hightlightFound = false;
       for (var i = 0; i < _.size(tList); i++) {
         tList[i].highlight = false;
@@ -34,7 +33,6 @@ export function playerList(state = {}, action) {
         ...tList
       }
     case END_SELECTION:
-      var tList = state;
       for (var i = 0; i < _.size(tList); i++) {
         tList[i].highlight = false;
         tList[i].selected = false;
@@ -43,7 +41,6 @@ export function playerList(state = {}, action) {
         ...tList
       }
     case HIGHLIGHT_SELECTION:
-      var tList = state;
       for (var i = 0; i < _.size(tList); i++) {
         tList[i].highlight = false;
         if (tList[i].id == action.id) {

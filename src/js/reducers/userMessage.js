@@ -10,9 +10,9 @@ export function userMessage(state = {
   message: null,
   shake: false
 }, action) {
+  let tMsg = state;
   switch(action.type) {
     case SHOW_MESSAGE:
-      let tMsg = state;
       const sameType = tMsg.type == action.messageType;
       const sameMsg = tMsg.message == action.message;
 
@@ -26,14 +26,12 @@ export function userMessage(state = {
         ...tMsg
       }
     case HIDE_MESSAGE:
-      let tMsg = state;
       tMsg.isShowing = false;
       tMsg.shake = false;
       return {
         ...tMsg
       }
     case REMOVE_SHAKE:
-      let tMsg = state;
       tMsg.shake = false;
       return {
         ...tMsg

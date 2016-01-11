@@ -11,16 +11,15 @@ export function overlay(state = {
     playerList: {}
   }
 }, action) {
+  let tOverlay = state;
   switch(action.type) {
     case SHOW_OVERLAY:
-      let tOverlay = state;
       tOverlay.activeIndex = action.overlayIndex;
       tOverlay.isOpen = true;
       return {
         ...tOverlay
       }
     case HIDE_OVERLAY:
-      let tOverlay = state;
       tOverlay.isOpen = false;
       return {
         ...tOverlay

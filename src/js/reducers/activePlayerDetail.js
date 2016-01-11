@@ -4,10 +4,9 @@ import  {
 
 
 export function activePlayerDetail(state = {}, action) {
+  let tPlayer = action.playerInfo;
   switch (action.type) {
     case SHOW_PLAYER_DETAIL:
-      var tPlayer = action.playerInfo;
-
       return {
         ...tPlayer
       }
