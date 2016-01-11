@@ -17,14 +17,12 @@ export function overlay(state = {
       tOverlay.activeIndex = action.overlayIndex;
       tOverlay.isOpen = true;
       return {
-        ...state,
         ...tOverlay
       }
     case HIDE_OVERLAY:
       let tOverlay = state;
       tOverlay.isOpen = false;
       return {
-        ...state,
         ...tOverlay
       }
     default:

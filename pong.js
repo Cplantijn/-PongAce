@@ -1,18 +1,19 @@
-const path = require('path');
-const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const Chance = require('chance');
-const http = require('http').server(app);
-const io = require('socket.io')(http);
-const formidable = require('formidable');
-const fs = require('fs');
-const config = require('./config');
-const five = require('johnny-five');
-const db = require('./db_actions');
-const gm = require('gm').subClass({
+var path = require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
+var Chance = require('chance');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var formidable = require('formidable');
+var fs = require('fs');
+var config = require('./config');
+var five = require('johnny-five');
+var db = require('./db_actions');
+var gm = require('gm').subClass({
   imageMagick: true
 });
+
 var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
   btnOneTimeout, btnTwoTimeout;
 
@@ -102,9 +103,11 @@ app.post('/update/player/picture', function(req, res) {
   });
 });
 
-board = new five.Board();
-board.on('ready', function() {
+board = new five.Board({
+  port: config.boardPort
+});
 
+board.on('ready', function() {
   btnOne = new five.Button(config.btnOne);
   btnOneDowned = false;
 

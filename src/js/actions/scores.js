@@ -1,4 +1,4 @@
-const actions = exports = module.exports
+const actions = exports = module.exports;
 import {
   Howl
 }
@@ -70,11 +70,7 @@ export function changeGamePoint(point) {
     gamePtSaveTimeout = setTimeout(function() {
       dispatch(saveSetting('game_point', point));
     }, 400);
-  }
-  return {
-    type: actions.CHANGE_GAME_POINT,
-    point: point
-  }
+  };
 }
 
 export function changeServeInterval(point) {

@@ -1,8 +1,9 @@
-let pool = 'abcdefghijklmnopqrstuvwxyz';
+var pool = 'abcdefghijklmnopqrstuvwxyz';
 pool = pool + pool.toUpperCase() + '_0123456789';
 
 module.exports = {
   'dbFile': 'pong.db',
+  'boardPort': '/dev/tty.PONGBLUE-DevB',
   'btnOne': {
     'pin': 2,
     'holdtime': 800

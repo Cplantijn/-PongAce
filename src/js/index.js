@@ -7,7 +7,7 @@ import createLogger from 'redux-logger'
 import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import App from './containers/App'
-import pongReducer from './reducer/scores'
+import pongReducer from './reducers'
 
 const loggerMiddleware = createLogger()
 

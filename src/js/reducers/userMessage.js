@@ -23,7 +23,6 @@ export function userMessage(state = {
       tMsg.message = action.message;
       tMsg.type = action.messageType;
       return {
-        ...state,
         ...tMsg
       }
     case HIDE_MESSAGE:
@@ -31,14 +30,12 @@ export function userMessage(state = {
       tMsg.isShowing = false;
       tMsg.shake = false;
       return {
-        ...state,
         ...tMsg
       }
     case REMOVE_SHAKE:
       let tMsg = state;
       tMsg.shake = false;
       return {
-        ...state,
         ...tMsg
       }
     default:

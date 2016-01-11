@@ -6,14 +6,11 @@ import _ from 'underscore';
 // "Sub" reducers...
 import overlay from './overlay';
 import userMessage from './userMessage';
+import playerList from './playerList';
+import activePlayerDetail from './activePlayerDetail';
 
 import  {
-  LIST_PLAYERS,
-  CLEAR_PLAYER_LIST,
   SHOW_PLAYER_DETAIL,
-  START_SELECTION,
-  END_SELECTION,
-  HIGHLIGHT_SELECTION,
   JOIN_GROUP,
   RESET_GROUPS,
   READY_UP,
@@ -23,7 +20,7 @@ import  {
   CHANGE_GAME_POINT,
   CHANGE_SERVE_INTERVAL,
   FETCH_SETTINGS
-} from '../actions/scores'
+} from '../actions/scores';
 
 var howl = new Howl(musicOpts);
 
@@ -88,58 +85,6 @@ const initialGroupState = {
     lastSwitchPoint: 0
   },
   winner: null
-}
-
-function playerList(state = {}, action) {
-  switch (action.type) {
-    case LIST_PLAYERS:
-      var tList = action.playerList;
-      return {
-        ...tList
-      }
-    case CLEAR_PLAYER_LIST:
-      var tList = {};
-      return {
-        ...tList
-      }
-    case START_SELECTION:
-      var tList = state;
-      var hightlightFound = false;
-      for (var i = 0; i < _.size(tList); i++) {
-        tList[i].highlight = false;
-      }
-      for (var j = 0; j < _.size(tList) && !hightlightFound; j++) {
-        if (tList[j].selected == false) {
-          tList[j].highlight = true;
-          hightlightFound = true;
-        }
-      }
-      return {
-        ...tList
-      }
-    case END_SELECTION:
-      var tList = state;
-      for (var i = 0; i < _.size(tList); i++) {
-        tList[i].highlight = false;
-        tList[i].selected = false;
-      }
-      return {
-        ...tList
-      }
-    case HIGHLIGHT_SELECTION:
-      var tList = state;
-      for (var i = 0; i < _.size(tList); i++) {
-        tList[i].highlight = false;
-        if (tList[i].id == action.id) {
-          tList[i].highlight = true;
-        }
-      }
-      return {
-        ...tList
-      }
-    default:
-      return state
-  }
 }
 
 function playerGroup( state = initialGroupState, action) {
@@ -402,62 +347,6 @@ function playerGroup( state = initialGroupState, action) {
 
     default:
       return state
-  }
-}
-
-function activePlayerDetail(state = {}, action) {
-  switch (action.type) {
-    case SHOW_PLAYER_DETAIL:
-      var tPlayer = action.playerInfo;
-
-      return {
-        ...tPlayer
-      }
-    default:
-      return state
-  }
-}
-
-
-
-function userMessage(state = {
-  isShowing: false,
-  type: null,
-  message: '',
-  shake: false
-}, action) {
-  switch(action.type) {
-    case SHOW_MESSAGE:
-      var tMsg = state;
-      if (tMsg.isShowing == true &&
-          tMsg.type == action.messageType &&
-          tMsg.message == action.message) {
-        tMsg.shake = true;
-      }
-      tMsg.isShowing = true;
-      tMsg.message = action.message;
-      tMsg.type = action.messageType;
-      return {
-        ...state,
-        ...tMsg
-      }
-    case HIDE_MESSAGE:
-      var tMsg = state;
-      tMsg.isShowing = false;
-      tMsg.shake = false;
-      return {
-        ...state,
-        ...tMsg
-      }
-    case REMOVE_SHAKE:
-      var tMsg = state;
-      tMsg.shake = false;
-      return {
-        ...state,
-        ...tMsg
-      }
-    default:
-      return state;
   }
 }
 
