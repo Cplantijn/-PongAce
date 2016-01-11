@@ -2,6 +2,7 @@
 node_modules
 pong.db
 /public
+config.js
 player_img/*
 !player_img/default_standard.jpg
 !player_img/default_winning.jpg
