@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classNames from 'classNames';
-import config from '../../../config';
+import config from '../../../../config';
 import ProfilesOverlay from './Profiles';
-import PlayerSelectOverlay from './PlayerSelectOverlay';
+import PlayerSelectOverlay from './PlayerSelect';
 import HideOverlay from './HideOverlay';
-import SettingsOverlay from './SettingsOverlay';
+import SettingsOverlay from './Settings';
 
 
 export default class Overlay extends Component {

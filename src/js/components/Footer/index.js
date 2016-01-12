@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import classNames from 'classNames';
-import { ProfilesOverlayItem, LeaderboardOverlayItem, HistoryOverlayItem, GameSettingsOverlayItem } from './OverlayItems';
-
+import ProfilesOverlayItem from './ProfilesOverlayItem';
+import LeaderboardOverlayItem from './LeaderboardOverlayItem';
+import HistoryOverlayItem from './HistoryOverlayItem';
+import GameSettingsOverlayItem from './GameSettingsOverlayItem';
 
 export default class Footer extends Component {
   constructor(props) {
@@ -29,6 +31,7 @@ export default class Footer extends Component {
     }
   }
   render() {
+    const { overlay } = this.props;
     const cls = classNames({
       'pong-section': true,
       'footer-bar': true,
@@ -36,10 +39,18 @@ export default class Footer extends Component {
     return (
       <div className={cls}>
         <div className="footer-container">
-          <ProfilesOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
-          <LeaderboardOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
-          <HistoryOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
-          <GameSettingsOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
+          <ProfilesOverlayItem
+            onClick={this._toggleOverlay.bind(this)}
+            overlay={overlay} />
+          <LeaderboardOverlayItem
+            onClick={this._toggleOverlay.bind(this)}
+            overlay={overlay} />
+          <HistoryOverlayItem
+            onClick={this._toggleOverlay.bind(this)}
+            overlay={overlay} />
+          <GameSettingsOverlayItem
+            onClick={this._toggleOverlay.bind(this)}
+            overlay={overlay} />
         </div>
       </div>
     );

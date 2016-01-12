@@ -7,10 +7,10 @@ import _ from 'underscore';
 
 export default class ProfilesOverlay extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   componentDidMount() {
-    var  ul = this.refs.playerList;
+    let ul = this.refs.playerList;
     ul.style.height = 710;
     ps.initialize(ul, {
       suppressScrollX: true
@@ -19,51 +19,51 @@ export default class ProfilesOverlay extends Component {
     ps.update(ul);
   }
   _changePlayerName(e) {
-    var { updateNewPlayerName } = this.props;
     if (e.type === 'keyup') {
       if (e.which === 13) {
-        this._submitNewPlayer()
+        this._submitNewPlayer();
       }
     }
   }
   _submitNewPlayer() {
-    var { createNewPlayer } = this.props;
+    const { createNewPlayer } = this.props;
     createNewPlayer(this.refs.playerNameInput.value);
     this.refs.playerNameInput.value = '';
   }
   _filterPlayerList() {
-    var { fetchPlayers } = this.props;
+    const { fetchPlayers } = this.props;
     fetchPlayers(this.refs.playerFilterInput.value.toLowerCase(), 'updated_on DESC');
   }
   render() {
-    var { overlayOpen, hideOverlay, overlay, playerList, active,
-          fetchPlayerDetails, showcasePlayer} = this.props;
-    var players = null, activeId = null, empty = true;
-    if (_.size(showcasePlayer) > 0) {
-      activeId = showcasePlayer.id
+    const { playerList, fetchPlayerDetails, showcasedPlayer} = this.props;
+    let players = null;
+    let activeId = null;
+    let empty = true;
+    if (_.size(showcasedPlayer) > 0) {
+      activeId = showcasedPlayer.id;
       empty = false;
     }
     if (_.size(playerList) > 0) {
       players = _.map(playerList, function(player, i) {
-        var placement = (i % 2 === 0 || i === 0) ? 'even' : 'odd';
-        var playerName = player.name.length > 23 ? '    '+player.name.slice(0, 21) + '...': player.name;
+        const placement = (i % 2 === 0 || i === 0) ? 'even' : 'odd';
+        const playerName = player.name.length > 23 ? '    ' + player.name.slice(0, 21) + '...' : player.name;
         return (
           <PlayerListItem
             key={player.id}
             playerId={player.id}
-            active={player.id == activeId}
+            active={player.id === activeId}
             placement={placement}
             fetchPlayerDetails={fetchPlayerDetails}
             playerImg={player.standardPose}
             playerName={playerName}
             wins={player.wins}
             losses={player.losses}/>
-        )
+        );
       });
     }
-    var cls = classNames({
+    const cls = classNames({
       'player-view-master-container': true,
-      'empty': empty,
+      empty,
       'player-shown': !empty
     });
 
@@ -128,6 +128,14 @@ export default class ProfilesOverlay extends Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
+
+ProfilesOverlay.propTypes = {
+  createNewPlayer: React.PropTypes.func,
+  fetchPlayers: React.PropTypes.func,
+  playerList: React.PropTypes.object,
+  fetchPlayerDetails: React.PropTypes.func,
+  showcasedPlayer: React.PropTypes.obj
+};

@@ -7,7 +7,7 @@ import _ from 'underscore';
 import overlay from './overlay';
 import userMessage from './userMessage';
 import playerList from './playerList';
-import showcasePlayer from './showcasePlayer';
+import showcasedPlayer from './showcasedPlayer';
 
 import  {
   JOIN_GROUP,
@@ -355,7 +355,7 @@ const pongReducer = combineReducers({
   userMessage,
   playerList,
   playerGroup,
-  showcasePlayer,
+  showcasedPlayer,
   overlay
 })
 

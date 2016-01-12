@@ -12,7 +12,7 @@ export default class TopBar extends Component {
       'top-content-container': true,
       'logo-container': true,
       'msg-shown': userMessage.isShowing,
-      'msg-hidden': !userMessage.isShowing
+      'msg-hidden': !userMessage.isShowing && userMessage.message
     });
     return (
       <div className="top-bar pong-section">

@@ -35,6 +35,6 @@ export default class HideOverlay extends Component {
 }
 
 HideOverlay.propTypes = {
-  show: React.propTypes.bool,
-  hideOverlay: React.propTypes.func
+  show: React.PropTypes.bool,
+  hideOverlay: React.PropTypes.func
 };
