@@ -10,23 +10,6 @@ export default class ProfilesOverlay extends Component {
     super(props);
   }
   componentDidMount() {
-    this.resizePlayerList();
-    window.addEventListener('resize', this.resizePlayerList.bind(this));
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.resizePlayerList.bind(this));
-  }
-  resizePlayerList() {
-    let ul = this.refs.playerList;
-    const profHgt = this.refs.profilesContainer.style;
-    const filterHgt = this.refs.playerFilterInput.style.height;
-    const headerHgt = this.refs.viewHeader.style.height;
-    console.log(profHgt);
-    ps.initialize(ul, {
-      suppressScrollX: true
-    });
-    ul.scrollTop = 0;
-    ps.update(ul);
   }
   _changePlayerName(e) {
     if (e.type === 'keyup') {
