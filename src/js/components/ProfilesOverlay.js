@@ -41,10 +41,10 @@ export default class ProfilesOverlay extends Component {
   }
   render() {
     var { overlayOpen, hideOverlay, overlay, playerList, active,
-          fetchPlayerDetails, activePlayerDetail} = this.props;
+          fetchPlayerDetails, showcasePlayer} = this.props;
     var players = null, activeId = null, empty = true;
-    if (_.size(activePlayerDetail) > 0) {
-      activeId = activePlayerDetail.id
+    if (_.size(showcasePlayer) > 0) {
+      activeId = showcasePlayer.id
       empty = false;
     }
     if (_.size(playerList) > 0) {

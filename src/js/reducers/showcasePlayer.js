@@ -1,9 +1,9 @@
 import  {
-  SHOW_PLAYER_DETAIL,
+  SHOW_PLAYER_DETAIL
 } from '../actions/scores';
 
 
-export function activePlayerDetail(state = {}, action) {
+export function showcasePlayer(state = {}, action) {
   let tPlayer = action.playerInfo;
   switch (action.type) {
     case SHOW_PLAYER_DETAIL:

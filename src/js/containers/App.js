@@ -122,7 +122,7 @@ function mapStateToProps(state) {
     game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,
-    activePlayerDetail: state.activePlayerDetail
+    showcasePlayer: state.showcasePlayer
   }
 }
 

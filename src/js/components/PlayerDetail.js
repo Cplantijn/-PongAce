@@ -15,24 +15,24 @@ export default class PlayerDetail extends Component {
     return true;
   }
   _uploadPic(type, e) {
-    var { activePlayerDetail, changePlayerPic } = this.props;
-    changePlayerPic(activePlayerDetail.id, type, e.target.files[0]);
+    var { showcasePlayer, changePlayerPic } = this.props;
+    changePlayerPic(showcasePlayer.id, type, e.target.files[0]);
   }
   render() {
-    var {activePlayerDetail} = this.props;
+    var {showcasePlayer} = this.props;
     var detail = <div className="empty-player-msg">
                   <h3>Select a Player</h3>
                 </div>;
-    if (_.size(activePlayerDetail) > 0) {
-      var quote = activePlayerDetail.quote ? activePlayerDetail.quote : '';
+    if (_.size(showcasePlayer) > 0) {
+      var quote = showcasePlayer.quote ? showcasePlayer.quote : '';
       var standardPicStyle = {
-        backgroundImage: 'url("/player_img/'+ activePlayerDetail.standardPose + '")'
+        backgroundImage: 'url("/player_img/'+ showcasePlayer.standardPose + '")'
       }
       var winningPicStyle = {
-        backgroundImage: 'url("/player_img/'+ activePlayerDetail.winningPose + '")'
+        backgroundImage: 'url("/player_img/'+ showcasePlayer.winningPose + '")'
       }
       detail = <div className="player-content">
-                <div className="header"><h2>{activePlayerDetail.name}</h2></div>
+                <div className="header"><h2>{showcasePlayer.name}</h2></div>
                 <div className="image-set-container">
                   <div className="image-center-container">
                     <div className="image-container">
@@ -72,24 +72,24 @@ export default class PlayerDetail extends Component {
                    placeholder="Player Quote"
                    ref="playerQuote"
                    value={quote}
-                   onKeyUp={this._quoteChange.bind(this, activePlayerDetail.id)}/>
+                   onKeyUp={this._quoteChange.bind(this, showcasePlayer.id)}/>
                </div> */}
                <div className="player-history">
                <div className="score">
                 <div className="score-title">SOLO <br /> WINS</div>
-                <h2 className="score-value">{activePlayerDetail.singlesWins}</h2>
+                <h2 className="score-value">{showcasePlayer.singlesWins}</h2>
                </div>
                <div className="score">
                 <div className="score-title">SOLO <br /> LOSSES</div>
-                <h2 className="score-value">{activePlayerDetail.singlesLosses}</h2>
+                <h2 className="score-value">{showcasePlayer.singlesLosses}</h2>
                </div>
                <div className="score">
                 <div className="score-title">DOUBLES <br /> WINS</div>
-                <h2 className="score-value">{activePlayerDetail.doublesWins}</h2>
+                <h2 className="score-value">{showcasePlayer.doublesWins}</h2>
                </div>
                <div className="score">
                 <div className="score-title">DOUBLES <br /> LOSSES</div>
-                <h2 className="score-value">{activePlayerDetail.doublesLosses}</h2>
+                <h2 className="score-value">{showcasePlayer.doublesLosses}</h2>
                </div>
                </div>
               </div>
