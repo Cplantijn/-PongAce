@@ -8,7 +8,7 @@ export function showcasePlayer(state = {}, action) {
   switch (action.type) {
     case SHOW_PLAYER_DETAIL:
       return {
-        ...tPlaye
+        ...tPlayer
       }
     default:
       return state
