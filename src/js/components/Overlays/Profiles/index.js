@@ -10,8 +10,18 @@ export default class ProfilesOverlay extends Component {
     super(props);
   }
   componentDidMount() {
+    this.resizePlayerList();
+    window.addEventListener('resize', this.resizePlayerList.bind(this));
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resizePlayerList.bind(this));
+  }
+  resizePlayerList() {
     let ul = this.refs.playerList;
-    ul.style.height = 710;
+    const profHgt = this.refs.profilesContainer.style;
+    const filterHgt = this.refs.playerFilterInput.style.height;
+    const headerHgt = this.refs.viewHeader.style.height;
+    console.log(profHgt);
     ps.initialize(ul, {
       suppressScrollX: true
     });
@@ -35,7 +45,7 @@ export default class ProfilesOverlay extends Component {
     fetchPlayers(this.refs.playerFilterInput.value.toLowerCase(), 'updated_on DESC');
   }
   render() {
-    const { playerList, fetchPlayerDetails, showcasedPlayer} = this.props;
+    const { playerList, fetchPlayerDetails, showcasedPlayer } = this.props;
     let players = null;
     let activeId = null;
     let empty = true;
@@ -68,9 +78,11 @@ export default class ProfilesOverlay extends Component {
     });
 
     return (
-      <div className="profiles-container">
+      <div
+        className="profiles-container"
+        ref="profilesContainer">
         <div className="player-add-container">
-          <h2 className="header" >Create</h2>
+          <h2 className="header">Create</h2>
           <div className="player-add-form-container">
             <div className="input-group">
               <input
@@ -100,7 +112,7 @@ export default class ProfilesOverlay extends Component {
             ref="playerListMasterContainer">
             <h2
               className="header"
-              ref="viewPlayerHeader">
+              ref="viewHeader">
               View
             </h2>
             <div className="player-list-view">
@@ -137,5 +149,5 @@ ProfilesOverlay.propTypes = {
   fetchPlayers: React.PropTypes.func,
   playerList: React.PropTypes.object,
   fetchPlayerDetails: React.PropTypes.func,
-  showcasedPlayer: React.PropTypes.obj
+  showcasedPlayer: React.PropTypes.object
 };

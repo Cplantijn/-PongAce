@@ -1,6 +1,6 @@
 import  {
   SHOW_PLAYER_DETAIL
-} from '../actions/scores';
+} from '../actions';
 
 export default function showcasedPlayer(state = {}, action) {
   let tPlayer = action.playerInfo;

@@ -1,7 +1,7 @@
 import  {
   SHOW_OVERLAY,
   HIDE_OVERLAY
-} from '../actions/scores';
+} from '../actions';
 
 
 export default function overlay(state = {

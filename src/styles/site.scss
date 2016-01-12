@@ -342,7 +342,7 @@ html, body {
         input{
           width:100%;
           padding: 0.5em;
-          font-size: 1.8em;
+          font-size: 1.2em;
           color: $white;
           background: transparent;
           text-align: center;
@@ -404,8 +404,8 @@ html, body {
               display: flex;
               .player-tile{
                 position: relative;
-                height: 7em;
-                width: 7em;
+                height: 6.2em;
+                width: 6.2em;
                 margin: 0.5em;
                 border-radius: 0.33em;
                 overflow: hidden;
@@ -459,10 +459,10 @@ html, body {
                   align-items: center;
                   justify-content: center;
                   position: relative;
-                  min-width: 12em;
-                  height: 12em;
-                  min-height: 12em;
-                  border: 5px dashed $element_shadow;
+                  min-width: 9em;
+                  height: 9em;
+                  min-height: 9em;
+                  border: 3px dashed $element_shadow;
                   border-radius: 50%;
                   flex: 1;
                   transition: 0.2s linear all;
@@ -695,7 +695,7 @@ html, body {
                     text-align: center;
                     flex: 1;
                     h2 {
-                      font-size: 4em;
+                      font-size: 3em;
                       text-transform: none;
                     }
                   }
@@ -718,8 +718,8 @@ html, body {
                         .single-image{
                           display: flex;
                           justify-content: center;
-                          height: 16em;
-                          width: 16em;
+                          height: 10.5em;
+                          width: 10.5em;
                           border-radius: 50%;
                           background-position: center center;
                           background-size: cover;
@@ -755,7 +755,7 @@ html, body {
                           display: flex;
                           justify-content: center;
                           .image-label{
-                            font-size: 1.5em;
+                            font-size: 1em;
                             border: 1px solid $white;
                             background:transparent;
                             color: $white;
@@ -821,10 +821,9 @@ html, body {
                       align-items: center;
                       display: flex;
                       img {
-                        width: 4.6em;
-                        height:4.6em;
+                        width: 4em;
+                        height:4em;
                         border-radius: 50%;
-                        margin-right: 0.5em;
                       }
                     }
                     .detail {
@@ -948,8 +947,8 @@ html, body {
         align-items: center;
         .icon-logo{
           display: inline-block;
-          width:  2.7em;
-          height: 1.875em;
+          width: 2.3em;
+          height: 1.76em;
           background: url('../img/pong_logo.svg') center center no-repeat;
           background-size: cover;
         }

@@ -42,11 +42,11 @@ export default class PlayerListItem extends Component {
 
 PlayerListItem.propTypes = {
   fetchPlayerDetails: React.PropTypes.func,
-  placement: React.PropTypes.number,
+  placement: React.PropTypes.string,
   playerId: React.PropTypes.number,
   playerName: React.PropTypes.string,
   playerImg: React.PropTypes.string,
   wins: React.PropTypes.number,
   losses: React.PropTypes.number,
-  active: React.PropTypes.boolean
+  active: React.PropTypes.bool
 };

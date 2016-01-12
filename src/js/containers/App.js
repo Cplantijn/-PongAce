@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import * as PongActions from '../actions/scores'
-import io from 'socket.io-client'
-import MainComponent from '../components/MainComponent'
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as PongActions from '../actions';
+import io from 'socket.io-client';
+import MainComponent from '../components/MainComponent';
 
 class App extends Component {
   constructor(props) {
@@ -103,10 +103,6 @@ class App extends Component {
         }
       }
     });
-    //Testing override
-    // document.addEventListener('keydown', function(e) {
-    //   console.log(e)
-    // })
   }
   render() {
     return (

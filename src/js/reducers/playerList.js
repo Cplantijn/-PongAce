@@ -1,10 +1,11 @@
+import _ from 'underscore';
 import {
   LIST_PLAYERS,
   CLEAR_PLAYER_LIST,
   START_SELECTION,
   END_SELECTION,
   HIGHLIGHT_SELECTION
-} from '../actions/scores';
+} from '../actions';
 
 export default function playerList(state = {}, action) {
   let tList = action.playerList;

@@ -2,7 +2,7 @@ import {
   SHOW_MESSAGE,
   HIDE_MESSAGE,
   REMOVE_SHAKE
-} from '../actions/scores';
+} from '../actions';
 
 export default function userMessage(state = {
   isShowing: false,

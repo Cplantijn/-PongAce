@@ -22,7 +22,7 @@ import  {
   CHANGE_GAME_POINT,
   CHANGE_SERVE_INTERVAL,
   FETCH_SETTINGS
-} from '../actions/scores';
+} from '../actions';
 
 var howl = new Howl(musicOpts);
 
