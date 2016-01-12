@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
-import FontAwesome from 'react-fontawesome'
-import classNames from 'classNames'
-import config from '../../../config'
-import ProfilesOverlay from './ProfilesOverlay'
-import PlayerSelectOverlay from './PlayerSelectOverlay'
-import HideOverlay from './HideOverlay'
-import SettingsOverlay from './SettingsOverlay'
+import React, { Component } from 'react';
+import classNames from 'classNames';
+import config from '../../../config';
+import ProfilesOverlay from './Profiles';
+import PlayerSelectOverlay from './PlayerSelectOverlay';
+import HideOverlay from './HideOverlay';
+import SettingsOverlay from './SettingsOverlay';
 
 
 export default class Overlay extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   render() {
     var { overlay, hideOverlay, playerGroup } = this.props;

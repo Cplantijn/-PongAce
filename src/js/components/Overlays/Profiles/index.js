@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import FontAwesome from 'react-fontawesome'
-import PlayerListItem from './PlayerListItem'
-import classNames from 'classNames'
-import ps from 'perfect-scrollbar'
-import PlayerDetail from './PlayerDetail'
-import _ from 'underscore'
+import React, { Component } from 'react';
+import PlayerListItem from './PlayerListItem';
+import classNames from 'classNames';
+import ps from 'perfect-scrollbar';
+import PlayerDetail from './PlayerDetail';
+import _ from 'underscore';
 
 export default class ProfilesOverlay extends Component {
   constructor(props) {
@@ -12,9 +11,6 @@ export default class ProfilesOverlay extends Component {
   }
   componentDidMount() {
     var  ul = this.refs.playerList;
-    {/* ctnHeight = this.refs.playerListMasterContainer.offsetHeight,
-    // viewCtn = this.refs.viewPlayerHeader.offsetHeight,
-    // flrHeight = this.refs.playerFilterInput.offsetHeight; */}
     ul.style.height = 710;
     ps.initialize(ul, {
       suppressScrollX: true
@@ -70,7 +66,7 @@ export default class ProfilesOverlay extends Component {
       'empty': empty,
       'player-shown': !empty
     });
-    
+
     return (
       <div className="profiles-container">
         <div className="player-add-container">

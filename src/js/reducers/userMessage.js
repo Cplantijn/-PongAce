@@ -4,7 +4,7 @@ import {
   REMOVE_SHAKE
 } from '../actions/scores';
 
-export function userMessage(state = {
+export default function userMessage(state = {
   isShowing: false,
   type: null,
   message: null,

@@ -4,7 +4,7 @@ import  {
 } from '../actions/scores';
 
 
-export function overlay(state = {
+export default function overlay(state = {
   isOpen: false,
   activeIndex: null,
   profilesData: {

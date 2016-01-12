@@ -6,7 +6,7 @@ import {
   HIGHLIGHT_SELECTION
 } from '../actions/scores';
 
-export function playerList(state = {}, action) {
+export default function playerList(state = {}, action) {
   let tList = action.playerList;
   switch (action.type) {
     case LIST_PLAYERS:

@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import _ from 'underscore'
-import Footer from './Footer'
-import TopBar from './TopBar'
-import classNames from 'classNames'
-import Overlay from './Overlay'
-import GameComponent from './GameComponent'
+import React, { Component } from 'react';
+import Footer from './Footer';
+import TopBar from './TopBar';
+import classNames from 'classNames';
+import Overlay from './Overlays';
+import GameComponent from './GameComponent';
 
 export default class MainComponent extends Component {
   constructor(props) {

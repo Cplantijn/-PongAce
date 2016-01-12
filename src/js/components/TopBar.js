@@ -1,19 +1,19 @@
-import React, { Component } from 'react'
-import classNames from 'classNames'
-import Message from './Message'
+import React, { Component } from 'react';
+import classNames from 'classNames';
+import Message from './Message';
 
 export default class TopBar extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    var { userMessage } = this.props;
-    var outCls = classNames({
+    const { userMessage } = this.props;
+    const outCls = classNames({
       'top-content-container': true,
       'logo-container': true,
       'msg-shown': userMessage.isShowing,
-      'msg-hidden': (!userMessage.isShowing && userMessage.message.trim().length)
-    })
+      'msg-hidden': !userMessage.isShowing
+    });
     return (
       <div className="top-bar pong-section">
           <Message userMessage={userMessage} />
@@ -21,6 +21,10 @@ export default class TopBar extends Component {
             <h1 className="logo-header"><span className="icon-logo"></span></h1>
           </div>
       </div>
-    )
+    );
   }
 }
+
+TopBar.propTypes = {
+  userMessage: React.PropTypes.object
+};

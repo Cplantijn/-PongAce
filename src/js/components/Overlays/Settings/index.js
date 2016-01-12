@@ -3,15 +3,15 @@ import FontAwesome from 'react-fontawesome'
 
 export default class SettingsOverlay extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   componentDidMount() {
-    var  { fetchSettings } = this.props;
+    const  { fetchSettings } = this.props;
     fetchSettings();
   }
   _changeGamePoint(e) {
-    var num = e.target.value;
-    var { changeGamePoint } = this.props;
+    const { changeGamePoint } = this.props;
+    let num = e.target.value;
 
     if (!isNaN(num)) {
       if (num < 100) {
@@ -21,9 +21,9 @@ export default class SettingsOverlay extends Component {
     }
   }
   _changeServeInterval(e) {
-    var num = e.target.value;
-    var { changeServeInterval, playerGroup } = this.props;
-    var gp = playerGroup.game.serveInterval;
+    const { changeServeInterval, playerGroup } = this.props;
+    const gp = playerGroup.game.serveInterval;
+    let num = e.target.value;
 
     if (!isNaN(num)) {
       if (num < gp) {
@@ -33,16 +33,16 @@ export default class SettingsOverlay extends Component {
     }
   }
   _stepServeInterval(num) {
-    var { playerGroup, changeServeInterval } = this.props;
-    var gp = playerGroup.game.gamePoint;
-    var si = playerGroup.game.serveInterval;
+    const { playerGroup, changeServeInterval } = this.props;
+    const gp = playerGroup.game.gamePoint;
+    const si = playerGroup.game.serveInterval;
     if (((si + num) > 0) && ((si + num) < gp)) {
       changeServeInterval(parseInt(si + num, 10));
     }
   }
   _stepGamePoint(num) {
-    var { playerGroup, changeGamePoint } = this.props;
-    var gp = playerGroup.game.gamePoint;
+    const { playerGroup, changeGamePoint } = this.props;
+    const gp = playerGroup.game.gamePoint;
     if ((num > 0 && gp < 99) || (num < 0 && gp > 1)) {
       changeGamePoint(parseInt(gp + num, 10));
     }
@@ -97,8 +97,7 @@ export default class SettingsOverlay extends Component {
             </div>
           </div>
         </div>
-
       </div>
-    )
+    );
   }
 }

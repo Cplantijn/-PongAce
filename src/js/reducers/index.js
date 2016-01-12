@@ -12,6 +12,9 @@ import showcasePlayer from './showcasePlayer';
 import  {
   JOIN_GROUP,
   RESET_GROUPS,
+  START_SELECTION,
+  END_SELECTION,
+  HIGHLIGHT_SELECTION,
   READY_UP,
   START_GAME,
   END_GAME,

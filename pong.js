@@ -10,6 +10,7 @@ var fs = require('fs');
 var config = require('./config');
 var five = require('johnny-five');
 var db = require('./db_actions');
+var colors = require('colors/safe');
 var gm = require('gm').subClass({
   imageMagick: true
 });
@@ -148,5 +149,6 @@ board.on('ready', function() {
 
 http.listen(port, function() {
   db.initTable();
-  console.log('Playing pong on http://localhost:' + port);
+  var listenMsg = 'Playing pong on http://localhost:' + port + '!';
+  console.log(colors.rainbow(listenMsg));
 });

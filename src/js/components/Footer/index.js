@@ -1,39 +1,38 @@
-import React, { Component } from 'react'
-import FontAwesome from 'react-fontawesome'
-import classNames from 'classNames'
-import { ProfilesOverlayItem, LeaderboardOverlayItem, HistoryOverlayItem, GameSettingsOverlayItem } from './OverlayItems'
+import React, { Component } from 'react';
+import classNames from 'classNames';
+import { ProfilesOverlayItem, LeaderboardOverlayItem, HistoryOverlayItem, GameSettingsOverlayItem } from './OverlayItems';
 
 
 export default class Footer extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   _toggleOverlay(overlayIndex) {
-    var { hideOverlay, showOverlay, overlay, fetchPlayers } = this.props;
+    const { hideOverlay, showOverlay, overlay, fetchPlayers } = this.props;
     if (overlayIndex === 0 && overlayIndex !== overlay.activeIndex) {
-      fetchPlayers('','updated_on DESC');
+      fetchPlayers('', 'updated_on DESC');
     }
     if (overlay.activeIndex !== overlayIndex && overlay.isOpen) {
       hideOverlay();
-      setTimeout(function(){
-        showOverlay(overlayIndex)
-      }, 600)
+      setTimeout(function() {
+        showOverlay(overlayIndex);
+      }, 600);
     } else if (overlay.activeIndex === overlayIndex && overlay.isOpen) {
-      hideOverlay()
+      hideOverlay();
     } else if (overlay.activeIndex === overlayIndex && !overlay.isOpen) {
       if (overlay.activeIndex === 0) {
-        fetchPlayers('','updated_on DESC');
+        fetchPlayers('', 'updated_on DESC');
       }
-      showOverlay(overlayIndex)
+      showOverlay(overlayIndex);
     } else {
-      showOverlay(overlayIndex)
+      showOverlay(overlayIndex);
     }
   }
   render() {
-    var cls = classNames({
+    const cls = classNames({
       'pong-section': true,
       'footer-bar': true,
-    })
+    });
     return (
       <div className={cls}>
         <div className="footer-container">
@@ -43,6 +42,13 @@ export default class Footer extends Component {
           <GameSettingsOverlayItem onClick={this._toggleOverlay.bind(this)} {...this.props} />
         </div>
       </div>
-    )
+    );
   }
 }
+
+Footer.propTypes = {
+  hideOverlay: React.PropTypes.func,
+  showOverlay: React.PropTypes.func,
+  fetchPlayers: React.PropTypes.func,
+  overlay: React.PropTypes.object
+};
