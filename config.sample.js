@@ -4,15 +4,15 @@ var pool = 'abcdefghijklmnopqrstuvwxyz';
 pool = pool + pool.toUpperCase() + '_0123456789';
 
 module.exports = {
-  'dbFile': 'pong.db', //name of the flat DB file created and used by SQLite
-  'boardPort': '/dev/tty.PONGBLUE-DevB', //Name of Bluetooth transceiver connected to arduino. do `ls -al /dev/` to see yours once connected.
+  'dbFile': 'YOUR_DB_NAME.db', //name of the flat DB file created and used by SQLite
+  'boardPort': 'YOUR_ARDUINOS_BLUE_TOOTH_NAME', //Name of Bluetooth transceiver connected to arduino. do `ls -al /dev/` to see yours once connected.
   'btnOne': {
-    'pin': 2, // Signal port for the arduino board button one is connected to.
+    'pin': 'PIN LOCATION FOR BTN 1', // Signal port for the arduino board button one is connected to.
     'holdtime': 800 //m.s of how long button needs to be held for a "hold" to be registered.
   },
   'btnTwo': {
-    'pin': 3, // Signal port for the arduino board button two is connected to.
-    'holdtime': 1200 //m.s of how long button needs to be held for a "hold" to be registered.
+    'pin': 'PIN LOCATION FOR BTN 2', // Signal port for the arduino board button two is connected to.
+    'holdtime': 800 //m.s of how long button needs to be held for a "hold" to be registered.
   },
   'overlayScreens': { //Colors used in panel. Will probably deprecate this soon and use 100% sass values. Make sure these colors and the `colors.scss` files are consistent.
     'profiles': {

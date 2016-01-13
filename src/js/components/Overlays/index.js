@@ -12,7 +12,7 @@ export default class Overlay extends Component {
     super(props);
   }
   render() {
-    var { overlay, hideOverlay, playerGroup } = this.props;
+    var { overlay, hideOverlay, playerGroup, changePlayerPic } = this.props;
     var styles,
         overlays = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'],
         activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles',

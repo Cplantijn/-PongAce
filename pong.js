@@ -104,10 +104,11 @@ app.post('/update/player/picture', function(req, res) {
   });
 });
 
-board = new five.Board({
-  port: config.boardPort
-});
+// board = new five.Board({
+//   port: config.boardPort
+// });
 
+board = new five.Board();
 board.on('ready', function() {
   btnOne = new five.Button(config.btnOne);
   btnOneDowned = false;
@@ -149,6 +150,7 @@ board.on('ready', function() {
 
 http.listen(port, function() {
   db.initTable();
-  var listenMsg = 'Playing pong on http://localhost:' + port + '!';
-  console.log(colors.rainbow(listenMsg));
+  var pongIcon = String.fromCharCode('0xD83C', '0xDFD3');
+  var listenMsg = pongIcon + '  Playing pong on http://localhost:' + port + '!  ' + pongIcon;
+  console.log(listenMsg);
 });

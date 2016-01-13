@@ -22,7 +22,8 @@ export default class MainComponent extends Component {
       fetchSettings,
       changeGamePoint,
       changeServeInterval,
-      startSelection
+      startSelection,
+      changePlayerPic
     } = this.props;
     const cls = classNames({
       'game-component-container': true,
@@ -45,6 +46,7 @@ export default class MainComponent extends Component {
             changeGamePoint={changeGamePoint}
             changeServeInterval={changeServeInterval}
             startSelection={startSelection}
+            changePlayerPic={changePlayerPic}
             hideOverlay={hideOverlay} />
         </div>
         <Footer {...this.props}/>
@@ -65,5 +67,6 @@ MainComponent.propTypes = {
   fetchSettings: React.PropTypes.func,
   changeGamePoint: React.PropTypes.func,
   changeServeInterval: React.PropTypes.func,
-  startSelection: React.PropTypes.func
+  startSelection: React.PropTypes.func,
+  changePlayerPic: React.PropTypes.func
 };
