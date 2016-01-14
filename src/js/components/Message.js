@@ -7,9 +7,9 @@ export default class Message extends Component {
   }
   render() {
     var { userMessage } = this.props;
-    var msgCls = classNames({
+    const msgCls = classNames({
       'top-content-container': true,
-      'message-container' : true,
+      'message-container': true,
       'msg-shown': userMessage.isShowing,
       'msg-hidden': !userMessage.isShowing,
       'danger': userMessage.type === 'danger',
@@ -17,7 +17,9 @@ export default class Message extends Component {
       'info': userMessage.type === 'info',
       'warning': userMessage.type === 'warning',
       'group-one': userMessage.type === 'group-one',
-      'group-two': userMessage.type === 'group-two'
+      'group-two': userMessage.type === 'group-two',
+      'group-one-win': userMessage.type === 'group-one-win',
+      'group-two-win': userMessage.type === 'group-two-win',
     });
     var shakeCls = classNames({
       'shake': userMessage.shake

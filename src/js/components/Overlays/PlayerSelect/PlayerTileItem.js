@@ -13,12 +13,12 @@ export default class PlayerTileItem extends Component {
     }
   }
   _makeSelection() {
-    var { player, joinGroup, playerGroup, selectingGroup,
+    var { player, joinGroup, game, selectingGroup,
           selectingPlayer, joinGroup, showSelectionWarning } = this.props;
     var { id, name, standardPose, winningPose } = player;
 
-    if (playerGroup.isSelecting) {
-      if (playerGroup.selectedIds.indexOf(id) == -1) {
+    if (game.isSelecting) {
+      if (game.selectedIds.indexOf(id) == -1) {
         joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
       } else {
         showSelectionWarning();
@@ -26,7 +26,7 @@ export default class PlayerTileItem extends Component {
     }
   }
   render() {
-    var { playerGroup, player, selectingGroup } = this.props;
+    var { game, player, selectingGroup } = this.props;
     var style = {
       backgroundImage: 'url("/player_img/'+ player.standardPose + '")'
     }

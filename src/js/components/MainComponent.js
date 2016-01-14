@@ -11,7 +11,7 @@ export default class MainComponent extends Component {
   }
   render() {
     const {
-      playerGroup,
+      game,
       createNewPlayer,
       fetchPlayers,
       playerList,
@@ -23,11 +23,16 @@ export default class MainComponent extends Component {
       changeGamePoint,
       changeServeInterval,
       startSelection,
-      changePlayerPic
+      changePlayerPic,
+      hideMessage,
+      endSelection,
+      highlightSelection,
+      joinGroup,
+      showSelectionWarning
     } = this.props;
     const cls = classNames({
       'game-component-container': true,
-      'no-game': !playerGroup.game.active && !playerGroup.game.ended
+      'no-game': !game.game.active && !game.game.ended
     });
     return (
       <div className="main-component container-fluid">
@@ -35,7 +40,7 @@ export default class MainComponent extends Component {
         <div className={cls}>
           <GameComponent {...this.props}/>
           <Overlay
-            playerGroup={playerGroup}
+            game={game}
             createNewPlayer={createNewPlayer}
             fetchPlayers={fetchPlayers}
             playerList={playerList}
@@ -47,6 +52,11 @@ export default class MainComponent extends Component {
             changeServeInterval={changeServeInterval}
             startSelection={startSelection}
             changePlayerPic={changePlayerPic}
+            highlightSelection={highlightSelection}
+            hideMessage={hideMessage}
+            endSelection={endSelection}
+            joinGroup={joinGroup}
+            showSelectionWarning={showSelectionWarning}
             hideOverlay={hideOverlay} />
         </div>
         <Footer {...this.props}/>
@@ -56,7 +66,7 @@ export default class MainComponent extends Component {
 }
 
 MainComponent.propTypes = {
-  playerGroup: React.PropTypes.object,
+  game: React.PropTypes.object,
   createNewPlayer: React.PropTypes.func,
   fetchPlayers: React.PropTypes.func,
   playerList: React.PropTypes.object,
@@ -68,5 +78,10 @@ MainComponent.propTypes = {
   changeGamePoint: React.PropTypes.func,
   changeServeInterval: React.PropTypes.func,
   startSelection: React.PropTypes.func,
-  changePlayerPic: React.PropTypes.func
+  changePlayerPic: React.PropTypes.func,
+  hideMessage: React.PropTypes.func,
+  endSelection: React.PropTypes.func,
+  highlightSelection: React.PropTypes.func,
+  joinGroup: React.PropTypes.func,
+  showSelectionWarning: React.PropTypes.func,
 };

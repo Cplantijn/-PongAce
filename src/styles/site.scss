@@ -994,8 +994,16 @@ html, body {
           &.group-one{
             background: $main_color;
           }
+          &.group-one-win{
+            background: $white;
+            color: $main_color;
+          }
           &.group-two{
             background: $secondary_color;
+          }
+          &.group-two-win{
+            background: $white;
+            color: $secondary_color;
           }
           &.msg-shown {
             z-index:1;

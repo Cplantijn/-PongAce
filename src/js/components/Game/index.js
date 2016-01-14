@@ -15,20 +15,20 @@ export default class GameComponent extends Component {
     showOverlay(4);
   }
   render() {
-    var {playerGroup, playerGroup, endGame} = this.props;
+    var {game, game, endGame} = this.props;
     var mainBody;
-    var serving = playerGroup.groupOne.serving ? 'groupOne' : 'groupTwo';
-    if (playerGroup.game.active || playerGroup.game.ended) {
+    var serving = game.groupOne.serving ? 'groupOne' : 'groupTwo';
+    if (game.game.active || game.game.ended) {
       mainBody = <div className="master-game-container">
-                  <WinnerPopUp playerGroup={playerGroup}/>
+                  <WinnerPopUp game={game}/>
                   <ServingBanner side={serving}/>
                   <GameQuit endGame={endGame}/>
                   <GameGroupContainer
                     group="groupOne"
-                    activeGroup={playerGroup.groupOne} />
+                    activeGroup={game.groupOne} />
                   <GameGroupContainer
                     group="groupTwo"
-                    activeGroup={playerGroup.groupTwo} />
+                    activeGroup={game.groupTwo} />
                 </div>;
     } else {
       mainBody = <div

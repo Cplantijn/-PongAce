@@ -8,9 +8,10 @@ import {
 } from '../actions';
 
 export default function playerList(state = {}, action) {
-  let tList = action.playerList;
+  let tList = state;
   switch (action.type) {
     case LIST_PLAYERS:
+      tList = action.playerList;  
       return {
         ...tList
       }

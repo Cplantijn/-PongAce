@@ -8,22 +8,22 @@ export default class WinnerPopUp extends Component {
     super(props);
   }
   render() {
-    var { playerGroup } = this.props;
+    var { game } = this.props;
     var winnerGroup = null, loserGroup = null, winningScore = null, losingScore = null;
-    var winningKey = playerGroup.winner;
+    var winningKey = game.winner;
     var losingKey = winningKey == 'groupOne' ? 'groupTwo' : 'groupOne';
     var cls = classNames({
       'winner-pop': true,
-      'open': playerGroup.winner !== null,
-      'group-one': playerGroup.winner == 'groupOne',
-      'group-two': playerGroup.winner == 'groupTwo'
+      'open': game.winner !== null,
+      'group-one': game.winner == 'groupOne',
+      'group-two': game.winner == 'groupTwo'
     });
 
-    if (playerGroup.winner) {
+    if (game.winner) {
       var winKey = -1;
       var loseKey = -1;
       var winningMessage='';
-      winnerGroup = _.map(playerGroup[winningKey], function(el, key){
+      winnerGroup = _.map(game[winningKey], function(el, key){
         if (key == 'playerOne' || key == 'playerTwo') {
           if (el.active) {
             var style = {
@@ -45,7 +45,7 @@ export default class WinnerPopUp extends Component {
         }
       });
 
-      loserGroup = _.map(playerGroup[losingKey], function(el, key){
+      loserGroup = _.map(game[losingKey], function(el, key){
         if (key == 'playerOne' || key == 'playerTwo') {
           if (el.active) {
             var style = {
@@ -67,15 +67,15 @@ export default class WinnerPopUp extends Component {
       } else {
         winningMessage+=' wins!'
       }
-      if (playerGroup[winningKey].rawScore > playerGroup.game.gamePoint ){
-        winningScore = <h2>{playerGroup[winningKey].score}<span className="raw-score">({playerGroup[winningKey].rawScore})</span></h2>
+      if (game[winningKey].rawScore > game.game.gamePoint ){
+        winningScore = <h2>{game[winningKey].score}<span className="raw-score">({game[winningKey].rawScore})</span></h2>
       } else {
-        winningScore = <h2>{playerGroup[winningKey].score}</h2>
+        winningScore = <h2>{game[winningKey].score}</h2>
       }
-      if (playerGroup[losingKey].rawScore > playerGroup.game.gamePoint ){
-        losingScore = <h2>{playerGroup[losingKey].score}<span className="raw-score">({playerGroup[losingKey].rawScore})</span></h2>
+      if (game[losingKey].rawScore > game.game.gamePoint ){
+        losingScore = <h2>{game[losingKey].score}<span className="raw-score">({game[losingKey].rawScore})</span></h2>
       } else {
-        losingScore = <h2>{playerGroup[losingKey].score}</h2>
+        losingScore = <h2>{game[losingKey].score}</h2>
       }
     }
 

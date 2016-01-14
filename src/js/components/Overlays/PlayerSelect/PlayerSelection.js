@@ -7,7 +7,8 @@ export default class PlayerSelection extends Component {
     super(props)
   }
   render() {
-    var { startSelection, show, player, group, playerType, contracted} = this.props;
+    var { startSelection, show, player, 
+          group, playerType, contracted} = this.props;
     var { active, standardPose, name, selecting } = player;
     var alignment = active ? 'stretch' : 'center';
 

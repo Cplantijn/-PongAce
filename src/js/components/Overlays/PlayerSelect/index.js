@@ -13,7 +13,7 @@ export default class PlayerSelectOverlay extends Component {
     document.addEventListener('keydown', this._handleKeyDown.bind(this));
   }
   componentWillUnmount() {
-    var { hideMessage, endSelection } = this.props;
+    const { hideMessage, endSelection } = this.props;
     hideMessage();
     endSelection();
     document.removeEventListener('keydown', this._handleKeyDown.bind(this));
@@ -23,8 +23,8 @@ export default class PlayerSelectOverlay extends Component {
     resetGroups();
   }
   _handleKeyDown(e) {
-    var { playerGroup, playerList, highlightSelection, joinGroup, showSelectionWarning } = this.props;
-    var { highlightId, selectingPlayer, selectingGroup, isSelecting } = playerGroup;
+    var { game, playerList, highlightSelection, joinGroup, showSelectionWarning } = this.props;
+    var { highlightId, selectingPlayer, selectingGroup, isSelecting } = game;
 
     var key = e.which;
     var acceptKeys = [37, 38, 39, 40, 13]; //Left, Up, Right, Down, Enter
@@ -38,13 +38,13 @@ export default class PlayerSelectOverlay extends Component {
             }
           }
           var {id, name, standardPose, winningPose } = player;
-          if (playerGroup.selectedIds.indexOf(id) == -1) {
+          if (game.selectedIds.indexOf(id) == -1) {
             joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
           } else {
             showSelectionWarning();
           }
         } else {
-          var currentSelectionId = playerGroup.highlightId,
+          var currentSelectionId = game.highlightId,
               currentSelectIndex, selectionFound = false;
 
           if (currentSelectionId == null) {
@@ -79,8 +79,8 @@ export default class PlayerSelectOverlay extends Component {
   }
 
   render() {
-    var { startSelection, playerList, playerGroup, highlightSelection,
-          playerGroup, selectingGroup, selectingPlayer, joinGroup, showSelectionWarning } = this.props;
+    var { startSelection, playerList, game, highlightSelection,
+          game, selectingGroup, selectingPlayer, joinGroup, showSelectionWarning } = this.props;
     var playerRows = null, playerContainer = null, row = 0;
     var message = 'Choose your players';
     var messageCls = '';
@@ -97,18 +97,18 @@ export default class PlayerSelectOverlay extends Component {
           <PlayerTileRow
             key={j}
             players={playerRow}
-            playerGroup={playerGroup}
+            game={game}
             joinGroup={joinGroup}
-            isSelecting={playerGroup.isSelecting}
-            selectingGroup={playerGroup.selectingGroup}
-            selectingPlayer={playerGroup.selectingPlayer}
+            isSelecting={game.isSelecting}
+            selectingGroup={game.selectingGroup}
+            selectingPlayer={game.selectingPlayer}
             highlightSelection={highlightSelection}
             showSelectionWarning={showSelectionWarning} />
         )
       });
     }
 
-    if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
+    if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
       message = 'Hold your side\'s button to ready up';
     }
     return (
@@ -133,7 +133,7 @@ export default class PlayerSelectOverlay extends Component {
           <PlayerGroup
             showSelectionWarning={showSelectionWarning}
             startSelection={startSelection}
-            group={playerGroup.groupOne}
+            group={game.groupOne}
             groupNumber={1} />
           <div className="player-group-seperator">
             <div className="line-container">
@@ -149,7 +149,7 @@ export default class PlayerSelectOverlay extends Component {
           <PlayerGroup
             showSelectionWarning={showSelectionWarning}
             startSelection={startSelection}
-            group={playerGroup.groupTwo}
+            group={game.groupTwo}
             groupNumber={2} />
         </div>
       </div>

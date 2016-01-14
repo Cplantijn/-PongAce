@@ -40,6 +40,7 @@
     "gulp-util": "^3.0.7",
     "gulp-watch": "^4.3.5",
     "lodash.assign": "^3.2.0",
+    "node-emoji": "^1.0.4",
     "reactify": "^1.1.1",
     "redux-logger": "^2.0.4",
     "underscore.deepclone": "^0.1.1",

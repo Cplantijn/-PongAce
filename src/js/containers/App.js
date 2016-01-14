@@ -10,21 +10,21 @@ class App extends Component {
     super(props)
   }
   componentDidMount() {
-    var {playerGroup, toggleReady, hideOverlay, modifyPoint, resetGroups } = this.props;
+    var {game, toggleReady, hideOverlay, modifyPoint, resetGroups } = this.props;
     this.socket = io();
     this.socket.on('btnHold', function(side) {
-      if (playerGroup.game.active) {
+      if (game.game.active) {
         modifyPoint(side, 'REMOVE');
-      } else if (!playerGroup.game.active && playerGroup.game.ended) {
-        if (!playerGroup[side].ready) {
+      } else if (!game.game.active && game.game.ended) {
+        if (!game[side].ready) {
           if (side == 'groupOne') {
-            if (playerGroup.groupTwo.ready) {
+            if (game.groupTwo.ready) {
               toggleReady(side, true);
             } else{
               toggleReady(side, false);
             }
           } else {
-            if (playerGroup.groupOne.ready) {
+            if (game.groupOne.ready) {
               toggleReady(side, true);
             } else{
               toggleReady(side, false);
@@ -34,16 +34,16 @@ class App extends Component {
           toggleReady(side, false);
         }
       } else {
-        if (playerGroup.groupOne.playerOne.active && playerGroup.groupTwo.playerOne.active) {
-          if (!playerGroup[side].ready) {
+        if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
+          if (!game[side].ready) {
             if (side == 'groupOne') {
-              if (playerGroup.groupTwo.ready) {
+              if (game.groupTwo.ready) {
                 toggleReady(side, true);
               } else{
                 toggleReady(side, false);
               }
             } else {
-              if (playerGroup.groupOne.ready) {
+              if (game.groupOne.ready) {
                 toggleReady(side, true);
               } else{
                 toggleReady(side, false);
@@ -56,46 +56,46 @@ class App extends Component {
       }
     });
     this.socket.on('btnDblDown', function(side) {
-      if (!playerGroup.game.active && playerGroup.game.ended) {
+      if (!game.game.active && game.game.ended) {
         resetGroups();
       }
     });
     this.socket.on('btnDown', function(side) {
-      if (playerGroup.game.active) {
+      if (game.game.active) {
         modifyPoint(side, 'ADD');
       }
     });
 
     window.addEventListener('keydown', function(e) {
       if (e.which == 49) {
-        if (playerGroup.game.active) { //Group 1 press, 1
+        if (game.game.active) { //Group 1 press, 1
           modifyPoint('groupOne', 'ADD');
         }
       }else if (e.which == 50) { //Group 2 press, 2
-        if (playerGroup.game.active) {
+        if (game.game.active) {
           modifyPoint('groupTwo', 'ADD');
         }
       } else if (e.which == 51) { //Double Tap, 3
         console.log('butn 3 tapped')
-        if (!playerGroup.game.active && playerGroup.game.ended) {
+        if (!game.game.active && game.game.ended) {
           console.log('reset');
           resetGroups();
         }
     } else if (e.which == 189) { //Group 1 hold, -
-        if (playerGroup.game.active) {
+        if (game.game.active) {
           modifyPoint('groupOne', 'REMOVE');
         } else {
-          if (playerGroup.groupTwo.ready) {
+          if (game.groupTwo.ready) {
             toggleReady('groupOne', true);
           } else{
             toggleReady('groupOne', false);
           }
         }
       }else if (e.which == 187) { // Group 2 hold, =
-        if (playerGroup.game.active) {
+        if (game.game.active) {
           modifyPoint('groupTwo', 'REMOVE');
         } else {
-          if (playerGroup.groupOne.ready) {
+          if (game.groupOne.ready) {
             toggleReady('groupTwo', true);
           } else{
             toggleReady('groupTwo', false);
@@ -114,7 +114,7 @@ class App extends Component {
 function mapStateToProps(state) {
   return {
     overlay: state.overlay,
-    playerGroup: state.playerGroup,
+    game: state.game,
     game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,

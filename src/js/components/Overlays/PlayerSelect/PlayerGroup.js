@@ -3,7 +3,7 @@ import _ from 'underscore'
 import PlayerSelection from './PlayerSelection'
 import classNames from 'classNames'
 
-export default class PlayerGroup extends Component {
+export default class game extends Component {
   constructor(props) {
     super(props)
   }

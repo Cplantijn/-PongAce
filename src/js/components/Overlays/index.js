@@ -12,24 +12,25 @@ export default class Overlay extends Component {
     super(props);
   }
   render() {
-    var { overlay, hideOverlay, playerGroup, changePlayerPic } = this.props;
-    var styles,
-        overlays = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'],
-        activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles',
-        overlayBody, show = true;
+    const { overlay, hideOverlay, game, changePlayerPic } = this.props;
+    const overlays = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'];
+    const activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles';
+    let overlayBody;
+    let show = true;
 
-    var oCls = classNames({
+    const oCls = classNames({
       'main-overlay': true,
       'closed': !overlay.isOpen,
       'opened': overlay.isOpen
     });
 
-    var styles = {
+    const styles = {
       'backgroundColor': config.overlayScreens[activeOverlay].backgroundColor,
       'color': config.overlayScreens[activeOverlay].pageTextColor
-    }
-    if (!playerGroup.game.active) {
-      switch(activeOverlay) {
+    };
+
+    if (!game.game.active) {
+      switch (activeOverlay) {
         case 'profiles':
           overlayBody = <ProfilesOverlay {...this.props}/>;
           break;
@@ -41,10 +42,10 @@ export default class Overlay extends Component {
           overlayBody = <SettingsOverlay {...this.props} />;
           break;
         default:
-        overlayBody = <div></div>;
+          overlayBody = <div></div>;
       }
     } else {
-      overlayBody = <div className="game-active"><h1>GAME IS ACTIVE.<br />PLEASE END THE GAME FIRST</h1></div>
+      overlayBody = <div className="game-active"><h1>GAME IS ACTIVE.<br />PLEASE END THE GAME FIRST</h1></div>;
     }
 
     return (
@@ -57,6 +58,6 @@ export default class Overlay extends Component {
           {overlayBody}
         </div>
       </div>
-    )
+    );
   }
 }

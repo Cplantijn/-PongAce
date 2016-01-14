@@ -80,39 +80,40 @@ export function changeServeInterval(point) {
     serveIntervalTimeout = setTimeout(function() {
       dispatch(saveSetting('serve_interval', point));
     }, 400);
-  }
-  return {
-    type: actions.CHANGE_GAME_POINT,
-    point: point
-  }
+    return {
+      type: actions.CHANGE_GAME_POINT,
+      point
+    };
+  };
 }
 
 export function endSelection() {
   return {
     type: actions.END_SELECTION
-  }
+  };
 }
 
 export function modifyPoint(group, event) {
   return (dispatch, getState) => {
     dispatch(pointModify(group, event));
     const {
-      playerGroup
+      game
     } = getState();
-    if (!playerGroup.game.active) {
+    if (!game.game.active) {
       dispatch(gameEnd());
-      dispatch(saveStats(playerGroup));
-      dispatch(showMessage('info', 'HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
+      dispatch(saveStats(game));
+      const bannerTheme = game.winner === 'groupOne' ? 'group-one-win' : 'group-two-win';
+      dispatch(showMessage(bannerTheme, 'HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
     }
-  }
+  };
 }
 
 export function endGame() {
   howl.play('no_contest', function() {
     setTimeout(function() {
       howl.play('crowd_upset');
-    }, 1000)
-  })
+    }, 1000);
+  });
   return dispatch => {
     clearTimeout(msgTimeout);
     dispatch(showMessage('warning', 'THE GAME HAS ENDED'));
@@ -121,15 +122,15 @@ export function endGame() {
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage());
     }, 3000);
-  }
+  };
 }
 
 export function toggleReady(side, gameStart) {
   return (dispatch, getState) => {
     var {
-      playerGroup
+      game
     } = getState();
-    if (!playerGroup[side].ready) {
+    if (!game[side].ready) {
       howl.play('ready');
     }
     dispatch(readyToggle(side));
@@ -327,7 +328,7 @@ export function createNewPlayer(playerName) {
       if (playerName.trim().length > 21) {
         dispatch(showMessage('danger', 'Player Name is too long.'));
         msgTimeout = setTimeout(function() {
-          dispatch(hideMessage())
+          dispatch(hideMessage());
         }, 3000);
       } else {
         return fetch('/create/player', {
@@ -417,10 +418,10 @@ function saveSetting(column, value) {
   }
 }
 
-function saveStats(playerGroup) {
+function saveStats(game) {
   var {
     groupOne, groupTwo, winner
-  } = playerGroup;
+  } = game;
   var loser = winner == 'groupOne' ? 'groupTwo' : 'groupOne';
   var winnerClip = winner == 'groupOne' ? 'blue_team' : 'red_team';
 
@@ -449,7 +450,7 @@ function saveStats(playerGroup) {
     gameType = 'doubles';
   }
   //Get Winner Ids
-  _.each(playerGroup[winner], function(player, key) {
+  _.each(game[winner], function(player, key) {
     if (key == 'playerOne' || key == 'playerTwo') {
       if (player.active) {
         winnerIds.push(player.id);
@@ -457,7 +458,7 @@ function saveStats(playerGroup) {
     }
   });
   //Get Loser Ids
-  _.each(playerGroup[loser], function(player, key) {
+  _.each(game[loser], function(player, key) {
     if (key == 'playerOne' || key == 'playerTwo') {
       if (player.active) {
         loserIds.push(player.id);

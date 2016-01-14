@@ -21,8 +21,8 @@ export default class SettingsOverlay extends Component {
     }
   }
   _changeServeInterval(e) {
-    const { changeServeInterval, playerGroup } = this.props;
-    const gp = playerGroup.game.serveInterval;
+    const { changeServeInterval, game } = this.props;
+    const gp = game.game.serveInterval;
     let num = e.target.value;
 
     if (!isNaN(num)) {
@@ -33,22 +33,22 @@ export default class SettingsOverlay extends Component {
     }
   }
   _stepServeInterval(num) {
-    const { playerGroup, changeServeInterval } = this.props;
-    const gp = playerGroup.game.gamePoint;
-    const si = playerGroup.game.serveInterval;
+    const { game, changeServeInterval } = this.props;
+    const gp = game.game.gamePoint;
+    const si = game.game.serveInterval;
     if (((si + num) > 0) && ((si + num) < gp)) {
       changeServeInterval(parseInt(si + num, 10));
     }
   }
   _stepGamePoint(num) {
-    const { playerGroup, changeGamePoint } = this.props;
-    const gp = playerGroup.game.gamePoint;
+    const { game, changeGamePoint } = this.props;
+    const gp = game.game.gamePoint;
     if ((num > 0 && gp < 99) || (num < 0 && gp > 1)) {
       changeGamePoint(parseInt(gp + num, 10));
     }
   }
   render() {
-    var { playerGroup } = this.props;
+    var { game } = this.props;
     return (
       <div className="settings-container">
         <div className="setting-content game-point-container">
@@ -58,7 +58,7 @@ export default class SettingsOverlay extends Component {
           <div className="input-content">
             <input
               type="text"
-              value={playerGroup.game.gamePoint}
+              value={game.game.gamePoint}
               onChange={this._changeGamePoint.bind(this)}/>
             <div className="increment-decrement">
               <FontAwesome
@@ -81,7 +81,7 @@ export default class SettingsOverlay extends Component {
           <div className="input-content">
             <input
               type="text"
-              value={playerGroup.game.serveInterval}
+              value={game.game.serveInterval}
               onChange={this._changeServeInterval.bind(this)}/>
             <div className="increment-decrement">
               <FontAwesome

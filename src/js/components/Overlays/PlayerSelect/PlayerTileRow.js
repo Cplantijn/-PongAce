@@ -9,12 +9,12 @@ export default class PlayerTileRow extends Component {
   }
   render() {
     var { players, highlightSelection, isSelecting, selectingGroup,
-          selectingPlayer, playerGroup, joinGroup, showSelectionWarning } = this.props;
+          selectingPlayer, game, joinGroup, showSelectionWarning } = this.props;
     var playerTiles = _.map(players, function(player, i) {
       return (
         <PlayerTileItem
           key={i}
-          playerGroup={playerGroup}
+          game={game}
           isSelecting={isSelecting}
           selectingGroup={selectingGroup}
           showSelectionWarning={showSelectionWarning}
