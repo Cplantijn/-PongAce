@@ -115,6 +115,7 @@ export default class MainComponent extends Component {
       showOverlay,
       userMessage,
       endGame,
+      resetGroups,
       showSelectionWarning
     } = this.props;
     const cls = classNames({
@@ -148,7 +149,9 @@ export default class MainComponent extends Component {
             endSelection={endSelection}
             joinGroup={joinGroup}
             showSelectionWarning={showSelectionWarning}
-            hideOverlay={hideOverlay} />
+            hideOverlay={hideOverlay}
+            resetGroups={resetGroups}
+            />
         </div>
         <Footer
           hideOverlay={hideOverlay}
@@ -184,5 +187,5 @@ MainComponent.propTypes = {
   modifyPoint: React.PropTypes.func,
   resetGroups: React.PropTypes.func,
   toggleReady: React.PropTypes.func,
-  endGame: React.PropTypes.func
+  endGame: React.PropTypes.func,
 };

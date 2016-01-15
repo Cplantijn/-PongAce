@@ -42,7 +42,7 @@ export default class PlayerSelection extends Component {
 
 PlayerSelection.propTypes = {
   startSelection: React.PropTypes.func,
-  player: React.PropTypes.objectect,
+  player: React.PropTypes.object,
   group: React.PropTypes.string,
   playerType: React.PropTypes.string,
   contracted: React.PropTypes.bool

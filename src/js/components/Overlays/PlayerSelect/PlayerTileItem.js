@@ -51,7 +51,7 @@ PlayerTileItem.propTypes = {
   isSelecting: React.PropTypes.bool,
   player: React.PropTypes.object,
   joinGroup: React.PropTypes.func,
-  game: React.PropTypes.func,
+  game: React.PropTypes.object,
   selectingGroup: React.PropTypes.string,
   selectingPlayer: React.PropTypes.string,
   showSelectionWarning: React.PropTypes.func,

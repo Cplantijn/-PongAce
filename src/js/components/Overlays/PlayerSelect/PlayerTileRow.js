@@ -32,7 +32,7 @@ export default class PlayerTileRow extends Component {
 }
 
 PlayerTileRow.propTypes = {
-  players: React.PropTypes.object,
+  players: React.PropTypes.array,
   highlightSelection: React.PropTypes.func,
   isSelecting: React.PropTypes.bool,
   selectingGroup: React.PropTypes.string,

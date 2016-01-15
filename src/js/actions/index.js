@@ -131,7 +131,7 @@ export function endGame() {
 
 export function toggleReady(side, gameStart) {
   return (dispatch, getState) => {
-    var {
+    const {
       game
     } = getState();
     if (!game[side].ready) {
@@ -145,24 +145,24 @@ export function toggleReady(side, gameStart) {
       dispatch(hideOverlay());
       dispatch(startGame());
     }
-  }
+  };
 }
 
 export function startSelection(group, player) {
-  var msgType = group == 'groupOne' ? 'group-one' : 'group-two';
+  const msgType = group === 'groupOne' ? 'group-one' : 'group-two';
   return dispatch => {
     clearTimeout(msgTimeout);
     dispatch(hideMessage());
     dispatch(showMessage(msgType, 'SELECT A PLAYER'));
     dispatch(selectionStart(group, player));
-  }
+  };
 }
 
 export function showSelectionWarning() {
   return dispatch => {
     clearTimeout(msgTimeout);
     dispatch(showMessage('warning', 'PLAYER ALREADY CHOSEN. PLEASE CHOOSE ANOTHER'));
-  }
+  };
 }
 
 export function resetGroups() {
@@ -170,26 +170,26 @@ export function resetGroups() {
     clearTimeout(msgTimeout);
     dispatch(hideMessage());
     dispatch(groupReset());
-  }
+  };
 }
 
-export function hideMessage(type, message) {
+export function hideMessage() {
   return {
     type: actions.HIDE_MESSAGE
-  }
+  };
 }
 
 export function highlightSelection(id) {
   howl.play('player_cursor');
   return {
     type: actions.HIGHLIGHT_SELECTION,
-    id: id
-  }
+    id
+  };
 }
 
 export function joinGroup(group, player, id, name, standardPose, winningPose) {
   howl.play('chosen');
-  var msgType = group == 'groupOne' ? 'group-one' : 'group-two';
+  const msgType = group === 'groupOne' ? 'group-one' : 'group-two';
   return dispatch => {
     clearTimeout(msgTimeout);
     dispatch(playerJoinGroup(group, player, id, name, standardPose, winningPose));
@@ -197,12 +197,12 @@ export function joinGroup(group, player, id, name, standardPose, winningPose) {
     dispatch(endSelection());
     msgTimeout = setTimeout(function() {
       dispatch(hideMessage());
-    }, 3000)
-  }
+    }, 3000);
+  };
 }
 
 export function showOverlay(overlayIndex) {
-  if (overlayIndex == 4) {
+  if (overlayIndex === 4) {
     howl.play('smash_theme', function() {
       setTimeout(function() {
         howl.play('choose_character');
@@ -211,27 +211,27 @@ export function showOverlay(overlayIndex) {
   }
   return dispatch => {
     dispatch(hideMessage());
-    dispatch(overlayShow(overlayIndex))
-  }
+    dispatch(overlayShow(overlayIndex));
+  };
 }
 
 
 export function hideOverlay() {
   return (dispatch, getState) => {
-    var {
+    const {
       overlay
     } = getState();
-    if (overlay.activeIndex == 4) {
+    if (overlay.activeIndex === 4) {
       howl.stop();
     }
     dispatch(overlayHide());
-  }
+  };
 }
 
 function overlayHide() {
   return {
     type: actions.HIDE_OVERLAY
-  }
+  };
 }
 
 export function fetchPlayerDetails(playerId) {
@@ -242,87 +242,47 @@ export function fetchPlayerDetails(playerId) {
         if (json.errno === 19) {
           dispatch(showMessage('danger', 'Something went wrong.'));
           msgTimeout = setTimeout(function() {
-            dispatch(hideMessage())
+            dispatch(hideMessage());
           }, 3000);
         } else {
           dispatch(loadPlayerInfo(json));
         }
       });
-  }
+  };
 }
 
-export function changePlayerPic(playerId, picType, file, res) {
-  var ext = file.name.match(/\.(jpg|png|jpeg)$/i);
+export function changePlayerPic(playerId, picType, file) {
+  const ext = file.name.match(/\.(jpg|png|jpeg)$/i);
   return dispatch => {
     clearTimeout(msgTimeout);
     clearTimeout(msgShakeTimeout);
-    if (ext == null) {
+    if (ext === null) {
       dispatch(showMessage('danger', 'Must be .jpg or .png file'));
     } else {
-      var data = new FormData;
+      const data = new FormData;
       data.append('file', file);
       data.append('picType', picType);
       data.append('id', playerId);
       return fetch('/update/player/picture', {
-          method: 'POST',
-          body: data
-        })
+        method: 'POST',
+        body: data
+      })
         .then(response => response.json())
         .then(function(json) {
           if (json.errno || json.error) {
             dispatch(showMessage('danger', 'An error has occurred'));
           }
           dispatch(fetchPlayerDetails(playerId));
-          //TODO: Do not get value by raw javascript. Maybe use state?
-          var currentFilter = document.getElementById('player-profile-filter-input').value;
+          // TODO: Do not get value by raw javascript. Maybe use state?
+          const currentFilter = document.getElementById('player-profile-filter-input').value;
           dispatch(fetchPlayers(currentFilter, 'updated_on DESC'));
-        })
+        });
     }
     msgTimeout = setTimeout(function() {
-      dispatch(hideMessage())
+      dispatch(hideMessage());
     }, 3000);
-  }
+  };
 }
-
-export function changePlayerQuote(playerId, text) {
-  text = text.trim();
-  return dispatch => {
-    clearTimeout(msgTimeout);
-    clearTimeout(msgShakeTimeout);
-    if (!text.length) {
-      dispatch(showMessage('danger', 'Quote cannot be empty'));
-      msgTimeout = setTimeout(function() {
-        dispatch(hideMessage())
-      }, 3000)
-    } else {
-      return fetch('/update/player/quote', {
-          method: 'POST',
-          headers: contentType,
-          body: JSON.stringify({
-            "quote": text,
-            "id": playerId
-          })
-        })
-        .then(response => response.json())
-        .then(function(json) {
-          if (json.errno) {
-            console.log(json);
-            dispatch(showMessage('danger', 'An error occurred. Try again'))
-            msgShakeTimeout = setTimeout(function() {
-              dispatch(removeMsgShake())
-            }, 1000);
-          } else {
-            dispatch(showMessage('success', 'Quote has been updated'));
-            dispatch(fetchPlayerDetails(playerId));
-          }
-          msgTimeout = setTimeout(function() {
-            dispatch(hideMessage())
-          }, 3000);
-        })
-    }
-  }
-}
-
 
 export function createNewPlayer(playerName) {
   return dispatch => {
@@ -336,39 +296,39 @@ export function createNewPlayer(playerName) {
         }, 3000);
       } else {
         return fetch('/create/player', {
-            method: 'POST',
-            headers: contentType,
-            body: JSON.stringify({
-              "name": playerName.trim()
-            })
+          method: 'POST',
+          headers: contentType,
+          body: JSON.stringify({
+            'name': playerName.trim()
           })
+        })
           .then(response => response.json())
           .then(function(json) {
             if (json.errno === 19) {
               dispatch(showMessage('danger', playerName + '  is already a player'));
               msgShakeTimeout = setTimeout(function() {
-                dispatch(removeMsgShake())
+                dispatch(removeMsgShake());
               }, 1000);
             } else {
               dispatch(showMessage('success', 'Player created: ' + playerName));
               dispatch(fetchPlayers('', 'updated_on DESC'));
             }
             msgTimeout = setTimeout(function() {
-              dispatch(hideMessage())
+              dispatch(hideMessage());
             }, 3000);
-          })
+          });
       }
     } else {
       msgTimeout = setTimeout(function() {
-        dispatch(hideMessage())
+        dispatch(hideMessage());
       }, 3000);
 
       msgShakeTimeout = setTimeout(function() {
-        dispatch(removeMsgShake())
+        dispatch(removeMsgShake());
       }, 1000);
-      dispatch(showMessage('danger', 'Player name is empty. Try again.'))
+      dispatch(showMessage('danger', 'Player name is empty. Try again.'));
     }
-  }
+  };
 }
 
 export function fetchPlayers(filter, sort) {
@@ -377,57 +337,62 @@ export function fetchPlayers(filter, sort) {
   return dispatch => {
     dispatch(clearPlayerList());
     return fetch('/fetch/players', {
-        method: 'POST',
-        headers: contentType,
-        body: JSON.stringify({
-          "filter": filter.trim(),
-          "sort": sort
-        })
+      method: 'POST',
+      headers: contentType,
+      body: JSON.stringify({
+        'filter': filter.trim(),
+        sort
       })
+    })
       .then(response => response.json())
       .then(function(json) {
         if (json.errno) {
-          console.log(json);
-          dispatch(showMessage('danger', 'Something\'s up with the database. Check it out bruh.'))
+          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage());
+          }, 3000);
+          msgShakeTimeout = setTimeout(function() {
+            dispatch(removeMsgShake());
+          }, 1000);
         } else {
           dispatch(showPlayerList(json));
         }
-      })
-    msgTimeout = setTimeout(function() {
-      dispatch(hideMessage())
-    }, 3000);
-    msgShakeTimeout = setTimeout(function() {
-      dispatch(removeMsgShake())
-    }, 1000);
-  }
+      });
+  };
 }
 
 
 function saveSetting(column, value) {
   return dispatch => {
     return fetch('/save/setting', {
-        method: 'POST',
-        headers: contentType,
-        body: JSON.stringify({
-          'column': column,
-          'value': value,
-        })
+      method: 'POST',
+      headers: contentType,
+      body: JSON.stringify({
+        column,
+        value
       })
+    })
       .then(response => response.json())
       .then(function(json) {
         if (json.errno) {
-          console.log('something went wrong', json);
+          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage());
+          }, 3000);
+          msgShakeTimeout = setTimeout(function() {
+            dispatch(removeMsgShake());
+          }, 1000);
         }
-      })
-  }
+      });
+  };
 }
 
 function saveStats(game) {
-  var {
+  const {
     groupOne, groupTwo, winner
   } = game;
-  var loser = winner == 'groupOne' ? 'groupTwo' : 'groupOne';
-  var winnerClip = winner == 'groupOne' ? 'blue_team' : 'red_team';
+  const loser = winner === 'groupOne' ? 'groupTwo' : 'groupOne';
+  const winnerClip = winner === 'groupOne' ? 'blue_team' : 'red_team';
 
   howl.play('game_end', function() {
     setTimeout(function() {
@@ -445,25 +410,25 @@ function saveStats(game) {
     }, 1000);
   });
 
+  let gameType = 'singles';
+  const winnerIds = [];
+  const loserIds = [];
 
-  var gameType = 'singles';
-  var winnerIds = [];
-  var loserIds = [];
   if (groupOne.playerOne.active && groupOne.playerTwo.active ||
     groupTwo.playerOne.active && groupTwo.playerTwo.active) {
     gameType = 'doubles';
   }
-  //Get Winner Ids
+  // Get Winner Ids
   _.each(game[winner], function(player, key) {
-    if (key == 'playerOne' || key == 'playerTwo') {
+    if (key === 'playerOne' || key === 'playerTwo') {
       if (player.active) {
         winnerIds.push(player.id);
       }
     }
   });
-  //Get Loser Ids
+  // Get Loser Ids
   _.each(game[loser], function(player, key) {
-    if (key == 'playerOne' || key == 'playerTwo') {
+    if (key === 'playerOne' || key === 'playerTwo') {
       if (player.active) {
         loserIds.push(player.id);
       }
@@ -471,129 +436,135 @@ function saveStats(game) {
   });
   return dispatch => {
     return fetch('/save/winloss', {
-        method: 'POST',
-        headers: contentType,
-        body: JSON.stringify({
-          'winningIds': winnerIds.join(','),
-          'losingIds': loserIds.join(','),
-          'gameType': gameType
-        })
+      method: 'POST',
+      headers: contentType,
+      body: JSON.stringify({
+        'winningIds': winnerIds.join(','),
+        'losingIds': loserIds.join(','),
+        gameType
       })
+    })
       .then(response => response.json())
       .then(function(json) {
         if (json.errno) {
-          console.log('an error has occured', json)
+          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage());
+          }, 3000);
+          msgShakeTimeout = setTimeout(function() {
+            dispatch(removeMsgShake());
+          }, 1000);
         }
-      })
-  }
+      });
+  };
 }
 
 function loadPlayerInfo(playerInfo) {
   return {
     type: actions.SHOW_PLAYER_DETAIL,
-    playerInfo: playerInfo
-  }
+    playerInfo
+  };
 }
 
 function overlayShow(overlayIndex) {
   return {
     type: actions.SHOW_OVERLAY,
-    overlayIndex: overlayIndex
-  }
+    overlayIndex
+  };
 }
 
 function removeMsgShake() {
   return {
     type: actions.REMOVE_SHAKE
-  }
+  };
 }
 
 function clearPlayerList() {
   return {
     type: actions.CLEAR_PLAYER_LIST
-  }
+  };
 }
 
 function showPlayerList(playerList) {
   return {
     type: actions.LIST_PLAYERS,
-    playerList: playerList
-  }
+    playerList
+  };
 }
 
 function showMessage(type, message) {
   return {
     type: actions.SHOW_MESSAGE,
-    message: message,
+    message,
     messageType: type
-  }
+  };
 }
 
 function selectionStart(group, player) {
   return {
     type: actions.START_SELECTION,
-    group: group,
-    player: player,
-  }
+    group,
+    player
+  };
 }
 
 function groupReset() {
   return {
     type: actions.RESET_GROUPS
-  }
+  };
 }
 
 function readyToggle(side) {
   return {
     type: actions.READY_UP,
-    side: side
-  }
+    side
+  };
 }
 
 function loadSettings(settings) {
   return {
     type: actions.FETCH_SETTINGS,
-    settings: settings
-  }
+    settings
+  };
 }
 
 function gameEnd() {
   return {
     type: actions.END_GAME
-  }
+  };
 }
 
 
 function pointModify(group, event) {
   return {
     type: actions.MODIFY_POINT,
-    event: event,
-    group: group
-  }
+    event,
+    group
+  };
 }
 
 function gamePointChange(point) {
   return {
     type: actions.CHANGE_GAME_POINT,
-    point: point
-  }
+    point
+  };
 }
 
 function serveIntervalChange(point) {
   return {
     type: actions.CHANGE_SERVE_INTERVAL,
-    point: point
-  }
+    point
+  };
 }
 
 function playerJoinGroup(group, player, id, name, standardPose, winningPose) {
   return {
     type: actions.JOIN_GROUP,
-    group: group,
-    player: player,
-    id: id,
-    name: name,
-    standardPose: standardPose,
-    winningPose: winningPose
-  }
+    group,
+    player,
+    id,
+    name,
+    standardPose,
+    winningPose
+  };
 }
