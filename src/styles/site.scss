@@ -503,6 +503,7 @@ html, body {
                     flex: 1;
                     background-repeat: no-repeat;
                     background-position: center center;
+                    background-size: cover;
                     display: flex;
                     position: relative;
                     border-radius: 50%;
@@ -538,13 +539,23 @@ html, body {
                 &.hidden{
                   display: none;
                 }
-                &.moved-right {
+                &.moved-left {
                   align-items: flex-end;
                   justify-content: center;
+                  .player-title{
+                    position: relative;
+                    left: 1em;
+                  }
                 }
-                &.moved-left {
+                &.moved-right {
                   align-items: flex-start;
                   justify-content: center;
+                  .player-title{
+                    &.group-two{
+                    position: relative;
+                    right: 1.5em;
+                    }
+                  }
                 }
               }
               .player-title{
@@ -555,7 +566,7 @@ html, body {
                 border-radius: 0.5em;
                 background: black;
                 min-height: 2em;
-                margin-left: 8em;
+                margin-left: 6em;
                 color: $white;
                 justify-content: center;
                 align-items: center;

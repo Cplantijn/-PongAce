@@ -22,13 +22,13 @@ export default class game extends Component {
     var ctnPlayerOneCls = classNames({
       'player-container': true,
       'hidden': false,
-      'moved-right': playerOne.active && groupName == 'groupOne',
+      'moved-left': playerOne.active && groupName == 'groupOne',
     });
 
     var ctnPlayerTwoCls = classNames({
       'player-container': true,
       'hidden': !playerOne.active,
-      'moved-left': playerOne.active
+      'moved-right': playerOne.active
     });
 
     var playerCls = classNames({
