@@ -1,24 +1,23 @@
-import React, { Component } from 'react'
-import classNames from 'classNames'
-import _ from 'underscore'
+import React, { Component } from 'react';
+import classNames from 'classNames';
 
 export default class PlayerTileItem extends Component {
   constructor(props) {
     super(props);
   }
   _highlightSelection(id) {
-    var { highlightSelection, isSelecting } = this.props;
+    const { highlightSelection, isSelecting } = this.props;
     if (isSelecting) {
       highlightSelection(id);
     }
   }
   _makeSelection() {
-    var { player, joinGroup, game, selectingGroup,
-          selectingPlayer, joinGroup, showSelectionWarning } = this.props;
-    var { id, name, standardPose, winningPose } = player;
+    const { player, joinGroup, game, selectingGroup,
+            selectingPlayer, showSelectionWarning } = this.props;
+    const { id, name, standardPose, winningPose } = player;
 
     if (game.isSelecting) {
-      if (game.selectedIds.indexOf(id) == -1) {
+      if (game.selectedIds.indexOf(id) === -1) {
         joinGroup(selectingGroup, selectingPlayer, id, name, standardPose, winningPose);
       } else {
         showSelectionWarning();
@@ -26,14 +25,14 @@ export default class PlayerTileItem extends Component {
     }
   }
   render() {
-    var { game, player, selectingGroup } = this.props;
-    var style = {
-      backgroundImage: 'url("/player_img/'+ player.standardPose + '")'
-    }
-    var cls = classNames({
+    const { player, selectingGroup } = this.props;
+    const style = {
+      backgroundImage: 'url("/player_img/' + player.standardPose + '")'
+    };
+    const cls = classNames({
       'player-tile': true,
       'highlight': player.highlight,
-      'group-two': selectingGroup == 'groupTwo',
+      'group-two': selectingGroup === 'groupTwo',
     });
     return (
       <div
@@ -43,6 +42,17 @@ export default class PlayerTileItem extends Component {
         onClick={this._makeSelection.bind(this)}>
         <div className="player-header">{player.name}</div>
       </div>
-    )
+    );
   }
 }
+
+PlayerTileItem.propTypes = {
+  highlightSelection: React.PropTypes.func,
+  isSelecting: React.PropTypes.bool,
+  player: React.PropTypes.object,
+  joinGroup: React.PropTypes.func,
+  game: React.PropTypes.func,
+  selectingGroup: React.PropTypes.string,
+  selectingPlayer: React.PropTypes.string,
+  showSelectionWarning: React.PropTypes.func,
+};

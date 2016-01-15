@@ -67,12 +67,12 @@ export default class WinnerPopUp extends Component {
       } else {
         winningMessage+=' wins!'
       }
-      if (game[winningKey].rawScore > game.game.gamePoint ){
+      if (game[winningKey].rawScore > game.gamePoint ){
         winningScore = <h2>{game[winningKey].score}<span className="raw-score">({game[winningKey].rawScore})</span></h2>
       } else {
         winningScore = <h2>{game[winningKey].score}</h2>
       }
-      if (game[losingKey].rawScore > game.game.gamePoint ){
+      if (game[losingKey].rawScore > game.gamePoint ){
         losingScore = <h2>{game[losingKey].score}<span className="raw-score">({game[losingKey].rawScore})</span></h2>
       } else {
         losingScore = <h2>{game[losingKey].score}</h2>

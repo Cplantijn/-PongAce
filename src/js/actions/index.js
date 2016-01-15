@@ -99,7 +99,7 @@ export function modifyPoint(group, event) {
     const {
       game
     } = getState();
-    if (!game.game.active) {
+    if (!game.active) {
       dispatch(gameEnd());
       dispatch(saveStats(game));
       const bannerTheme = game.winner === 'groupOne' ? 'group-one-win' : 'group-two-win';

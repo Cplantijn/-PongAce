@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import classNames from 'classNames'
+import React, { Component } from 'react';
+import classNames from 'classNames';
 
 export default class Message extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    var { userMessage } = this.props;
+    const { userMessage } = this.props;
     const msgCls = classNames({
       'top-content-container': true,
       'message-container': true,
@@ -21,15 +21,19 @@ export default class Message extends Component {
       'group-one-win': userMessage.type === 'group-one-win',
       'group-two-win': userMessage.type === 'group-two-win',
     });
-    var shakeCls = classNames({
+    const shakeCls = classNames({
       'shake': userMessage.shake
-    })
+    });
     return (
       <div className={msgCls}>
         <div className="message-info-container">
           <h1 className={shakeCls}>{userMessage.message}</h1>
         </div>
       </div>
-    )
+    );
   }
 }
+
+Message.propTypes = {
+  userMessage: React.PropTypes.object
+};

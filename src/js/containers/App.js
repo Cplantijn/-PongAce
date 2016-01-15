@@ -7,26 +7,26 @@ import MainComponent from '../components/MainComponent';
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   componentDidMount() {
-    var {game, toggleReady, hideOverlay, modifyPoint, resetGroups } = this.props;
+    const {game, toggleReady, hideOverlay, modifyPoint, resetGroups } = this.props;
     this.socket = io();
     this.socket.on('btnHold', function(side) {
-      if (game.game.active) {
+      if (game.active) {
         modifyPoint(side, 'REMOVE');
-      } else if (!game.game.active && game.game.ended) {
+      } else if (!game.active && game.ended) {
         if (!game[side].ready) {
-          if (side == 'groupOne') {
+          if (side === 'groupOne') {
             if (game.groupTwo.ready) {
               toggleReady(side, true);
-            } else{
+            } else {
               toggleReady(side, false);
             }
           } else {
             if (game.groupOne.ready) {
               toggleReady(side, true);
-            } else{
+            } else {
               toggleReady(side, false);
             }
           }
@@ -36,16 +36,16 @@ class App extends Component {
       } else {
         if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
           if (!game[side].ready) {
-            if (side == 'groupOne') {
+            if (side === 'groupOne') {
               if (game.groupTwo.ready) {
                 toggleReady(side, true);
-              } else{
+              } else {
                 toggleReady(side, false);
               }
             } else {
               if (game.groupOne.ready) {
                 toggleReady(side, true);
-              } else{
+              } else {
                 toggleReady(side, false);
               }
             }
@@ -55,49 +55,48 @@ class App extends Component {
         }
       }
     });
-    this.socket.on('btnDblDown', function(side) {
-      if (!game.game.active && game.game.ended) {
+    this.socket.on('btnDblDown', function() {
+      if (!game.active && game.ended) {
         resetGroups();
       }
     });
+
     this.socket.on('btnDown', function(side) {
-      if (game.game.active) {
+      if (game.active) {
         modifyPoint(side, 'ADD');
       }
     });
 
     window.addEventListener('keydown', function(e) {
-      if (e.which == 49) {
-        if (game.game.active) { //Group 1 press, 1
+      if (e.which === 49) {
+        if (game.active) { // Group 1 press, 1
           modifyPoint('groupOne', 'ADD');
         }
-      }else if (e.which == 50) { //Group 2 press, 2
-        if (game.game.active) {
+      } else if (e.which === 50) { // Group 2 press, 2
+        if (game.active) {
           modifyPoint('groupTwo', 'ADD');
         }
-      } else if (e.which == 51) { //Double Tap, 3
-        console.log('butn 3 tapped')
-        if (!game.game.active && game.game.ended) {
-          console.log('reset');
+      } else if (e.which === 51) { // Double Tap, 3
+        if (!game.active && game.ended) {
           resetGroups();
         }
-    } else if (e.which == 189) { //Group 1 hold, -
-        if (game.game.active) {
+      } else if (e.which === 189) { // Group 1 hold, -
+        if (game.active) {
           modifyPoint('groupOne', 'REMOVE');
         } else {
           if (game.groupTwo.ready) {
             toggleReady('groupOne', true);
-          } else{
+          } else {
             toggleReady('groupOne', false);
           }
         }
-      }else if (e.which == 187) { // Group 2 hold, =
-        if (game.game.active) {
+      } else if (e.which === 187) { // Group 2 hold, =
+        if (game.active) {
           modifyPoint('groupTwo', 'REMOVE');
         } else {
           if (game.groupOne.ready) {
             toggleReady('groupTwo', true);
-          } else{
+          } else {
             toggleReady('groupTwo', false);
           }
         }
@@ -107,7 +106,7 @@ class App extends Component {
   render() {
     return (
       <MainComponent {...this.props}/>
-    )
+    );
   }
 }
 
@@ -115,14 +114,21 @@ function mapStateToProps(state) {
   return {
     overlay: state.overlay,
     game: state.game,
-    game: state.game,
     userMessage: state.userMessage,
     playerList: state.playerList,
     showcasedPlayer: state.showcasedPlayer
-  }
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(PongActions, dispatch)
+  return bindActionCreators(PongActions, dispatch);
 }
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+App.propTypes = {
+  game: React.PropTypes.object,
+  toggleReady: React.PropTypes.func,
+  hideOverlay: React.PropTypes.func,
+  modifyPoint: React.PropTypes.func,
+  resetGroups: React.PropTypes.func
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

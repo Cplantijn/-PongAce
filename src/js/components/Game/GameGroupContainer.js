@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import PlayerGamePic from './PlayerGamePic'
-import classNames from 'classNames'
-import FontAwesome from 'react-fontawesome'
-import _ from 'underscore'
+import React, { Component } from 'react';
+import PlayerGamePic from './PlayerGamePic';
+import classNames from 'classNames';
+import FontAwesome from 'react-fontawesome';
+import _ from 'underscore';
 
 export default class GameGroupContainer extends Component {
   constructor(props) {
     super(props);
   }
   render() {
-    var { activeGroup, group} = this.props;
-    var picContainers = null;
-    var count = -1;
-    var up = null;
+    const { activeGroup, group } = this.props;
+    let picContainers = null;
+    let count = -1;
+    let up = null;
     picContainers = _.map(activeGroup, function(val, key) {
-      if (key == 'playerOne' || key == 'playerTwo') {
+      if (key === 'playerOne' || key === 'playerTwo') {
         if (val.active) {
-         count++;
+          count++;
           return (
             <PlayerGamePic
               key={count}
@@ -24,24 +24,24 @@ export default class GameGroupContainer extends Component {
               name={val.name}
               standardPose={val.standardPose}
               winningPose={val.winningPose} />
-          )
+          );
         }
       } else {
         return false;
       }
-    })
+    });
 
-    var cls = classNames({
+    const cls = classNames({
       'group-container': true,
-      'group-one': group == 'groupOne',
-      'group-two': group == 'groupTwo'
+      'group-one': group === 'groupOne',
+      'group-two': group === 'groupTwo'
     });
 
     if (activeGroup.up) {
-      up = <FontAwesome
-            className="arrow-up"
-            name='arrow-up'
-            size='5x' />
+      up = (<FontAwesome
+        className="arrow-up"
+        name="arrow-up"
+        size="5x" />);
     }
 
     return (
@@ -56,6 +56,11 @@ export default class GameGroupContainer extends Component {
           {picContainers}
         </div>
       </div>
-    )
+    );
   }
 }
+
+GameGroupContainer.propTypes = {
+  activeGroup: React.PropTypes.object,
+  group: React.PropTypes.string
+};

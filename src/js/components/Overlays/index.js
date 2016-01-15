@@ -29,7 +29,7 @@ export default class Overlay extends Component {
       'color': config.overlayScreens[activeOverlay].pageTextColor
     };
 
-    if (!game.game.active) {
+    if (!game.active) {
       switch (activeOverlay) {
         case 'profiles':
           overlayBody = <ProfilesOverlay {...this.props}/>;

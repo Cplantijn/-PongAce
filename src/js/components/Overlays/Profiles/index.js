@@ -10,6 +10,13 @@ export default class ProfilesOverlay extends Component {
     super(props);
   }
   componentDidMount() {
+    let ul = this.refs.playerList;
+    ul.style.height = 500;
+    ps.initialize(ul, {
+      suppressScrollX: true
+    });
+    ul.scrollTop = 0;
+    ps.update(ul);
   }
   _changePlayerName(e) {
     if (e.type === 'keyup') {

@@ -20,29 +20,35 @@ import  {
 const howl = new Howl(musicOpts);
 
 const initGameState = {
+  active: false,
+  ended: false,
+  gamePoint: 21,
+  serveInterval: 5,
+  lastSwitchPoint: 0,
+  winner: null,
   groupOne: {
-      playerOne:{
-        id: null,
-        active: false,
-        selecting: false,
-        name: null,
-        standardPose: null,
-        winningPose: null
-      },
-      playerTwo:{
-        id: null,
-        active: false,
-        selecting: false,
-        contracted: true,
-        name: null,
-        standardPose: null,
-        winningPose: null
-      },
-      ready: false,
-      score: 0,
-      rawScore: 0,
-      up: false,
-      serving: false
+    playerOne:{
+      id: null,
+      active: false,
+      selecting: false,
+      name: null,
+      standardPose: null,
+      winningPose: null
+    },
+    playerTwo:{
+      id: null,
+      active: false,
+      selecting: false,
+      contracted: true,
+      name: null,
+      standardPose: null,
+      winningPose: null
+    },
+    ready: false,
+    score: 0,
+    rawScore: 0,
+    up: false,
+    serving: false
   },
   groupTwo: {
       playerOne:{
@@ -70,272 +76,264 @@ const initGameState = {
   },
   isSelecting: false,
   highlightId: null,
-  selectedIds: [],
-  game: {
-    active: false,
-    ended: false,
-    gamePoint: 21,
-    serveInterval: 5,
-    lastSwitchPoint: 0
-  },
-  winner: null
+  selectedIds: []
 }
 
 export default function game( state = initGameState, action) {
   switch (action.type) {
     case START_SELECTION:
-      var tGrp = state;
-      tGrp.isSelecting = true;
-      tGrp.groupOne.playerOne.selecting = false;
-      tGrp.groupOne.playerTwo.selecting = false;
-      tGrp.groupTwo.playerOne.selecting = false;
-      tGrp.groupTwo.playerTwo.selecting = false;
-      tGrp[action.group][action.player].selecting = true;
-      tGrp.highlightId = null;
-      tGrp.selectingGroup = action.group;
-      tGrp.selectingPlayer = action.player;
+      var tGame = state;
+      tGame.isSelecting = true;
+      tGame.groupOne.playerOne.selecting = false;
+      tGame.groupOne.playerTwo.selecting = false;
+      tGame.groupTwo.playerOne.selecting = false;
+      tGame.groupTwo.playerTwo.selecting = false;
+      tGame[action.group][action.player].selecting = true;
+      tGame.highlightId = null;
+      tGame.selectingGroup = action.group;
+      tGame.selectingPlayer = action.player;
       if (action.player == 'playerTwo') {
-        tGrp[action.group][action.player].contracted = false;
+        tGame[action.group][action.player].contracted = false;
       }
       return {
-        ...tGrp
+        ...tGame
       }
     case END_SELECTION:
-      var tGrp = state;
-      tGrp.isSelecting = false;
-      tGrp.groupOne.playerOne.selecting = false;
-      tGrp.groupOne.playerTwo.selecting = false;
-      tGrp.groupTwo.playerOne.selecting = false;
-      tGrp.groupTwo.playerTwo.selecting = false;
-      tGrp.highlightId = null;
-      tGrp.selectingGroup = null;
-      tGrp.selectingPlayer = null;
+      var tGame = state;
+      tGame.isSelecting = false;
+      tGame.groupOne.playerOne.selecting = false;
+      tGame.groupOne.playerTwo.selecting = false;
+      tGame.groupTwo.playerOne.selecting = false;
+      tGame.groupTwo.playerTwo.selecting = false;
+      tGame.highlightId = null;
+      tGame.selectingGroup = null;
+      tGame.selectingPlayer = null;
       return {
-        ...tGrp
+        ...tGame
       }
     case HIGHLIGHT_SELECTION:
-      var tGrp = state;
-      tGrp.highlightId = action.id;
+      var tGame = state;
+      tGame.highlightId = action.id;
       return {
-        ...tGrp
+        ...tGame
       }
     case JOIN_GROUP:
-      var tGrp = state;
-      tGrp.selectedIds = [];
-      tGrp[action.group][action.player].id = action.id;
-      tGrp[action.group][action.player].name = action.name;
-      tGrp[action.group][action.player].standardPose = action.standardPose;
-      tGrp[action.group][action.player].winningPose = action.winningPose;
-      tGrp[action.group][action.player].selecting = false;
-      tGrp[action.group][action.player].active = true;
-      _.each(tGrp, function(group, key) {
+      var tGame = state;
+      tGame.selectedIds = [];
+      tGame[action.group][action.player].id = action.id;
+      tGame[action.group][action.player].name = action.name;
+      tGame[action.group][action.player].standardPose = action.standardPose;
+      tGame[action.group][action.player].winningPose = action.winningPose;
+      tGame[action.group][action.player].selecting = false;
+      tGame[action.group][action.player].active = true;
+      _.each(tGame, function(group, key) {
         if (key == 'groupOne' || key == 'groupTwo') {
           if (group.playerOne.id) {
-            tGrp.selectedIds = tGrp.selectedIds.concat(group.playerOne.id);
+            tGame.selectedIds = tGame.selectedIds.concat(group.playerOne.id);
           }
           if (group.playerTwo.id) {
-            tGrp.selectedIds = tGrp.selectedIds.concat(group.playerTwo.id);
+            tGame.selectedIds = tGame.selectedIds.concat(group.playerTwo.id);
           }
         }
       });
       return {
-        ...tGrp
+        ...tGame
       }
     case RESET_GROUPS:
-      var tGrp = state;
-      tGrp.groupOne.ready = false;
-      tGrp.groupTwo.ready = false;
-      tGrp.groupOne.score = 0;
-      tGrp.groupTwo.score = 0;
-      tGrp.groupOne.rawScore = 0;
-      tGrp.groupTwo.rawScore = 0;
-      tGrp.groupOne.serving = false;
-      tGrp.groupTwo.serving = false;
-      tGrp.groupOne.up = false;
-      tGrp.groupTwo.up = false;
+      var tGame = state;
+      tGame.groupOne.ready = false;
+      tGame.groupTwo.ready = false;
+      tGame.groupOne.score = 0;
+      tGame.groupTwo.score = 0;
+      tGame.groupOne.rawScore = 0;
+      tGame.groupTwo.rawScore = 0;
+      tGame.groupOne.serving = false;
+      tGame.groupTwo.serving = false;
+      tGame.groupOne.up = false;
+      tGame.groupTwo.up = false;
 
-      tGrp.groupOne.playerOne.active = false;
-      tGrp.groupOne.playerOne.id = null;
-      tGrp.groupOne.playerOne.name = null;
-      tGrp.groupOne.playerOne.standardPose = null;
-      tGrp.groupOne.playerOne.winningPose = null;
-      tGrp.groupOne.playerOne.selecting = false;
+      tGame.groupOne.playerOne.active = false;
+      tGame.groupOne.playerOne.id = null;
+      tGame.groupOne.playerOne.name = null;
+      tGame.groupOne.playerOne.standardPose = null;
+      tGame.groupOne.playerOne.winningPose = null;
+      tGame.groupOne.playerOne.selecting = false;
 
-      tGrp.groupOne.playerTwo.active = false;
-      tGrp.groupOne.playerTwo.id = null;
-      tGrp.groupOne.playerTwo.name = null;
-      tGrp.groupOne.playerTwo.standardPose = null;
-      tGrp.groupOne.playerTwo.winningPose = null;
-      tGrp.groupOne.playerTwo.selecting = false;
-      tGrp.groupOne.playerTwo.contracted = true;
-
-
-      tGrp.groupTwo.playerOne.active = false;
-      tGrp.groupTwo.playerOne.id = null;
-      tGrp.groupTwo.playerOne.name = null;
-      tGrp.groupTwo.playerOne.standardPose = null;
-      tGrp.groupTwo.playerOne.winningPose = null;
-      tGrp.groupTwo.playerOne.selecting = false;
-
-      tGrp.groupTwo.playerTwo.active = false;
-      tGrp.groupTwo.playerTwo.id = null;
-      tGrp.groupTwo.playerTwo.name = null;
-      tGrp.groupTwo.playerTwo.standardPose = null;
-      tGrp.groupTwo.playerTwo.winningPose = null;
-      tGrp.groupTwo.playerTwo.selecting = false;
-      tGrp.groupTwo.playerTwo.contracted = true;
+      tGame.groupOne.playerTwo.active = false;
+      tGame.groupOne.playerTwo.id = null;
+      tGame.groupOne.playerTwo.name = null;
+      tGame.groupOne.playerTwo.standardPose = null;
+      tGame.groupOne.playerTwo.winningPose = null;
+      tGame.groupOne.playerTwo.selecting = false;
+      tGame.groupOne.playerTwo.contracted = true;
 
 
-      tGrp.isSelecting = false;
-      tGrp.game.active = false;
-      tGrp.game.ended = false;
-      tGrp.selectingGroup = null;
-      tGrp.selectingPlayer = null;
-      tGrp.selectedIds =[];
-      tGrp.winner = null;
+      tGame.groupTwo.playerOne.active = false;
+      tGame.groupTwo.playerOne.id = null;
+      tGame.groupTwo.playerOne.name = null;
+      tGame.groupTwo.playerOne.standardPose = null;
+      tGame.groupTwo.playerOne.winningPose = null;
+      tGame.groupTwo.playerOne.selecting = false;
+
+      tGame.groupTwo.playerTwo.active = false;
+      tGame.groupTwo.playerTwo.id = null;
+      tGame.groupTwo.playerTwo.name = null;
+      tGame.groupTwo.playerTwo.standardPose = null;
+      tGame.groupTwo.playerTwo.winningPose = null;
+      tGame.groupTwo.playerTwo.selecting = false;
+      tGame.groupTwo.playerTwo.contracted = true;
+
+
+      tGame.isSelecting = false;
+      tGame.active = false;
+      tGame.ended = false;
+      tGame.selectingGroup = null;
+      tGame.selectingPlayer = null;
+      tGame.selectedIds =[];
+      tGame.winner = null;
       return {
-        ...tGrp
+        ...tGame
       }
     case READY_UP:
-      var tGrp = state;
+      var tGame = state;
 
-      if (!tGrp.groupOne.ready && !tGrp.groupTwo.ready) {
-        tGrp[action.side].serving = true;
+      if (!tGame.groupOne.ready && !tGame.groupTwo.ready) {
+        tGame[action.side].serving = true;
       }
 
-      tGrp[action.side].ready = !tGrp[action.side].ready;
+      tGame[action.side].ready = !tGame[action.side].ready;
 
-      if (tGrp.groupOne.ready && tGrp.groupTwo.ready) {
-        tGrp.game.active = true;
+      if (tGame.groupOne.ready && tGame.groupTwo.ready) {
+        tGame.active = true;
       }
 
       return {
-        ...tGrp
+        ...tGame
       }
     case START_GAME:
-      var tGrp = state;
-      tGrp.game.active = true;
-      tGrp.game.ended = false;
-      tGrp.game.lastSwitchPoint = 0;
-      tGrp.winner = null;
-      tGrp.groupOne.score = 0;
-      tGrp.groupTwo.score = 0;
-      tGrp.groupOne.rawScore = 0;
-      tGrp.groupTwo.rawScore = 0;
+      var tGame = state;
+      tGame.active = true;
+      tGame.ended = false;
+      tGame.lastSwitchPoint = 0;
+      tGame.winner = null;
+      tGame.groupOne.score = 0;
+      tGame.groupTwo.score = 0;
+      tGame.groupOne.rawScore = 0;
+      tGame.groupTwo.rawScore = 0;
 
       return {
-        ...tGrp
+        ...tGame
       }
     case END_GAME:
-      var tGrp = state;
-      tGrp.game.active = false;
-      tGrp.game.ended = true;
-      tGrp.groupOne.ready = false;
-      tGrp.groupTwo.ready = false;
-      tGrp.game.lastSwitchPoint = 0;
+      var tGame = state;
+      tGame.active = false;
+      tGame.ended = true;
+      tGame.groupOne.ready = false;
+      tGame.groupTwo.ready = false;
+      tGame.lastSwitchPoint = 0;
       return {
-        ...tGrp
+        ...tGame
       }
     case MODIFY_POINT:
-      var tGrp = state;
-      var { gamePoint } = tGrp.game;
+      var tGame = state;
+      var { gamePoint } = tGame;
       var value = action.event == 'ADD' ? 1 : -1;
-      var rawScore = tGrp[action.group].rawScore + value;
-      tGrp[action.group].rawScore = rawScore > -1 ? rawScore: 0;
+      var rawScore = tGame[action.group].rawScore + value;
+      tGame[action.group].rawScore = rawScore > -1 ? rawScore: 0;
 
-      tGrp[action.group].score = tGrp[action.group].rawScore > gamePoint ? gamePoint : tGrp[action.group].rawScore;
+      tGame[action.group].score = tGame[action.group].rawScore > gamePoint ? gamePoint : tGame[action.group].rawScore;
 
-      var totalScore = tGrp.groupOne.score + tGrp.groupTwo.score;
+      var totalScore = tGame.groupOne.score + tGame.groupTwo.score;
 
       if (action.event == 'ADD') {
-        if ((totalScore % tGrp.game.serveInterval == 0) && (totalScore == tGrp.game.lastSwitchPoint + tGrp.game.serveInterval)) {
+        if ((totalScore % tGame.serveInterval == 0) && (totalScore == tGame.lastSwitchPoint + tGame.serveInterval)) {
           howl.play('switch_serve');
-          tGrp.groupOne.serving = !tGrp.groupOne.serving;
-          tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
-          tGrp.game.lastSwitchPoint = totalScore;
+          tGame.groupOne.serving = !tGame.groupOne.serving;
+          tGame.groupTwo.serving = !tGame.groupTwo.serving;
+          tGame.lastSwitchPoint = totalScore;
         }
       } else {
-        if (totalScore == tGrp.game.lastSwitchPoint - 1) {
+        if (totalScore == tGame.lastSwitchPoint - 1) {
           //TODO Remove this logic from reducer
           howl.play('switch_serve');
-          tGrp.groupOne.serving = !tGrp.groupOne.serving;
-          tGrp.groupTwo.serving = !tGrp.groupTwo.serving;
-          tGrp.game.lastSwitchPoint = tGrp.game.lastSwitchPoint - tGrp.game.serveInterval;
+          tGame.groupOne.serving = !tGame.groupOne.serving;
+          tGame.groupTwo.serving = !tGame.groupTwo.serving;
+          tGame.lastSwitchPoint = tGame.lastSwitchPoint - tGame.serveInterval;
         }
       }
 
       //TODO: Please do a better job here, i get it you havnt slept in a while.
-      var oneScore = tGrp.groupOne.score;
-      var twoScore = tGrp.groupTwo.score;
-      var oneRawScore = tGrp.groupOne.rawScore;
-      var twoRawScore = tGrp.groupTwo.rawScore;
+      var oneScore = tGame.groupOne.score;
+      var twoScore = tGame.groupTwo.score;
+      var oneRawScore = tGame.groupOne.rawScore;
+      var twoRawScore = tGame.groupTwo.rawScore;
 
       var group = action.group;
 
       if (oneScore == gamePoint - 1) {
-        tGrp.groupTwo.serving = true;
-        tGrp.groupOne.serving = false;
+        tGame.groupTwo.serving = true;
+        tGame.groupOne.serving = false;
       } else if (twoScore == gamePoint - 1) {
-        tGrp.groupOne.serving = true;
-        tGrp.groupTwo.serving = false;
+        tGame.groupOne.serving = true;
+        tGame.groupTwo.serving = false;
       }
 
       if (oneRawScore == twoRawScore) {
-        tGrp.groupOne.up = false;
-        tGrp.groupTwo.up = false;
+        tGame.groupOne.up = false;
+        tGame.groupTwo.up = false;
       }
 
       if (oneRawScore == twoRawScore + 1 && oneRawScore >= gamePoint) {
-        tGrp.groupOne.up = true;
-        tGrp.groupTwo.up = false;
-        tGrp.groupOne.serving = false;
-        tGrp.groupTwo.serving = true;
+        tGame.groupOne.up = true;
+        tGame.groupTwo.up = false;
+        tGame.groupOne.serving = false;
+        tGame.groupTwo.serving = true;
       }
 
       if (twoRawScore == oneRawScore + 1 && twoRawScore >= gamePoint) {
-        tGrp.groupOne.up = false;
-        tGrp.groupTwo.up = true;
-        tGrp.groupOne.serving = true;
-        tGrp.groupTwo.serving = false;
+        tGame.groupOne.up = false;
+        tGame.groupTwo.up = true;
+        tGame.groupOne.serving = true;
+        tGame.groupTwo.serving = false;
       }
 
       if ((oneRawScore >= (twoRawScore + 2)) && oneRawScore >= gamePoint) {
-        tGrp.groupOne.up = false;
-        tGrp.groupTwo.up = false;
-        tGrp.winner = 'groupOne';
-        tGrp.game.active = false;
+        tGame.groupOne.up = false;
+        tGame.groupTwo.up = false;
+        tGame.winner = 'groupOne';
+        tGame.active = false;
       }
 
       if ((twoRawScore >= (oneRawScore + 2)) && twoRawScore >= gamePoint) {
-        tGrp.groupOne.up = false;
-        tGrp.groupTwo.up = false;
-        tGrp.winner = 'groupTwo';
-        tGrp.game.active = false;
+        tGame.groupOne.up = false;
+        tGame.groupTwo.up = false;
+        tGame.winner = 'groupTwo';
+        tGame.active = false;
       }
 
       return {
-        ...tGrp
+        ...tGame
       }
     case CHANGE_GAME_POINT:
-      var tGrp = state;
-      tGrp.game.gamePoint = action.point;
+      var tGame = state;
+      tGame.gamePoint = action.point;
 
       return {
-        ...tGrp
+        ...tGame
       }
     case CHANGE_SERVE_INTERVAL:
-      var tGrp = state;
-      tGrp.game.serveInterval = action.point;
+      var tGame = state;
+      tGame.serveInterval = action.point;
 
       return {
-        ...tGrp
+        ...tGame
       }
     case FETCH_SETTINGS:
-      var tGrp = state;
-      tGrp.game.gamePoint = action.settings.gamePoint;
-      tGrp.game.serveInterval = action.settings.serveInterval;
+      var tGame = state;
+      tGame.gamePoint = action.settings.gamePoint;
+      tGame.serveInterval = action.settings.serveInterval;
       return {
-        ...tGrp
+        ...tGame
       }
 
     default:

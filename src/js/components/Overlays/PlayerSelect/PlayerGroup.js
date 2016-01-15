@@ -1,52 +1,52 @@
-import React, { Component } from 'react'
-import _ from 'underscore'
-import PlayerSelection from './PlayerSelection'
-import classNames from 'classNames'
+import React, { Component } from 'react';
+import PlayerSelection from './PlayerSelection';
+import classNames from 'classNames';
 
-export default class game extends Component {
+export default class PlayerGroup extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
-  _startSelection(group, player){
-    var { startSelection } = this.props;
+  _startSelection(group, player) {
+    const { startSelection } = this.props;
     startSelection(group, player);
   }
   render() {
-    var { group, groupNumber } = this.props;
-    var  playerOne = group.playerOne,
-         playerTwo = group.playerTwo;
-    var groupName = groupNumber == 1 ? 'groupOne': 'groupTwo';
-    var groupCls = groupName == 'groupOne' ? 'group-one' : 'group-two';
-    var playerOneName = null, playerTwoName = null;
+    const { group, groupNumber } = this.props;
+    const playerOne = group.playerOne;
+    const playerTwo = group.playerTwo;
+    const groupName = groupNumber === 1 ? 'groupOne' : 'groupTwo';
+    const groupCls = groupName === 'groupOne' ? 'group-one' : 'group-two';
+    let playerOneName = null;
+    let playerTwoName = null;
 
-    var ctnPlayerOneCls = classNames({
+    const ctnPlayerOneCls = classNames({
       'player-container': true,
       'hidden': false,
-      'moved-left': playerOne.active && groupName == 'groupOne',
+      'moved-left': playerOne.active && groupName === 'groupOne'
     });
 
-    var ctnPlayerTwoCls = classNames({
+    const ctnPlayerTwoCls = classNames({
       'player-container': true,
       'hidden': !playerOne.active,
       'moved-right': playerOne.active
     });
 
-    var playerCls = classNames({
+    const playerCls = classNames({
       'player-title': true,
-      'group-one': groupCls == 'group-one',
-      'group-two': groupCls == 'group-two'
+      'group-one': groupCls === 'group-one',
+      'group-two': groupCls === 'group-two'
     });
 
-    var grpCls = classNames({
+    const grpCls = classNames({
       'player-group': true,
       'ready': group.ready
     });
 
     if (playerOne.active) {
-      playerOneName = <div className={playerCls}><span>{playerOne.name}</span></div>
+      playerOneName = <div className={playerCls}><span>{playerOne.name}</span></div>;
     }
     if (playerTwo.active) {
-      playerTwoName = <div className={playerCls}><span>{playerTwo.name}</span></div>
+      playerTwoName = <div className={playerCls}><span>{playerTwo.name}</span></div>;
     }
 
     return (
@@ -70,6 +70,12 @@ export default class game extends Component {
           {playerTwoName}
         </div>
       </div>
-    )
+    );
   }
 }
+
+PlayerGroup.propTypes = {
+  startSelection: React.PropTypes.func,
+  group: React.PropTypes.object,
+  groupNumber: React.PropTypes.number,
+};

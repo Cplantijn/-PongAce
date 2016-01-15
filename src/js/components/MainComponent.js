@@ -28,15 +28,17 @@ export default class MainComponent extends Component {
       endSelection,
       highlightSelection,
       joinGroup,
+      showOverlay,
+      userMessage,
       showSelectionWarning
     } = this.props;
     const cls = classNames({
       'game-component-container': true,
-      'no-game': !game.game.active && !game.game.ended
+      'no-game': !game.active && !game.ended
     });
     return (
       <div className="main-component container-fluid">
-        <TopBar {...this.props}/>
+        <TopBar userMessage={userMessage}/>
         <div className={cls}>
           <GameComponent {...this.props}/>
           <Overlay
@@ -59,13 +61,18 @@ export default class MainComponent extends Component {
             showSelectionWarning={showSelectionWarning}
             hideOverlay={hideOverlay} />
         </div>
-        <Footer {...this.props}/>
+        <Footer
+          hideOverlay={hideOverlay}
+          showOverlay={showOverlay}
+          overlay={overlay}
+          fetchPlayers={fetchPlayers}/>
       </div>
     );
   }
 }
 
 MainComponent.propTypes = {
+  userMessage: React.PropTypes.object,
   game: React.PropTypes.object,
   createNewPlayer: React.PropTypes.func,
   fetchPlayers: React.PropTypes.func,
@@ -73,6 +80,7 @@ MainComponent.propTypes = {
   fetchPlayerDetails: React.PropTypes.func,
   showcasedPlayer: React.PropTypes.object,
   overlay: React.PropTypes.object,
+  showOverlay: React.PropTypes.func,
   hideOverlay: React.PropTypes.func,
   fetchSettings: React.PropTypes.func,
   changeGamePoint: React.PropTypes.func,

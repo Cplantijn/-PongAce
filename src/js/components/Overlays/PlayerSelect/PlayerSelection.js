@@ -1,40 +1,34 @@
-import React, { Component } from 'react'
-import classNames from 'classNames'
-import FontAwesome from 'react-fontawesome'
+import React, { Component } from 'react';
+import classNames from 'classNames';
 
 export default class PlayerSelection extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
   render() {
-    var { startSelection, show, player, 
-          group, playerType, contracted} = this.props;
-    var { active, standardPose, name, selecting } = player;
-    var alignment = active ? 'stretch' : 'center';
+    const { startSelection, player, group, playerType, contracted } = this.props;
+    const { active, standardPose, selecting } = player;
+    const alignment = active ? 'stretch' : 'center';
 
-    var cls = classNames({
+    const cls = classNames({
       'player': true,
-      'player-two': playerType == 'playerTwo',
-      'group-two': group == 'groupTwo',
-      'contracted': contracted,
-      'selecting': selecting
-      });
+      'player-two': playerType === 'playerTwo',
+      'group-two': group === 'groupTwo',
+      contracted,
+      selecting
+    });
 
-    var containerStyle = {
+    const containerStyle = {
       alignItems: alignment
-    }
-    var playerStyle = {
-      backgroundImage: 'url("/player_img/'+ standardPose + '")'
+    };
+    const playerStyle = {
+      backgroundImage: 'url("/player_img/' + standardPose + '")'
     };
 
-    var playerSelection = null;
-      if (active) {
-        playerSelection = <div
-                            className="placed"
-                            style={playerStyle} />
-      } else {
-        playerSelection = <div className="empty" />;
-      }
+    let playerSelection = <div className="empty" />;
+    if (active) {
+      playerSelection = <div className="placed" style={playerStyle} />;
+    }
     return (
         <div
           className={cls}
@@ -42,6 +36,14 @@ export default class PlayerSelection extends Component {
           onClick={startSelection.bind(this, group, playerType)}>
           {playerSelection}
         </div>
-    )
+    );
   }
 }
+
+PlayerSelection.propTypes = {
+  startSelection: React.PropTypes.func,
+  player: React.PropTypes.objectect,
+  group: React.PropTypes.string,
+  playerType: React.PropTypes.string,
+  contracted: React.PropTypes.bool
+};

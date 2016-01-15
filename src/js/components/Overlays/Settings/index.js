@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import FontAwesome from 'react-fontawesome'
+import React, { Component } from 'react';
+import FontAwesome from 'react-fontawesome';
 
 export default class SettingsOverlay extends Component {
   constructor(props) {
     super(props);
   }
   componentDidMount() {
-    const  { fetchSettings } = this.props;
+    const { fetchSettings } = this.props;
     fetchSettings();
   }
   _changeGamePoint(e) {
@@ -22,7 +22,7 @@ export default class SettingsOverlay extends Component {
   }
   _changeServeInterval(e) {
     const { changeServeInterval, game } = this.props;
-    const gp = game.game.serveInterval;
+    const gp = game.serveInterval;
     let num = e.target.value;
 
     if (!isNaN(num)) {
@@ -34,21 +34,21 @@ export default class SettingsOverlay extends Component {
   }
   _stepServeInterval(num) {
     const { game, changeServeInterval } = this.props;
-    const gp = game.game.gamePoint;
-    const si = game.game.serveInterval;
+    const gp = game.gamePoint;
+    const si = game.serveInterval;
     if (((si + num) > 0) && ((si + num) < gp)) {
       changeServeInterval(parseInt(si + num, 10));
     }
   }
   _stepGamePoint(num) {
     const { game, changeGamePoint } = this.props;
-    const gp = game.game.gamePoint;
+    const gp = game.gamePoint;
     if ((num > 0 && gp < 99) || (num < 0 && gp > 1)) {
       changeGamePoint(parseInt(gp + num, 10));
     }
   }
   render() {
-    var { game } = this.props;
+    const { game } = this.props;
     return (
       <div className="settings-container">
         <div className="setting-content game-point-container">
@@ -58,7 +58,7 @@ export default class SettingsOverlay extends Component {
           <div className="input-content">
             <input
               type="text"
-              value={game.game.gamePoint}
+              value={game.gamePoint}
               onChange={this._changeGamePoint.bind(this)}/>
             <div className="increment-decrement">
               <FontAwesome
@@ -81,7 +81,7 @@ export default class SettingsOverlay extends Component {
           <div className="input-content">
             <input
               type="text"
-              value={game.game.serveInterval}
+              value={game.serveInterval}
               onChange={this._changeServeInterval.bind(this)}/>
             <div className="increment-decrement">
               <FontAwesome
@@ -101,3 +101,10 @@ export default class SettingsOverlay extends Component {
     );
   }
 }
+
+SettingsOverlay.propTypes = {
+  fetchSettings: React.PropTypes.func,
+  changeServeInterval: React.PropTypes.func,
+  changeGamePoint: React.PropTypes.func,
+  game: React.PropTypes.object
+};
