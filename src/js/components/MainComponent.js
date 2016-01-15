@@ -3,11 +3,95 @@ import Footer from './Footer';
 import TopBar from './TopBar';
 import classNames from 'classNames';
 import Overlay from './Overlays';
+import io from 'socket.io-client';
 import GameComponent from './Game';
 
 export default class MainComponent extends Component {
   constructor(props) {
     super(props);
+  }
+  componentDidMount() {
+    const { game, toggleReady, modifyPoint, resetGroups } = this.props;
+    this.socket = io();
+    this.socket.on('btnHold', function(side) {
+      if (game.active) {
+        modifyPoint(side, 'REMOVE');
+      } else {
+        if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
+          if (!game[side].ready) {
+            if (side === 'groupOne') {
+              if (game.groupTwo.ready) {
+                toggleReady(side, true);
+              } else {
+                toggleReady(side, false);
+              }
+            } else {
+              if (game.groupOne.ready) {
+                toggleReady(side, true);
+              } else {
+                toggleReady(side, false);
+              }
+            }
+          } else {
+            toggleReady(side, false);
+          }
+        }
+      }
+    });
+
+    this.socket.on('btnDblDown', function() {
+      if (!game.active && game.ended) {
+        resetGroups();
+      }
+    });
+
+    this.socket.on('btnDown', function(side) {
+      if (game.active) {
+        modifyPoint(side, 'ADD');
+      }
+    });
+
+    window.addEventListener('keydown', this._kbPressHandler.bind(this));
+  }
+  _kbPressHandler(e) {
+    const { game, modifyPoint, resetGroups, toggleReady } = this.props;
+    if (game.active) {
+      switch (e.which) {
+        case 49: // Grp 1 press
+          modifyPoint('groupOne', 'ADD');
+          break;
+        case 50: // Grp 2 press
+          modifyPoint('groupTwo', 'ADD');
+          break;
+        case 189: // Grp 1 hold
+          modifyPoint('groupOne', 'REMOVE');
+          break;
+        case 187: // Grp 2 hold
+          modifyPoint('groupTwo', 'REMOVE');
+          break;
+        default:
+          // nothing
+      }
+    } else {
+      if (e.which === 189) {
+        if (game.groupTwo.ready) {
+          toggleReady('groupOne', true);
+        } else {
+          toggleReady('groupOne', false);
+        }
+      } else if (e.which === 187) {
+        if (game.groupOne.ready) {
+          toggleReady('groupTwo', true);
+        } else {
+          toggleReady('groupTwo', false);
+        }
+      }
+      if (game.ended) {
+        if (e.which === 51) {
+          resetGroups();
+        }
+      }
+    }
   }
   render() {
     const {
@@ -30,6 +114,7 @@ export default class MainComponent extends Component {
       joinGroup,
       showOverlay,
       userMessage,
+      endGame,
       showSelectionWarning
     } = this.props;
     const cls = classNames({
@@ -40,7 +125,11 @@ export default class MainComponent extends Component {
       <div className="main-component container-fluid">
         <TopBar userMessage={userMessage}/>
         <div className={cls}>
-          <GameComponent {...this.props}/>
+          <GameComponent
+            showOverlay={showOverlay}
+            endGame={endGame}
+            fetchPlayers={fetchPlayers}
+            game={game}/>
           <Overlay
             game={game}
             createNewPlayer={createNewPlayer}
@@ -92,4 +181,8 @@ MainComponent.propTypes = {
   highlightSelection: React.PropTypes.func,
   joinGroup: React.PropTypes.func,
   showSelectionWarning: React.PropTypes.func,
+  modifyPoint: React.PropTypes.func,
+  resetGroups: React.PropTypes.func,
+  toggleReady: React.PropTypes.func,
+  endGame: React.PropTypes.func
 };

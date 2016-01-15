@@ -83,9 +83,9 @@ html, body {
             align-items: center;
             .winning-player{
               margin: 0 3em;
-              min-width: 24em;
-              min-height: 24em;
-              height: 24em;
+              min-width: 16em;
+              min-height: 16em;
+              height: 16em;
               background-size: cover;
               background-repeat: no-repeat;
               background-position: center center;
@@ -237,10 +237,10 @@ html, body {
                 background-size: cover;
                 border: 0.5em solid $white;
                 border-radius: 50%;
-                min-height: 14em;
-                min-width: 14em;
-                max-width: 14em;
-                height: 14em;
+                min-height: 10em;
+                min-width: 10em;
+                max-width: 10em;
+                height: 10em;
               }
               .label {
                 font-size: 1.2em;

@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { Howl } from 'howler';
-import musicOpts from '../../sound/game_music';
+import musicOpts from '../../sound/pong_music';
 
 import  {
   JOIN_GROUP,

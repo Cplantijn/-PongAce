@@ -3,7 +3,7 @@ import {
   Howl
 }
 from 'howler';
-import musicOpts from '../../sound/game_music';
+import musicOpts from '../../sound/pong_music';
 // import { polyfill } from 'es6-promise';
 import _ from 'underscore';
 export const SHOW_OVERLAY = 'SHOW_OVERLAY';
@@ -40,6 +40,7 @@ let gamePtSaveTimeout;
 let serveIntervalTimeout;
 
 export function startGame() {
+  howl.stop();
   howl.play('applause');
   return {
     type: actions.START_GAME
@@ -94,6 +95,9 @@ export function endSelection() {
 }
 
 export function modifyPoint(group, event) {
+  if (event === 'ADD') {
+    howl.play('make_score');
+  }
   return (dispatch, getState) => {
     dispatch(pointModify(group, event));
     const {
