@@ -29,6 +29,9 @@ export const FETCH_SETTINGS = 'FETCH_SETTINGS';
 export const SWITCH_SERVE = 'SWITCH_SERVE';
 export const UPDATE_LAST_POINT = 'UPDATE_LAST_POINT';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
+export const SHOW_GAME_HISTORY = 'SHOW_GAME_HISTORY';
+
+
 
 const howl = new Howl(musicOpts);
 
@@ -109,7 +112,6 @@ export function modifyPoint(group, event) {
     if (!game.active) {
       dispatch(gameEnd());
       dispatch(saveStats(game));
-      dispatch(saveHistory(game));
       const bannerTheme = game.winner === 'groupOne' ? 'group-one-win' : 'group-two-win';
       dispatch(showMessage(bannerTheme, 'HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
     } else {
@@ -266,13 +268,30 @@ export function fetchPlayerDetails(playerId) {
     return fetch('/fetch/player/' + playerId)
       .then(response => response.json())
       .then(function(json) {
-        if (json.errno === 19) {
-          dispatch(showMessage('danger', 'Something went wrong.'));
+        if (json.errno) {
+          dispatch(showMessage('danger', 'Something went wrong communicating with the database.'));
           msgTimeout = setTimeout(function() {
             dispatch(hideMessage());
           }, 3000);
         } else {
           dispatch(loadPlayerInfo(json));
+        }
+      });
+  };
+}
+
+export function fetchHistory() {
+  return dispatch => {
+    return fetch('/fetch/history/')
+      .then(response => response.json())
+      .then(function(json) {
+        if (json.errno) {
+          dispatch(showMessage('danger', 'Something went wrong communicating with the database.'));
+          msgTimeout = setTimeout(function() {
+            dispatch(hideMessage());
+          }, 3000);
+        } else {
+          dispatch(loadHistory(json));
         }
       });
   };
@@ -374,7 +393,8 @@ export function fetchPlayers(filter, sort) {
       .then(response => response.json())
       .then(function(json) {
         if (json.errno) {
-          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+          console.log(json);
+          dispatch(showMessage('danger', 'Error communicating to the database.'));
           msgTimeout = setTimeout(function() {
             dispatch(hideMessage());
           }, 3000);
@@ -402,7 +422,7 @@ function saveSetting(column, value) {
       .then(response => response.json())
       .then(function(json) {
         if (json.errno) {
-          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+          dispatch(showMessage('danger', 'Error communicating to the database.'));
           msgTimeout = setTimeout(function() {
             dispatch(hideMessage());
           }, 3000);
@@ -416,7 +436,7 @@ function saveSetting(column, value) {
 
 function saveStats(game) {
   const {
-    groupOne, groupTwo, winner
+    groupOne, groupTwo, winner, gameHistory
   } = game;
   const loser = winner === 'groupOne' ? 'groupTwo' : 'groupOne';
   const winnerClip = winner === 'groupOne' ? 'blue_team' : 'red_team';
@@ -440,6 +460,8 @@ function saveStats(game) {
   let gameType = 'singles';
   const winnerIds = [];
   const loserIds = [];
+  const groupOneIds = [];
+  const groupTwoIds = [];
 
   if (groupOne.playerOne.active && groupOne.playerTwo.active ||
     groupTwo.playerOne.active && groupTwo.playerTwo.active) {
@@ -450,6 +472,11 @@ function saveStats(game) {
     if (key === 'playerOne' || key === 'playerTwo') {
       if (player.active) {
         winnerIds.push(player.id);
+        if (winner === 'groupOne') {
+          groupOneIds.push(player.id);
+        } else {
+          groupTwoIds.push(player.id);
+        }
       }
     }
   });
@@ -458,10 +485,28 @@ function saveStats(game) {
     if (key === 'playerOne' || key === 'playerTwo') {
       if (player.active) {
         loserIds.push(player.id);
+        if (loser === 'groupOne') {
+          groupOneIds.push(player.id);
+        } else {
+          groupTwoIds.push(player.id);
+        }
       }
     }
   });
+  // Save history
+  const groupOneObj = {
+    id: groupOneIds,
+    score: game.groupOne.score,
+    rawScore: game.groupOne.rawScore
+  };
+
+  const groupTwoObj = {
+    id: groupTwoIds,
+    score: game.groupTwo.score,
+    rawScore: game.groupTwo.rawScore
+  };
   return dispatch => {
+    dispatch(saveHistory(groupOneObj, groupTwoObj, gameHistory, gameType));
     return fetch('/save/winloss', {
       method: 'POST',
       headers: contentType,
@@ -473,8 +518,8 @@ function saveStats(game) {
     })
       .then(response => response.json())
       .then(function(json) {
-        if (json.errno) {
-          dispatch(showMessage('danger', 'Error communicating to the databse.'));
+        if (json.errno === 19) {
+          dispatch(showMessage('danger', 'Error communicating to the database.'));
           msgTimeout = setTimeout(function() {
             dispatch(hideMessage());
           }, 3000);
@@ -486,14 +531,41 @@ function saveStats(game) {
   };
 }
 
-function saveHistory(game) {
-  
+function saveHistory(groupOne, groupTwo, log, type) {
+  return dispatch => {
+    return fetch('/save/history', {
+      method: 'POST',
+      headers: contentType,
+      body: JSON.stringify({
+        groupOne,
+        groupTwo,
+        log,
+        type
+      })
+    })
+    .then(response => response.json())
+    .then(function(json) {
+      if (json.errno) {
+        dispatch(showMessage('danger', 'Error communicating to the database.'));
+        msgTimeout = setTimeout(function() {
+          dispatch(hideMessage());
+        }, 3000);
+      }
+    });
+  };
 }
 
 function loadPlayerInfo(playerInfo) {
   return {
     type: actions.SHOW_PLAYER_DETAIL,
     playerInfo
+  };
+}
+
+function loadHistory(history) {
+  return {
+    type: actions.SHOW_GAME_HISTORY,
+    history
   };
 }
 

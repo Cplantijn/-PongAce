@@ -10,8 +10,8 @@ export default class Footer extends Component {
     super(props);
   }
   _toggleOverlay(overlayIndex) {
-    const { hideOverlay, showOverlay, overlay, fetchPlayers } = this.props;
-    if (overlayIndex === 0 && overlayIndex !== overlay.activeIndex) {
+    const { hideOverlay, showOverlay, overlay, fetchPlayers, fetchHistory } = this.props;
+    if ((overlayIndex === 0 || overlayIndex === 2) && overlayIndex !== overlay.activeIndex) {
       fetchPlayers('', 'updated_on DESC');
     }
     if (overlay.activeIndex !== overlayIndex && overlay.isOpen) {
@@ -24,6 +24,9 @@ export default class Footer extends Component {
     } else if (overlay.activeIndex === overlayIndex && !overlay.isOpen) {
       if (overlay.activeIndex === 0) {
         fetchPlayers('', 'updated_on DESC');
+      } else if (overlay.activeIndex === 2) {
+        fetchPlayers('', 'updated_on DESC');
+        fetchHistory();
       }
       showOverlay(overlayIndex);
     } else {
@@ -61,5 +64,6 @@ Footer.propTypes = {
   hideOverlay: React.PropTypes.func,
   showOverlay: React.PropTypes.func,
   fetchPlayers: React.PropTypes.func,
+  fetchHistory: React.PropTypes.func,
   overlay: React.PropTypes.object
 };

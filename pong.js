@@ -32,7 +32,11 @@ app.get('/fetch/player/:id', function(req, res) {
 });
 
 app.get('/fetch/settings', function(req, res) {
-  db.loadSettings(res);
+  db.fetchSettings(res);
+});
+
+app.get('/fetch/history', function(req, res) {
+  db.fetchHistory(res);
 });
 
 app.post('/create/player', function(req, res) {
@@ -48,11 +52,15 @@ app.post('/update/player/quote', function(req, res) {
 });
 
 app.post('/save/winloss', function(req, res) {
-  db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
+  db.savePlayerWinLoss(req.body.gameType, req.body.groupOne, req.body.groupTwo, res);
 });
 
 app.post('/save/setting', function(req, res) {
   db.saveSetting(req.body.column, req.body.value, res);
+});
+
+app.post('/save/history', function(req, res) {
+  db.saveHistory(req.body.groupOne, req.body.groupTwo, req.body.log, req.body.type, res);
 });
 
 app.post('/update/player/picture', function(req, res) {

@@ -116,7 +116,8 @@ export default class MainComponent extends Component {
       userMessage,
       endGame,
       resetGroups,
-      showSelectionWarning
+      showSelectionWarning,
+      fetchHistory
     } = this.props;
     const cls = classNames({
       'game-component-container': true,
@@ -151,13 +152,15 @@ export default class MainComponent extends Component {
             showSelectionWarning={showSelectionWarning}
             hideOverlay={hideOverlay}
             resetGroups={resetGroups}
+            fetchHistory={fetchHistory}
             />
         </div>
         <Footer
           hideOverlay={hideOverlay}
           showOverlay={showOverlay}
           overlay={overlay}
-          fetchPlayers={fetchPlayers}/>
+          fetchPlayers={fetchPlayers}
+          fetchHistory={fetchHistory}/>
       </div>
     );
   }
@@ -188,4 +191,5 @@ MainComponent.propTypes = {
   resetGroups: React.PropTypes.func,
   toggleReady: React.PropTypes.func,
   endGame: React.PropTypes.func,
+  fetchHistory: React.PropTypes.func,
 };

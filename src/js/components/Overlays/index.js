@@ -13,14 +13,32 @@ export default class Overlay extends Component {
     super(props);
   }
   render() {
-    const { overlay, hideOverlay, game, changePlayerPic,
-            createNewPlayer, fetchPlayers, playerList,
-            fetchPlayerDetails, showcasedPlayer, hideMessage,
-            endSelection, resetGroups, highlightSelection,
-            joinGroup, showSelectionWarning, highlightId,
-            selectingPlayer, selectingGroup, isSelecting,
-            startSelection, fetchSettings, changeServeInterval,
-            changeGamePoint } = this.props;
+    const {
+      overlay,
+      hideOverlay,
+      game,
+      changePlayerPic,
+      createNewPlayer,
+      fetchPlayers,
+      playerList,
+      fetchPlayerDetails,
+      showcasedPlayer,
+      hideMessage,
+      endSelection,
+      resetGroups,
+      highlightSelection,
+      joinGroup,
+      showSelectionWarning,
+      highlightId,
+      selectingPlayer,
+      selectingGroup,
+      isSelecting,
+      startSelection,
+      fetchSettings,
+      changeServeInterval,
+      changeGamePoint,
+      fetchHistory
+    } = this.props;
     const overlays = ['profiles', 'leaderboard', 'history', 'settings', 'characterSelect'];
     const activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles';
     let overlayBody;
@@ -79,11 +97,13 @@ export default class Overlay extends Component {
           break;
         case 'history':
           overlayBody =
-          (<HistoryOverlay />);
+          (<HistoryOverlay
+            fetchHistory={fetchHistory}
+            playerList={playerList} />);
           break;
         case 'leaderboard':
           overlayBody =
-          (<LeaderboardOverlay />);
+          (<LeaderboardOverlay  />);
           break;
         default:
           overlayBody = <div></div>;
@@ -129,5 +149,6 @@ Overlay.propTypes = {
   startSelection: React.PropTypes.func,
   fetchSettings: React.PropTypes.func,
   changeServeInterval: React.PropTypes.func,
-  changeGamePoint: React.PropTypes.func
+  changeGamePoint: React.PropTypes.func,
+  fetchHistory: React.PropTypes.func
 };

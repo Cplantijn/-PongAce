@@ -1,7 +1,7 @@
-var config       = require('../config');
-var sqlite3      = require('sqlite3').verbose();
-var db           = new sqlite3.Database(config.dbFile);
-var colors       = require('colors');
+var config   = require('../config');
+var sqlite3  = require('sqlite3').verbose();
+var db       = new sqlite3.Database(config.dbFile);
+var colors   = require('colors');
 
 function openConnection() {
   return new sqlite3.Database(config.dbFile)
@@ -61,19 +61,20 @@ exports.initTable = function() {
       }
     });
 
-    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='history'", function(err, result){
+    db.get("SELECT name FROM sqlite_master WHERE type='table' AND name='history'", function(err, result) {
       if (err) console.log('An error has occured.');
       if (!result) {
         console.log('history table  not found. Creating new history table.'.underline.white.bgMagenta.bold);
-        db.serialize(function(){
+        db.serialize(function() {
           db.run("CREATE TABLE history (\
                     id INTEGER PRIMARY KEY, \
+                    type TEXT, \
+                    log TEXT, \
                     team_one_player_id TEXT, \
                     team_two_player_id TEXT, \
-                    team_one_point INTEGER, \
-                    team_two_point INTEGER, \
-                    game_time DATETIME DEFAULT (datetime('now','localtime')),\
-                    game_type TEXT)");
+                    team_one_point TEXT, \
+                    team_two_point TEXT, \
+                    game_time DATETIME DEFAULT (datetime('now','localtime')))");
         });
         console.log('Finished creating history table'.bgGreen.red.bold);
       }
@@ -125,7 +126,7 @@ exports.saveSetting = function(column, value, res) {
   db.close();
 }
 
-exports.loadSettings = function(res) {
+exports.fetchSettings = function(res) {
   var db = openConnection();
   db.serialize(function() {
     var sql = "SELECT game_point AS gamePoint, \
@@ -138,6 +139,17 @@ exports.loadSettings = function(res) {
     })
   })
   db.close();
+}
+
+exports.fetchHistory = function(res) {
+  var db = openConnection();
+  db.serialize(function() {
+    var sql = "SELECT * FROM history";
+    db.all(sql, function(err, result) {
+      var response = err || result;
+      dbCallback(response, res);
+    })
+  })
 }
 
 exports.updatePlayerQuote = function(id, quote, res) {
@@ -159,6 +171,33 @@ exports.createNewProfile = function(playerName, res) {
     stmt.run(playerName, function(err) {
       var result = err || true;
         dbCallback(result, res)
+    });
+    stmt.finalize();
+  });
+  db.close();
+}
+
+exports.saveHistory = function(groupOne, groupTwo, log, type, res) {
+  log = JSON.stringify(log);
+  var db = openConnection();
+  db.serialize(function() {
+    var stmt = db.prepare("INSERT INTO history(type, log, team_one_player_id, \
+                          team_two_player_id, team_one_point, team_two_point) \
+                          VALUES(?, ?, ?, ?, ?, ?)");
+    var groupOneIds = groupOne.id.join(',');
+    var groupTwoIds = groupTwo.id.join(',');
+    var groupOneScore = JSON.stringify({
+      score: groupOne.score,
+      rawScore: groupOne.rawScore
+    });
+    var groupTwoScore = JSON.stringify({
+      score: groupTwo.score,
+      rawScore: groupTwo.rawScore
+    });
+    var params = [type, log, groupOneIds, groupTwoIds, groupOneScore, groupTwoScore];
+    stmt.run(params, function(err) {
+      var result = err || true;
+      dbCallback(result, res);
     });
     stmt.finalize();
   });

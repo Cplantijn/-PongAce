@@ -19,6 +19,7 @@ function mapStateToProps(state) {
   return {
     overlay: state.overlay,
     game: state.game,
+    history: state.history,
     userMessage: state.userMessage,
     playerList: state.playerList,
     showcasedPlayer: state.showcasedPlayer
