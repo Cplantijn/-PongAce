@@ -13,6 +13,7 @@ var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var reactify = require('reactify');
 var babelify = require('babelify');
+var uglify = require('gulp-uglify');
 
 var jsFiles = glob.sync('./src/js/index.js');
 var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/*.*', './src/sound/*.*'];
@@ -37,6 +38,7 @@ function bundle() {
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('bundle.js'))
     .pipe(buffer())
+    .pipe(uglify())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
