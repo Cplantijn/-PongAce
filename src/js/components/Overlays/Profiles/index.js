@@ -11,7 +11,7 @@ export default class ProfilesOverlay extends Component {
   }
   componentDidMount() {
     let ul = this.refs.playerList;
-    ul.style.height = 500;
+    ul.style.height = 440;
     ps.initialize(ul, {
       suppressScrollX: true
     });

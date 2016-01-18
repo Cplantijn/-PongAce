@@ -1081,18 +1081,18 @@ html, body {
           }
           &.leaderboard {
             &:hover {
-              color: $gold_color;
+              color: $secondary_color;
             }
             &.active {
-              color: $gold_color;
+              color: $secondary_color;
             }
           }
           &.history {
             &:hover {
-              color: $secondary_color;
+              color: $gold_color;
             }
             &.active {
-              color: $secondary_color;
+              color: $gold_color;
             }
           }
           &.settings {
