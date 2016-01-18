@@ -4,7 +4,7 @@ import {
 }
 from 'howler';
 import musicOpts from '../../sound/pong_music';
-// import { polyfill } from 'es6-promise';
+
 import _ from 'underscore';
 export const SHOW_OVERLAY = 'SHOW_OVERLAY';
 export const HIDE_OVERLAY = 'HIDE_OVERLAY';
@@ -26,6 +26,9 @@ export const MODIFY_POINT = 'MODIFY_POINT';
 export const CHANGE_GAME_POINT = 'CHANGE_GAME_POINT';
 export const CHANGE_SERVE_INTERVAL = 'CHANGE_SERVE_INTERVAL';
 export const FETCH_SETTINGS = 'FETCH_SETTINGS';
+export const SWITCH_SERVE = 'SWITCH_SERVE';
+export const UPDATE_LAST_POINT = 'UPDATE_LAST_POINT';
+export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 
 const howl = new Howl(musicOpts);
 
@@ -95,7 +98,7 @@ export function endSelection() {
 }
 
 export function modifyPoint(group, event) {
-  if (event === 'ADD') {
+  if (event === 'SCORE_UP') {
     howl.play('make_score');
   }
   return (dispatch, getState) => {
@@ -106,8 +109,32 @@ export function modifyPoint(group, event) {
     if (!game.active) {
       dispatch(gameEnd());
       dispatch(saveStats(game));
+      dispatch(saveHistory(game));
       const bannerTheme = game.winner === 'groupOne' ? 'group-one-win' : 'group-two-win';
       dispatch(showMessage(bannerTheme, 'HOLD BUTTON FOR REMATCH / DOUBLE TAP TO QUIT'));
+    } else {
+      const { groupOne, groupTwo, serveInterval, lastSwitchPoint } = game;
+      const totalScore = groupOne.score + groupTwo.score;
+      if (event === 'SCORE_UP') {
+        if ((totalScore % serveInterval === 0) && (totalScore === lastSwitchPoint + serveInterval)) {
+          dispatch(switchServe());
+          howl.play('switch_serve');
+          const lastPoint = totalScore;
+          const whoIsServing = groupOne.serving ? 'groupOne' : 'groupTwo';
+          dispatch(updateLastPoint(lastPoint));
+          dispatch(updateHistory('SERVING', whoIsServing));
+        }
+      } else {
+        if (totalScore === lastSwitchPoint - 1) {
+          dispatch(switchServe());
+          const lastPoint = lastSwitchPoint - serveInterval;
+          const whoIsServing = groupOne.serving ? 'groupOne' : 'groupTwo';
+          howl.play('switch_serve');
+          dispatch(updateLastPoint(lastPoint));
+          dispatch(updateHistory('SERVING', whoIsServing));
+        }
+      }
+      dispatch(updateHistory(event, group));
     }
   };
 }
@@ -459,6 +486,10 @@ function saveStats(game) {
   };
 }
 
+function saveHistory(game) {
+  
+}
+
 function loadPlayerInfo(playerInfo) {
   return {
     type: actions.SHOW_PLAYER_DETAIL,
@@ -566,5 +597,27 @@ function playerJoinGroup(group, player, id, name, standardPose, winningPose) {
     name,
     standardPose,
     winningPose
+  };
+}
+
+function switchServe() {
+  return {
+    type: actions.SWITCH_SERVE
+  };
+}
+
+function updateLastPoint(point) {
+  return {
+    type: actions.UPDATE_LAST_POINT,
+    point
+  };
+}
+
+function updateHistory(event, side) {
+  const group = side || null;
+  return {
+    type: actions.UPDATE_HISTORY,
+    event,
+    group
   };
 }

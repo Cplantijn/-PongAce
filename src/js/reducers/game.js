@@ -1,6 +1,4 @@
 import _ from 'underscore';
-import { Howl } from 'howler';
-import musicOpts from '../../sound/pong_music';
 
 import  {
   JOIN_GROUP,
@@ -14,10 +12,11 @@ import  {
   MODIFY_POINT,
   CHANGE_GAME_POINT,
   CHANGE_SERVE_INTERVAL,
-  FETCH_SETTINGS
+  FETCH_SETTINGS,
+  SWITCH_SERVE,
+  UPDATE_LAST_POINT,
+  UPDATE_HISTORY
 } from '../actions';
-
-const howl = new Howl(musicOpts);
 
 const initGameState = {
   active: false,
@@ -74,15 +73,16 @@ const initGameState = {
       up: false,
       serving: false
   },
+  gameHistory:[],
   isSelecting: false,
   highlightId: null,
   selectedIds: []
 }
 
-export default function game( state = initGameState, action) {
+export default function game(state = initGameState, action) {
+  let tGame = state;
   switch (action.type) {
     case START_SELECTION:
-      var tGame = state;
       tGame.isSelecting = true;
       tGame.groupOne.playerOne.selecting = false;
       tGame.groupOne.playerTwo.selecting = false;
@@ -99,7 +99,6 @@ export default function game( state = initGameState, action) {
         ...tGame
       }
     case END_SELECTION:
-      var tGame = state;
       tGame.isSelecting = false;
       tGame.groupOne.playerOne.selecting = false;
       tGame.groupOne.playerTwo.selecting = false;
@@ -112,13 +111,11 @@ export default function game( state = initGameState, action) {
         ...tGame
       }
     case HIGHLIGHT_SELECTION:
-      var tGame = state;
       tGame.highlightId = action.id;
       return {
         ...tGame
       }
     case JOIN_GROUP:
-      var tGame = state;
       tGame.selectedIds = [];
       tGame[action.group][action.player].id = action.id;
       tGame[action.group][action.player].name = action.name;
@@ -140,7 +137,6 @@ export default function game( state = initGameState, action) {
         ...tGame
       }
     case RESET_GROUPS:
-      var tGame = state;
       tGame.groupOne.ready = false;
       tGame.groupTwo.ready = false;
       tGame.groupOne.score = 0;
@@ -189,13 +185,13 @@ export default function game( state = initGameState, action) {
       tGame.ended = false;
       tGame.selectingGroup = null;
       tGame.selectingPlayer = null;
-      tGame.selectedIds =[];
+      tGame.selectedIds = [];
+      tGame.gameHistory = [];
       tGame.winner = null;
       return {
         ...tGame
       }
     case READY_UP:
-      var tGame = state;
 
       if (!tGame.groupOne.ready && !tGame.groupTwo.ready) {
         tGame[action.side].serving = true;
@@ -211,7 +207,6 @@ export default function game( state = initGameState, action) {
         ...tGame
       }
     case START_GAME:
-      var tGame = state;
       tGame.active = true;
       tGame.ended = false;
       tGame.lastSwitchPoint = 0;
@@ -220,12 +215,11 @@ export default function game( state = initGameState, action) {
       tGame.groupTwo.score = 0;
       tGame.groupOne.rawScore = 0;
       tGame.groupTwo.rawScore = 0;
-
+      tGame.gameHistory = [];
       return {
         ...tGame
       }
     case END_GAME:
-      var tGame = state;
       tGame.active = false;
       tGame.ended = true;
       tGame.groupOne.ready = false;
@@ -235,34 +229,13 @@ export default function game( state = initGameState, action) {
         ...tGame
       }
     case MODIFY_POINT:
-      var tGame = state;
       var { gamePoint } = tGame;
-      var value = action.event == 'ADD' ? 1 : -1;
+      var value = action.event == 'SCORE_UP' ? 1 : -1;
       var rawScore = tGame[action.group].rawScore + value;
       tGame[action.group].rawScore = rawScore > -1 ? rawScore: 0;
-
       tGame[action.group].score = tGame[action.group].rawScore > gamePoint ? gamePoint : tGame[action.group].rawScore;
-
       var totalScore = tGame.groupOne.score + tGame.groupTwo.score;
 
-      if (action.event == 'ADD') {
-        if ((totalScore % tGame.serveInterval == 0) && (totalScore == tGame.lastSwitchPoint + tGame.serveInterval)) {
-          howl.play('switch_serve');
-          tGame.groupOne.serving = !tGame.groupOne.serving;
-          tGame.groupTwo.serving = !tGame.groupTwo.serving;
-          tGame.lastSwitchPoint = totalScore;
-        }
-      } else {
-        if (totalScore == tGame.lastSwitchPoint - 1) {
-          //TODO Remove this logic from reducer
-          howl.play('switch_serve');
-          tGame.groupOne.serving = !tGame.groupOne.serving;
-          tGame.groupTwo.serving = !tGame.groupTwo.serving;
-          tGame.lastSwitchPoint = tGame.lastSwitchPoint - tGame.serveInterval;
-        }
-      }
-
-      //TODO: Please do a better job here, i get it you havnt slept in a while.
       var oneScore = tGame.groupOne.score;
       var twoScore = tGame.groupTwo.score;
       var oneRawScore = tGame.groupOne.rawScore;
@@ -314,22 +287,42 @@ export default function game( state = initGameState, action) {
       return {
         ...tGame
       }
+    case SWITCH_SERVE:
+      tGame.groupOne.serving = !tGame.groupOne.serving;
+      tGame.groupTwo.serving = !tGame.groupTwo.serving;
+      return {
+        ...tGame
+      }
+    case UPDATE_LAST_POINT:
+      tGame.lastSwitchPoint = action.point;
+      return {
+        ...tGame
+      }
+    case UPDATE_HISTORY:
+      tGame.gameHistory.push({
+        event: action.event,
+        group: action.group,
+        score: {
+          groupOne: tGame.groupOne.score,
+          groupTwo: tGame.groupTwo.score
+        }
+      });
+      return {
+        ...tGame
+      }
     case CHANGE_GAME_POINT:
-      var tGame = state;
       tGame.gamePoint = action.point;
 
       return {
         ...tGame
       }
     case CHANGE_SERVE_INTERVAL:
-      var tGame = state;
       tGame.serveInterval = action.point;
 
       return {
         ...tGame
       }
     case FETCH_SETTINGS:
-      var tGame = state;
       tGame.gamePoint = action.settings.gamePoint;
       tGame.serveInterval = action.settings.serveInterval;
       return {

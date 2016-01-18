@@ -5,7 +5,8 @@ import ProfilesOverlay from './Profiles';
 import PlayerSelectOverlay from './PlayerSelect';
 import HideOverlay from './HideOverlay';
 import SettingsOverlay from './Settings';
-
+import HistoryOverlay from './History';
+import LeaderboardOverlay from './Leaderboard';
 
 export default class Overlay extends Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class Overlay extends Component {
             selectingPlayer, selectingGroup, isSelecting,
             startSelection, fetchSettings, changeServeInterval,
             changeGamePoint } = this.props;
-    const overlays = ['profiles', 'leaderboards', 'history', 'settings', 'characterSelect'];
+    const overlays = ['profiles', 'leaderboard', 'history', 'settings', 'characterSelect'];
     const activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles';
     let overlayBody;
     let show = true;
@@ -75,6 +76,14 @@ export default class Overlay extends Component {
             changeServeInterval={changeServeInterval}
             changeGamePoint={changeGamePoint}
             game={game} />);
+          break;
+        case 'history':
+          overlayBody =
+          (<HistoryOverlay />);
+          break;
+        case 'leaderboard':
+          overlayBody =
+          (<LeaderboardOverlay />);
           break;
         default:
           overlayBody = <div></div>;

@@ -888,6 +888,16 @@ html, body {
             }
           }
         }
+        .leaderboard-container{
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          text-transform: uppercase;
+          font-family: $pier_bold;
+          letter-spacing: 0.05em;
+          font-size: 2em;
+        }
         .settings-container {
           display: flex;
           flex: 1;

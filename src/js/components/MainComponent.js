@@ -15,7 +15,7 @@ export default class MainComponent extends Component {
     this.socket = io();
     this.socket.on('btnHold', function(side) {
       if (game.active) {
-        modifyPoint(side, 'REMOVE');
+        modifyPoint(side, 'SCORE_DOWN');
       } else {
         if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
           if (!game[side].ready) {
@@ -47,7 +47,7 @@ export default class MainComponent extends Component {
 
     this.socket.on('btnDown', function(side) {
       if (game.active) {
-        modifyPoint(side, 'ADD');
+        modifyPoint(side, 'SCORE_UP');
       }
     });
 
@@ -58,16 +58,16 @@ export default class MainComponent extends Component {
     if (game.active) {
       switch (e.which) {
         case 49: // Grp 1 press
-          modifyPoint('groupOne', 'ADD');
+          modifyPoint('groupOne', 'SCORE_UP');
           break;
         case 50: // Grp 2 press
-          modifyPoint('groupTwo', 'ADD');
+          modifyPoint('groupTwo', 'SCORE_UP');
           break;
         case 189: // Grp 1 hold
-          modifyPoint('groupOne', 'REMOVE');
+          modifyPoint('groupOne', 'SCORE_DOWN');
           break;
         case 187: // Grp 2 hold
-          modifyPoint('groupTwo', 'REMOVE');
+          modifyPoint('groupTwo', 'SCORE_DOWN');
           break;
         default:
           // nothing
