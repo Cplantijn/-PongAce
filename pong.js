@@ -60,7 +60,8 @@ app.post('/save/setting', function(req, res) {
 });
 
 app.post('/save/history', function(req, res) {
-  db.saveHistory(req.body.groupOne, req.body.groupTwo, req.body.log, req.body.type, res);
+  var b = req.body;
+  db.saveHistory(b.groupOne, b.groupTwo, b.log, b.type, b.winner, res);
 });
 
 app.post('/update/player/picture', function(req, res) {
@@ -101,7 +102,8 @@ app.post('/update/player/picture', function(req, res) {
               'content-type': 'application/json'
             });
             var errorBody = {
-              error: 'err'
+              error: 'err',
+              reason: err
             }
             res.write(JSON.stringify(errorBody));
             res.end();

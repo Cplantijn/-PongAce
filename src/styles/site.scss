@@ -951,6 +951,34 @@ html, body {
             }
           }
         }
+        .history-container{
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          table{
+            color: $white;
+            width: 98%;
+            tr{
+              min-height: 2.5em;
+              td{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              td:not(:first-of-type){
+                text-align:center;
+                .player-pic{
+                  display: inline-block;
+                  margin: 0 0.25em;
+                  height: 2em;
+                  width: 2em;
+                  background-size: cover;
+                  border-radius: 50%;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

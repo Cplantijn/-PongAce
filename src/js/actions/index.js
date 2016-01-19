@@ -506,7 +506,7 @@ function saveStats(game) {
     rawScore: game.groupTwo.rawScore
   };
   return dispatch => {
-    dispatch(saveHistory(groupOneObj, groupTwoObj, gameHistory, gameType));
+    dispatch(saveHistory(groupOneObj, groupTwoObj, gameHistory, gameType, winner));
     return fetch('/save/winloss', {
       method: 'POST',
       headers: contentType,
@@ -531,7 +531,7 @@ function saveStats(game) {
   };
 }
 
-function saveHistory(groupOne, groupTwo, log, type) {
+function saveHistory(groupOne, groupTwo, log, type, winner) {
   return dispatch => {
     return fetch('/save/history', {
       method: 'POST',
@@ -540,7 +540,8 @@ function saveHistory(groupOne, groupTwo, log, type) {
         groupOne,
         groupTwo,
         log,
-        type
+        type,
+        winner
       })
     })
     .then(response => response.json())

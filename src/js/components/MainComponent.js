@@ -116,6 +116,7 @@ export default class MainComponent extends Component {
       userMessage,
       endGame,
       resetGroups,
+      history,
       showSelectionWarning,
       fetchHistory
     } = this.props;
@@ -153,6 +154,7 @@ export default class MainComponent extends Component {
             hideOverlay={hideOverlay}
             resetGroups={resetGroups}
             fetchHistory={fetchHistory}
+            history={history}
             />
         </div>
         <Footer
@@ -169,6 +171,7 @@ export default class MainComponent extends Component {
 MainComponent.propTypes = {
   userMessage: React.PropTypes.object,
   game: React.PropTypes.object,
+  history: React.PropTypes.object,
   createNewPlayer: React.PropTypes.func,
   fetchPlayers: React.PropTypes.func,
   playerList: React.PropTypes.object,

@@ -32,6 +32,7 @@ export default class Overlay extends Component {
       highlightId,
       selectingPlayer,
       selectingGroup,
+      history,
       isSelecting,
       startSelection,
       fetchSettings,
@@ -99,11 +100,12 @@ export default class Overlay extends Component {
           overlayBody =
           (<HistoryOverlay
             fetchHistory={fetchHistory}
+            history={history}
             playerList={playerList} />);
           break;
         case 'leaderboard':
           overlayBody =
-          (<LeaderboardOverlay  />);
+          (<LeaderboardOverlay />);
           break;
         default:
           overlayBody = <div></div>;
@@ -136,6 +138,7 @@ Overlay.propTypes = {
   playerList: React.PropTypes.object,
   fetchPlayerDetails: React.PropTypes.func,
   showcasedPlayer: React.PropTypes.object,
+  history: React.PropTypes.object,
   hideMessage: React.PropTypes.func,
   endSelection: React.PropTypes.func,
   resetGroups: React.PropTypes.func,

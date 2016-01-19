@@ -70,10 +70,11 @@ exports.initTable = function() {
                     id INTEGER PRIMARY KEY, \
                     type TEXT, \
                     log TEXT, \
-                    team_one_player_id TEXT, \
-                    team_two_player_id TEXT, \
-                    team_one_point TEXT, \
-                    team_two_point TEXT, \
+                    group_one_player_id TEXT, \
+                    group_two_player_id TEXT, \
+                    group_one_point TEXT, \
+                    group_two_point TEXT, \
+                    winner TEXT, \
                     game_time DATETIME DEFAULT (datetime('now','localtime')))");
         });
         console.log('Finished creating history table'.bgGreen.red.bold);
@@ -177,24 +178,24 @@ exports.createNewProfile = function(playerName, res) {
   db.close();
 }
 
-exports.saveHistory = function(groupOne, groupTwo, log, type, res) {
+exports.saveHistory = function(groupOne, groupTwo, log, type, winner, res) {
   log = JSON.stringify(log);
   var db = openConnection();
   db.serialize(function() {
-    var stmt = db.prepare("INSERT INTO history(type, log, team_one_player_id, \
-                          team_two_player_id, team_one_point, team_two_point) \
-                          VALUES(?, ?, ?, ?, ?, ?)");
+    var stmt = db.prepare("INSERT INTO history(type, log, group_one_player_id, \
+                          group_two_player_id, group_one_point, group_two_point, winner) \
+                          VALUES(?, ?, ?, ?, ?, ?, ?)");
     var groupOneIds = groupOne.id.join(',');
     var groupTwoIds = groupTwo.id.join(',');
     var groupOneScore = JSON.stringify({
       score: groupOne.score,
-      rawScore: groupOne.rawScore
+      rawScore: groupOne.rawScore,
     });
     var groupTwoScore = JSON.stringify({
       score: groupTwo.score,
-      rawScore: groupTwo.rawScore
+      rawScore: groupTwo.rawScore,
     });
-    var params = [type, log, groupOneIds, groupTwoIds, groupOneScore, groupTwoScore];
+    var params = [type, log, groupOneIds, groupTwoIds, groupOneScore, groupTwoScore, winner];
     stmt.run(params, function(err) {
       var result = err || true;
       dbCallback(result, res);

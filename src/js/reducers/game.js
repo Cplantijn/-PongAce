@@ -303,8 +303,16 @@ export default function game(state = initGameState, action) {
         event: action.event,
         group: action.group,
         score: {
-          groupOne: tGame.groupOne.score,
-          groupTwo: tGame.groupTwo.score
+          groupOne: {
+            score: tGame.groupOne.score,
+            rawScore: tGame.groupOne.rawScore,
+            up: tGame.groupOne.up
+          },
+          groupTwo: {
+            score: tGame.groupTwo.score,
+            rawScore: tGame.groupTwo.score,
+            up: tGame.groupTwo.up
+          }
         }
       });
       return {
