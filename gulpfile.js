@@ -13,7 +13,8 @@ var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var reactify = require('reactify');
 var babelify = require('babelify');
-
+var uglify = require('gulp-uglify');
+var config = require('./config');
 var jsFiles = glob.sync('./src/js/index.js');
 var staticFiles = ['./src/index.html', './src/webfont/*.*', './src/img/*.*', './src/sound/*.*'];
 
@@ -31,12 +32,21 @@ b.on('update', bundle);
 b.on('log', gutil.log);
 
 function bundle() {
+  gutil.log(gutil.colors.bgYellow.black('Setting NODE_ENV to \'' + config.mode));
+  process.env.NODE_ENV = config.mode;
+  if (process.env.NODE_ENV != config.mode) {
+    throw new Error('Failed to set NODE_ENV to ' + config.mode + '!');
+  } else {
+      gutil.log(gutil.colors.bgYellow.black('Successfully set NODE_ENV to ' + config.mode));
+  }
   gutil.log(gutil.colors.bgMagenta('Browserifying js files'));
   gutil.beep();
+
   return b.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('bundle.js'))
     .pipe(buffer())
+    .pipe(uglify())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/js'));
