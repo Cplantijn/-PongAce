@@ -81,7 +81,6 @@ app.post('/update/player/picture', function(req, res) {
     var tmpPath = this.openedFiles[0].path;
     var fileName = this.openedFiles[0].name;
     var preResizePath = './uploads/' + this.openedFiles[0].name;
-    console.log('moving image to temp folder');
     fs.rename(tmpPath, preResizePath, function(err) {
       if (err) throw err;
       var nameGen = new Chance();
@@ -92,12 +91,10 @@ app.post('/update/player/picture', function(req, res) {
       var ext = fileName.match(/\.(jpg|jpeg|png)$/i);
       ext = ext[0] || '.jpg';
       var finalPath = config.imageDir + newName + ext;
-      console.log('resizing image');
       gm(preResizePath)
         .resize(null, 280)
         .write(finalPath, function(err) {
           if (!err) {
-            console.log('done, cleaning up temp folder...');
             fs.unlink(preResizePath);
             db.updatePlayerPicture(playerId, picType, newName + ext, res);
           } else {
