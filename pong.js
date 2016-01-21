@@ -18,7 +18,8 @@ var gm = require('gm').subClass({
 
 
 var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
-  btnOneTimeout, btnTwoTimeout;
+  btnOneTimeout, btnTwoTimeout, btnOneClicked, btnTwoClicked,
+  btnOneClickTimeout, btnTwoClickTimeout;
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/player_img', express.static(path.join(__dirname, 'player_img')));
@@ -119,23 +120,34 @@ app.post('/update/player/picture', function(req, res) {
 // board = new five.Board({
 //   port: config.boardPort
 // });
-
 board = new five.Board();
+
 board.on('ready', function() {
   btnOne = new five.Button(config.btnOne);
   btnOneDowned = false;
+  btnOneClicked = false;
 
   btnTwo = new five.Button(config.btnTwo);
   btnTwoDowned = false;
+  btnTwoClicked = false;
 
   btnOne.on('down', function() {
+    if (!btnOneClicked) {
+      btnOneClicked = true;
+      io.emit('btnDown', 'groupOne');
+      btnOneClickTimeout = setTimeout(function() {
+        btnOneClicked = false;
+      }, 400);
+    }
+
     btnOneTimeout = setTimeout(function() {
       btnOneDowned = false;
     }, 500);
-    io.emit('btnDown', 'groupOne');
+
     if (btnOneDowned) {
       io.emit('btnDblDown', 'groupOne');
     }
+
     btnOneDowned = true;
   });
 
@@ -144,13 +156,22 @@ board.on('ready', function() {
   });
 
   btnTwo.on('down', function() {
+    if (!btnTwoClicked) {
+      btnTwoClicked = true;
+      io.emit('btnDown', 'groupTwo');
+      btnTwoClickTimeout = setTimeout(function() {
+        btnTwoClicked = false;
+      }, 400);
+    }
+
     btnTwoTimeout = setTimeout(function() {
       btnTwoDowned = false;
     }, 500);
-    io.emit('btnDown', 'groupTwo');
+
     if (btnTwoDowned) {
       io.emit('btnDblDown', 'groupTwo');
     }
+
     btnTwoDowned = true;
   });
 

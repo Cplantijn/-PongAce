@@ -9,49 +9,78 @@ import GameComponent from './Game';
 export default class MainComponent extends Component {
   constructor(props) {
     super(props);
+    this.setState({
+      eventSide: ''
+    });
   }
   componentDidMount() {
-    const { game, toggleReady, modifyPoint, resetGroups } = this.props;
     this.socket = io();
+    const btnDown = new Event('btnDown');
+    const btnHold = new Event('btnHold');
+    const btnDblDown = new Event('btnDblDown');
+    const self = this;
+
     this.socket.on('btnHold', function(side) {
-      if (game.active) {
-        modifyPoint(side, 'SCORE_DOWN');
-      } else {
-        if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
-          if (!game[side].ready) {
-            if (side === 'groupOne') {
-              if (game.groupTwo.ready) {
-                toggleReady(side, true);
-              } else {
-                toggleReady(side, false);
-              }
-            } else {
-              if (game.groupOne.ready) {
-                toggleReady(side, true);
-              } else {
-                toggleReady(side, false);
-              }
-            }
-          } else {
-            toggleReady(side, false);
-          }
-        }
-      }
+      self.setState({
+        eventSide: side
+      });
+      window.dispatchEvent(btnHold);
     });
 
     this.socket.on('btnDblDown', function() {
-      if (!game.active && game.ended) {
-        resetGroups();
-      }
+      window.dispatchEvent(btnDblDown);
     });
 
     this.socket.on('btnDown', function(side) {
-      if (game.active) {
-        modifyPoint(side, 'SCORE_UP');
-      }
+      self.setState({
+        eventSide: side
+      });
+      window.dispatchEvent(btnDown);
     });
 
     window.addEventListener('keydown', this._kbPressHandler.bind(this));
+    window.addEventListener('btnDown', this._btnDownHandler.bind(this));
+    window.addEventListener('btnHold', this._btnHoldHandler.bind(this));
+    window.addEventListener('btnDblDown', this._btnDblDownHandler.bind(this));
+  }
+  _btnDblDownHandler() {
+    const { game, resetGroups } = this.props;
+    if (!game.active && game.ended) {
+      resetGroups();
+    }
+  }
+  _btnHoldHandler() {
+    const { game, modifyPoint, toggleReady } = this.props;
+    const side = this.state.eventSide;
+    if (game.active) {
+      modifyPoint(side, 'SCORE_DOWN');
+    } else {
+      if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
+        if (!game[side].ready) {
+          if (side === 'groupOne') {
+            if (game.groupTwo.ready) {
+              toggleReady(side, true);
+            } else {
+              toggleReady(side, false);
+            }
+          } else {
+            if (game.groupOne.ready) {
+              toggleReady(side, true);
+            } else {
+              toggleReady(side, false);
+            }
+          }
+        } else {
+          toggleReady(side, false);
+        }
+      }
+    }
+  }
+  _btnDownHandler() {
+    const { game, modifyPoint } = this.props;
+    if (game.active) {
+      modifyPoint(this.state.eventSide, 'SCORE_UP');
+    }
   }
   _kbPressHandler(e) {
     const { game, modifyPoint, resetGroups, toggleReady } = this.props;
