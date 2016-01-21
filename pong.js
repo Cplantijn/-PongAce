@@ -11,9 +11,11 @@ var config = require('./config');
 var five = require('johnny-five');
 var db = require('./db_actions');
 var emoji = require('node-emoji');
+var colors   = require('colors');
 var gm = require('gm').subClass({
   imageMagick: true
 });
+
 
 var board, btnOne, buttonTwo, btnOneDowned, btnTwoDowned,
   btnOneTimeout, btnTwoTimeout;
@@ -160,6 +162,17 @@ board.on('ready', function() {
 
 http.listen(port, function() {
   db.initTable();
+  checkFolder('./uploads');
   var listenMsg = emoji.get('tennis') + '  Playing pong on http://localhost:' + port + '! ' + emoji.get('tennis');
   console.log(listenMsg);
 });
+
+function checkFolder(path) {
+  try {
+    fs.accessSync(path, fs.F_OK);
+  } catch (e) {
+    var msg = path + ' not found. Creating ' + path;
+    console.log(msg.white.bgBlue.bold);
+    fs.mkdirSync(path);
+  }
+}
