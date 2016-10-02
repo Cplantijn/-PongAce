@@ -31,9 +31,9 @@ export default class PlayerSelectOverlay extends Component {
       if (acceptKeys.indexOf(key) > -1) {
         if (key === 13) {
           let player = null;
-          for (let i = 0; i < _.size(playerList); i++) {
-            if (playerList[i].highlight) {
-              player = playerList[i];
+          for (let i = 0; i < _.size(playerList.players); i++) {
+            if (playerList.players[i].highlight) {
+              player = playerList.players[i];
             }
           }
           const { id, name, standardPose, winningPose } = player;
@@ -48,16 +48,16 @@ export default class PlayerSelectOverlay extends Component {
           let selectionFound = false;
 
           if (currentSelectionId === null) {
-            for (let i = 0; i < _.size(playerList); i++) {
-              if (playerList[i].highlight) {
-                currentSelectionId = playerList[i].id;
-                highlightSelection(playerList[i].id);
+            for (let i = 0; i < _.size(playerList.players); i++) {
+              if (playerList.players[i].highlight) {
+                currentSelectionId = playerList.players[i].id;
+                highlightSelection(playerList.players[i].id);
               }
             }
           }
 
-          for (let i = 0; i < _.size(playerList) && !selectionFound; i++) {
-            if (playerList[i].id === currentSelectionId) {
+          for (let i = 0; i < _.size(playerList.players) && !selectionFound; i++) {
+            if (playerList.players[i].id === currentSelectionId) {
               currentSelectIndex = i;
               selectionFound = true;
             }
@@ -67,12 +67,12 @@ export default class PlayerSelectOverlay extends Component {
             currentSelectIndex = currentSelectIndex - 1;
           } else if (key === 38 && currentSelectIndex > 9) {
             currentSelectIndex = currentSelectIndex - 10;
-          } else if (key === 39 && (_.size(playerList) > currentSelectIndex + 1)) {
+          } else if (key === 39 && (_.size(playerList.players) > currentSelectIndex + 1)) {
             currentSelectIndex = currentSelectIndex + 1;
-          } else if (key === 40 && (_.size(playerList) > currentSelectIndex + 10)) {
+          } else if (key === 40 && (_.size(playerList.players) > currentSelectIndex + 10)) {
             currentSelectIndex = currentSelectIndex + 10;
           }
-          highlightSelection(playerList[currentSelectIndex].id);
+          highlightSelection(playerList.players[currentSelectIndex].id);
         }
       }
     }
@@ -83,11 +83,17 @@ export default class PlayerSelectOverlay extends Component {
             joinGroup, showSelectionWarning } = this.props;
     let playerRows = null;
     let playerContainer = null;
+    let selectionContainer = null;;
     let row = 0;
-    let message = 'Choose your players';
+    let message = 'Create at least two player profiles to play!';
+    const hasEnoughPlayers = _.size(playerList.players) > 1;
+    if (hasEnoughPlayers) {
+      message = 'Choose your players';
+    }
 
-    if (_.size(playerList) > 0) {
-      playerContainer = _.groupBy(playerList, function(player, i) {
+
+    if (hasEnoughPlayers) {
+      playerContainer = _.groupBy(playerList.players, function(player, i) {
         if (i % 10 === 0) {
           row ++;
         }
@@ -107,29 +113,8 @@ export default class PlayerSelectOverlay extends Component {
             showSelectionWarning={showSelectionWarning} />
         );
       });
-    }
 
-    if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
-      message = 'Hold your side\'s button to ready up';
-    }
-    return (
-      <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>
-        <div className="header-container">
-          <div>
-            <h1>{message}</h1>
-          </div>
-          <FontAwesome
-            size="2x"
-            className="refresh-icon"
-            onClick={this._resetGroups.bind(this)}
-            title="clear selections"
-            name="refresh"/>
-        </div>
-        <div className="roster-container">
-          <div className="tile-container">
-            {playerRows}
-          </div>
-        </div>
+      selectionContainer = (
         <div className="selection-container">
           <PlayerGroup
             showSelectionWarning={showSelectionWarning}
@@ -153,6 +138,31 @@ export default class PlayerSelectOverlay extends Component {
             group={game.groupTwo}
             groupNumber={2} />
         </div>
+      );
+    }
+
+    if (game.groupOne.playerOne.active && game.groupTwo.playerOne.active) {
+      message = 'Hold your side\'s button to ready up';
+    }
+    return (
+      <div className="player-select-container" onKeyPress={this._handleKeyDown.bind(this)}>
+        <div className="header-container">
+          <div>
+            <h1>{message}</h1>
+          </div>
+          <FontAwesome
+            size="2x"
+            className="refresh-icon"
+            onClick={this._resetGroups.bind(this)}
+            title="clear selections"
+            name="refresh"/>
+        </div>
+        <div className="roster-container">
+          <div className="tile-container">
+            {playerRows}
+          </div>
+        </div>
+        {selectionContainer}
       </div>
     );
   }

@@ -10,11 +10,17 @@ export default class PlayerDetail extends Component {
     const { showcasedPlayer, changePlayerPic } = this.props;
     changePlayerPic(showcasedPlayer.id, type, e.target.files[0]);
   }
+  _showImageSelectModal(picType) {
+    const { showImageSelectModal } = this.props;
+    showImageSelectModal(picType);
+  }
   render() {
-    const { showcasedPlayer } = this.props;
-    let detail = (<div className="empty-player-msg">
-                      <h3>Select a Player</h3>
-                    </div>);
+    const { showcasedPlayer, showImageSelectModal } = this.props;
+
+    let detail = (
+      <div className='empty-player-msg'>
+        <h3>Select a Player</h3>
+      </div>);
     if (_.size(showcasedPlayer) > 0) {
       const standardPicStyle = {
         backgroundImage: 'url("/player_img/' + showcasedPlayer.standardPose + '")'
@@ -26,9 +32,10 @@ export default class PlayerDetail extends Component {
                   <div className="header"><h2>{showcasedPlayer.name}</h2></div>
                   <div className="image-set-container">
                     <div className="image-center-container">
-                      <div className="image-container">
+                      <div
+                        className="image-container"
+                        onClick={this._showImageSelectModal.bind(this, 'standard')}>
                         <div className="single-image" style={standardPicStyle}>
-                          <input onChange={this._uploadPic.bind(this, 'standard')} type="file" accept="image/*" />
                           <div className="overlay">
                             <FontAwesome
                               name="camera"
@@ -41,9 +48,10 @@ export default class PlayerDetail extends Component {
                           <span className="label image-label">Standard Picture</span>
                         </div>
                       </div>
-                      <div className="image-container">
+                      <div
+                        className="image-container"
+                        onClick={this._showImageSelectModal.bind(this, 'winning')}>
                         <div className="single-image" style={winningPicStyle}>
-                          <input onChange={this._uploadPic.bind(this, 'winning')}type="file" accept="image/*" />
                           <div className="overlay">
                             <FontAwesome
                               name="camera"
@@ -87,6 +95,7 @@ export default class PlayerDetail extends Component {
 }
 
 PlayerDetail.propTypes = {
+  showImageSelectModal: React.PropTypes.func,
   changePlayerPic: React.PropTypes.func,
   showcasedPlayer: React.PropTypes.object,
 };

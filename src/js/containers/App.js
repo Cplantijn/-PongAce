@@ -22,7 +22,8 @@ function mapStateToProps(state) {
     history: state.history,
     userMessage: state.userMessage,
     playerList: state.playerList,
-    showcasedPlayer: state.showcasedPlayer
+    showcasedPlayer: state.showcasedPlayer,
+    imageSelectModal: state.imageSelectModal
   };
 }
 

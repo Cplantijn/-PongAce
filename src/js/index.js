@@ -6,13 +6,16 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import App from './containers/App';
 import pongReducer from './reducers';
+import config from '../../config';
 
-const loggerMiddleware = createLogger();
+let middleware = [thunkMiddleware];
 
-const createStoreWithMiddleWare = applyMiddleware(
-  thunkMiddleware,
-  loggerMiddleware
-)(createStore);
+if (config.mode !== 'production') {
+  const loggerMiddleware = createLogger();
+  middleware = [...middleware, loggerMiddleware]
+}
+
+const createStoreWithMiddleWare = applyMiddleware(...middleware)(createStore);
 
 const store = createStoreWithMiddleWare(pongReducer);
 

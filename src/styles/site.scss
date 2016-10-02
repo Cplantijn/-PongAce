@@ -347,7 +347,7 @@ html, body {
           font-size: 1.2em;
           color: $white;
           background: transparent;
-          text-align: center;
+          text-align: left;
           border: 0;
           border-bottom: 2px solid $white;
           &:focus {
@@ -658,10 +658,9 @@ html, body {
             text-transform: uppercase;
             font-family: $pier_bold;
             letter-spacing: 0.1em;
-            flex: 1
             }
             .player-add-form-container{
-              flex: 10;
+              flex: 1;
               display: flex;
               padding-left: 1em;
               flex-direction: column;
@@ -815,6 +814,9 @@ html, body {
               display: flex;
               .player-list-container {
                 flex: 1;
+                .input-group {
+                  width: 100%;
+                }
                 .player-list {
                   min-width: 100%;
                   li {
@@ -882,6 +884,15 @@ html, body {
                         position: absolute;
                       }
                     }
+                  }
+                  .empty {
+                    opacity: 0.5;
+                    font-size: 2rem;
+                  }
+                  &.empty {
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
                   }
                 }
               }
@@ -1109,18 +1120,18 @@ html, body {
           }
           &.leaderboard {
             &:hover {
-              color: $secondary_color;
+              color: $gold_color;
             }
             &.active {
-              color: $secondary_color;
+              color: $gold_color;
             }
           }
           &.history {
             &:hover {
-              color: $gold_color;
+              color: $secondary_color;
             }
             &.active {
-              color: $gold_color;
+              color: $secondary_color;
             }
           }
           &.settings {

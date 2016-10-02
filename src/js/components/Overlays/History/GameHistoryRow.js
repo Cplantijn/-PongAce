@@ -31,7 +31,7 @@ export default class GameHistoryRow extends Component {
     return (
       <tr style={{ 'display': 'flex' }} >
         <td style={{ 'flex': '2' }}>
-          {moment(game.game_time, 'YYYY-MM-DD H:mm:ss').format('MMM DDD, YYYY [|] h:mm a')}
+          {moment(game.game_time, 'YYYY-MM-DD H:mm:ss').format('MMM DD, YYYY [|] h:mm a')}
         </td>
         <td style={{ 'flex': '2' }}>
         {groupOneProfiles}

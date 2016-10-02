@@ -32,13 +32,8 @@ b.on('update', bundle);
 b.on('log', gutil.log);
 
 function bundle() {
-  gutil.log(gutil.colors.bgYellow.black('Setting NODE_ENV to \'' + config.mode));
-  process.env.NODE_ENV = config.mode;
-  if (process.env.NODE_ENV != config.mode) {
-    throw new Error('Failed to set NODE_ENV to ' + config.mode + '!');
-  } else {
-      gutil.log(gutil.colors.bgYellow.black('Successfully set NODE_ENV to ' + config.mode));
-  }
+  var env = process.env.NODE_ENV || 'development';
+  gutil.log(gutil.colors.bgYellow.black('Setting NODE_ENV to \'' + env));
   gutil.log(gutil.colors.bgMagenta('Browserifying js files'));
   gutil.beep();
 
@@ -73,4 +68,10 @@ gulp.task('watch', function () {
   gulp.watch('src/**/*.scss', ['styles']);
 });
 
+gulp.task('set-env', function () {
+  return process.env.NODE_ENV = process.env.NODE_ENV;
+});
+
 gulp.task('default', ['styles', 'statics', 'js', 'watch']);
+
+gulp.task('build-prod', ['set-env','styles', 'statics', 'js'])

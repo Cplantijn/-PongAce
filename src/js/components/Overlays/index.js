@@ -38,7 +38,8 @@ export default class Overlay extends Component {
       fetchSettings,
       changeServeInterval,
       changeGamePoint,
-      fetchHistory
+      fetchHistory,
+      showImageSelectModal
     } = this.props;
     const overlays = ['profiles', 'leaderboard', 'history', 'settings', 'characterSelect'];
     const activeOverlay = overlay.activeIndex ? overlays[overlay.activeIndex] : 'profiles';
@@ -64,6 +65,7 @@ export default class Overlay extends Component {
             createNewPlayer={createNewPlayer}
             fetchPlayers={fetchPlayers}
             playerList={playerList}
+            showImageSelectModal={showImageSelectModal}
             changePlayerPic={changePlayerPic}
             fetchPlayerDetails={fetchPlayerDetails}
             showcasedPlayer={showcasedPlayer}
@@ -153,5 +155,6 @@ Overlay.propTypes = {
   fetchSettings: React.PropTypes.func,
   changeServeInterval: React.PropTypes.func,
   changeGamePoint: React.PropTypes.func,
-  fetchHistory: React.PropTypes.func
+  fetchHistory: React.PropTypes.func,
+  showImageSelectModal: React.PropTypes.func
 };

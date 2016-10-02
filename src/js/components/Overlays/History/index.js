@@ -14,7 +14,7 @@ export default class HistoryOverlay extends Component {
     const { playerList, history } = this.props;
     const players = {};
     const games = [];
-    _.each(playerList, function(player) {
+    _.each(playerList.players, function(player) {
       players[player.id] = player;
     });
     _.each(history, function(game, key) {

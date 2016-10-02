@@ -5,6 +5,7 @@ import overlay from './overlay';
 import userMessage from './userMessage';
 import playerList from './playerList';
 import showcasedPlayer from './showcasedPlayer';
+import imageSelectModal from './imageSelectModal';
 import game from './game';
 import history from './history';
 
@@ -14,6 +15,7 @@ const pongReducer = combineReducers({
   game,
   history,
   showcasedPlayer,
+  imageSelectModal,
   overlay
 });
 

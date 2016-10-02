@@ -36,15 +36,18 @@ export default class ProfilesOverlay extends Component {
   }
   render() {
     const { playerList, fetchPlayerDetails, showcasedPlayer } = this.props;
-    let players = null;
     let activeId = null;
     let empty = true;
+    let players = null;
+    const hasPlayerResult = _.size(playerList.players) > 0;
+
     if (_.size(showcasedPlayer) > 0) {
       activeId = showcasedPlayer.id;
       empty = false;
     }
-    if (_.size(playerList) > 0) {
-      players = _.map(playerList, function(player, i) {
+
+    if (hasPlayerResult) {
+      players = _.map(playerList.players, function(player, i) {
         const placement = (i % 2 === 0 || i === 0) ? 'even' : 'odd';
         const playerName = player.name.length > 23 ? '    ' + player.name.slice(0, 21) + '...' : player.name;
         return (
@@ -60,6 +63,12 @@ export default class ProfilesOverlay extends Component {
             losses={player.losses}/>
         );
       });
+    } else if (hasPlayerResult && !playerList.isLoading){
+      players = (
+        <span className="muted empty">
+          {'No players found.'}
+        </span>
+      );
     }
     const cls = classNames({
       'player-view-master-container': true,
@@ -67,6 +76,10 @@ export default class ProfilesOverlay extends Component {
       'player-shown': !empty
     });
 
+    const playerListCls = classNames({
+      'player-list': true,
+      'empty': !hasPlayerResult
+    })
     return (
       <div
         className="profiles-container"
@@ -118,7 +131,7 @@ export default class ProfilesOverlay extends Component {
                   </div>
                 </div>
                   <ul
-                    className="player-list"
+                    className={playerListCls}
                     ref="playerList">
                     {players}
                   </ul>

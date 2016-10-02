@@ -13,6 +13,7 @@ export const HIDE_MESSAGE = 'HIDE_MESSAGE';
 export const REMOVE_SHAKE = 'REMOVE_SHAKE';
 export const LIST_PLAYERS = 'LIST_PLAYERS';
 export const CLEAR_PLAYER_LIST = 'CLEAR_PLAYER_LIST';
+export const SET_PLAYER_LIST_LOADING = 'SET_PLAYER_LIST_LOADING';
 export const SHOW_PLAYER_DETAIL = 'SHOW_PLAYER_DETAIL';
 export const START_SELECTION = 'START_SELECTION';
 export const END_SELECTION = 'END_SELECTION';
@@ -30,8 +31,12 @@ export const SWITCH_SERVE = 'SWITCH_SERVE';
 export const UPDATE_LAST_POINT = 'UPDATE_LAST_POINT';
 export const UPDATE_HISTORY = 'UPDATE_HISTORY';
 export const SHOW_GAME_HISTORY = 'SHOW_GAME_HISTORY';
-
-
+export const SHOW_IMAGE_SELECT_MODAL = 'SHOW_IMAGE_SELECT_MODAL';
+export const CLOSE_IMAGE_SELECT_MODAL = 'CLOSE_IMAGE_SELECT_MODAL';
+export const SHOW_WEBCAM_UNAVAILABLE = 'SHOW_WEBCAM_UNAVAILABLE';
+export const SHOW_WEBCAM_AVAILABLE = 'SHOW_WEBCAM_AVAILABLE';
+export const UPLOAD_PLAYER_PIC = 'UPLOAD_PLAYER_PIC';
+export const UPLOAD_PLAYER_PIC_COUNTDOWN = 'UPLOAD_PLAYER_PIC_COUNTDOWN';
 
 const howl = new Howl(musicOpts);
 
@@ -69,6 +74,7 @@ export function fetchSettings() {
       });
   };
 }
+
 
 export function changeGamePoint(point) {
   return dispatch => {
@@ -202,10 +208,95 @@ export function resetGroups() {
   };
 }
 
+export function showImageSelectModal(picType) {
+  return {
+    type: actions.SHOW_IMAGE_SELECT_MODAL,
+    picType
+  };
+}
+
+export function closeImageSelectModal() {
+  return {
+    type: actions.CLOSE_IMAGE_SELECT_MODAL
+  }
+}
+
+export function showWebCamUnavailable() {
+  return {
+    type: actions.SHOW_WEBCAM_UNAVAIBLE
+  }
+}
+
+export function showWebCamAvailable() {
+  return {
+    type: actions.SHOW_WEBCAM_AVAILABLE
+  }
+}
+
 export function hideMessage() {
   return {
     type: actions.HIDE_MESSAGE
   };
+}
+
+export function takePicture(playerId, picType, picture) {
+  return dispatch => {
+    dispatch(uploadPlayerPic(playerId, picType, picture));
+  }
+}
+export function playerPicCountDown () {
+  return dispatch => {
+    var count = 3;
+    dispatch(updatePlayerPicCountDown(count));
+    const countDownInterval = setInterval(() => {
+      count = count - 1;
+      if (count > 0) {
+        dispatch(updatePlayerPicCountDown(count));
+      } else {
+        clearInterval(countDownInterval);
+        dispatch(updatePlayerPicCountDown(count));
+        dispatch(closeImageSelectModal());
+      }
+    }, 1000);
+  }
+}
+
+function updatePlayerPicCountDown (count) {
+  return {
+    type: actions.UPLOAD_PLAYER_PIC_COUNTDOWN,
+    count
+  }
+}
+
+function uploadPlayerPic(playerId, picType, picture) {
+  return dispatch => {
+      return fetch('/upload/player/picture', {
+        method: 'POST',
+        headers: contentType,
+        body: JSON.stringify({
+          playerId,
+          picType,
+          picture
+        })
+      })
+        .then(response => response.json())
+        .then(function(json) {
+          if (json.errno || json.error) {
+            dispatch(showMessage('danger', 'An error has occurred'));
+          }
+          const currentFilter = document.getElementById('player-profile-filter-input').value;
+          console.log(currentFilter);
+          dispatch(postPlayerPic);
+          dispatch(fetchPlayers(currentFilter || '', 'updated_on DESC'));
+          dispatch(fetchPlayerDetails(playerId));
+        });
+    }
+}
+
+function postPlayerPic () {
+  return {
+    type: actions.UPLOAD_PLAYER_PIC
+  }
 }
 
 export function highlightSelection(id) {
@@ -382,6 +473,7 @@ export function fetchPlayers(filter, sort) {
   clearTimeout(msgShakeTimeout);
   return dispatch => {
     dispatch(clearPlayerList());
+    dispatch(setPlayerListLoading())
     return fetch('/fetch/players', {
       method: 'POST',
       headers: contentType,
@@ -589,9 +681,17 @@ function clearPlayerList() {
   };
 }
 
+function setPlayerListLoading() {
+  return {
+    type: actions.SET_PLAYER_LIST_LOADING
+  }
+}
+
 function showPlayerList(playerList) {
   return {
     type: actions.LIST_PLAYERS,
+    playersLoaded: true,
+    playersLoading: false,
     playerList
   };
 }

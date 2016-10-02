@@ -55,8 +55,34 @@ app.post('/update/player/quote', function(req, res) {
 });
 
 app.post('/save/winloss', function(req, res) {
-  db.savePlayerWinLoss(req.body.gameType, req.body.groupOne, req.body.groupTwo, res);
+  db.savePlayerWinLoss(req.body.gameType, req.body.winningIds, req.body.losingIds, res);
 });
+
+app.post('/upload/player/picture', (req, res) => {
+  var base64Data = req.body.picture.replace(/^data:image\/\w+;base64,/, '');
+  var nameGen = new Chance();
+  var fileName = nameGen.string({
+    length: 12,
+    pool: config.imageNameSeed
+  });
+  fileName += '.jpg';
+  var filePath = path.join(__dirname, 'player_img/') + fileName;
+
+  fs.writeFile(filePath, base64Data, {encoding: 'base64'}, function (err) {
+    if (err) {
+      res.writeHead(500, {
+        'content-type': 'application/json'
+      });
+      var errorBody = {
+        error: 'err',
+        reason: err
+      }
+      res.write(JSON.stringify(errorBody));
+    } else {
+      db.updatePlayerPicture(req.body.playerId, req.body.picType, fileName, res)
+    }
+  });
+})
 
 app.post('/save/setting', function(req, res) {
   db.saveSetting(req.body.column, req.body.value, res);

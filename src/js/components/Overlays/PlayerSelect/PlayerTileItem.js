@@ -7,6 +7,7 @@ export default class PlayerTileItem extends Component {
   }
   _highlightSelection(id) {
     const { highlightSelection, isSelecting } = this.props;
+    console.log('fooo', isSelecting);
     if (isSelecting) {
       highlightSelection(id);
     }

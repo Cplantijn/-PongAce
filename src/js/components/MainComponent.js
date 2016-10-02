@@ -5,6 +5,7 @@ import classNames from 'classNames';
 import Overlay from './Overlays';
 import io from 'socket.io-client';
 import GameComponent from './Game';
+import ImageSelectModal from './ImageSelectModal';
 
 export default class MainComponent extends Component {
   constructor(props) {
@@ -147,23 +148,40 @@ export default class MainComponent extends Component {
       resetGroups,
       history,
       showSelectionWarning,
-      fetchHistory
+      imageSelectModal,
+      showImageSelectModal,
+      closeImageSelectModal,
+      showWebCamUnavailable,
+      showWebCamAvailable,
+      fetchHistory,
+      playerPicCountDown,
+      takePicture
     } = this.props;
+
     const cls = classNames({
       'game-component-container': true,
       'no-game': !game.active && !game.ended
     });
     return (
       <div className="main-component container-fluid">
-        <TopBar userMessage={userMessage}/>
+        <ImageSelectModal
+          modal={imageSelectModal}
+          showWebCamUnavailable={showWebCamUnavailable}
+          showWebCamAvailable={showWebCamAvailable}
+          showcasedPlayer={showcasedPlayer}
+          playerPicCountDown={playerPicCountDown}
+          takePicture={takePicture}
+          closeImageSelectModal={closeImageSelectModal} />
+        <TopBar userMessage={userMessage} />
         <div className={cls}>
           <GameComponent
             showOverlay={showOverlay}
             endGame={endGame}
             fetchPlayers={fetchPlayers}
-            game={game}/>
+            game={game} />
           <Overlay
             game={game}
+            showImageSelectModal={showImageSelectModal}
             createNewPlayer={createNewPlayer}
             fetchPlayers={fetchPlayers}
             playerList={playerList}
@@ -224,4 +242,11 @@ MainComponent.propTypes = {
   toggleReady: React.PropTypes.func,
   endGame: React.PropTypes.func,
   fetchHistory: React.PropTypes.func,
+  imageSelectModal: React.PropTypes.object,
+  showImageSelectModal: React.PropTypes.func,
+  closeImageSelectModal: React.PropTypes.func,
+  showWebCamUnavailable: React.PropTypes.func,
+  showWebCamAvailable: React.PropTypes.func,
+  playerPicCountDown: React.PropTypes.func,
+  takePicture: React.PropTypes.func
 };

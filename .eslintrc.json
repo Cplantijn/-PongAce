@@ -1,5 +1,5 @@
 {
-    "extends": "airbnb",
+  "extends": ["standard", "standard-react"],
     "plugins": [
         "react"
     ],
@@ -11,6 +11,7 @@
     "rules": {
       "comma-dangle": [0],
       "strict": [2, "never"],
+      "semi":[0],
       "no-unused-vars": [2],
       "no-use-before-define": [0],
       "space-before-function-paren":[0],
